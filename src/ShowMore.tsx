@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Truncate, type TruncateProps } from './Truncate'
 
 export interface ShowMoreProps
@@ -18,10 +18,24 @@ export const ShowMore: React.FC<ShowMoreProps> = ({
   less = 'Collapse',
   anchorClass,
   children,
+  width,
   ...others
 }) => {
-  const [expanded, setExpanded] = useState(false)
+  const parentRef = useRef<HTMLDivElement>(null)
+  const [contentWidth, setContentWidth] = useState(0)
   const [truncated, setTruncated] = useState(false)
+  const [expanded, setExpanded] = useState(false)
+
+  const expandedLines = useMemo(() => {
+    if (!expanded) return lines
+    return 0
+  }, [expanded, lines])
+
+  useEffect(() => {
+    if (!parentRef.current) return
+    const { clientWidth } = parentRef.current
+    setContentWidth(clientWidth)
+  }, [])
 
   const handleTruncate = useCallback(
     (didTruncate: boolean) => {
@@ -40,15 +54,11 @@ export const ShowMore: React.FC<ShowMoreProps> = ({
     [],
   )
 
-  const expandedLines = useMemo(() => {
-    if (!expanded) return lines
-    return 0
-  }, [expanded, lines])
-
   return (
-    <>
+    <div ref={parentRef} style={{ width: '100%' }}>
       <Truncate
         {...others}
+        width={width || contentWidth}
         lines={expandedLines}
         ellipsis={
           ellipsis || (
@@ -64,6 +74,7 @@ export const ShowMore: React.FC<ShowMoreProps> = ({
       >
         {children}
       </Truncate>
+
       {!truncated && expanded && (
         <span>
           {' '}
@@ -72,6 +83,6 @@ export const ShowMore: React.FC<ShowMoreProps> = ({
           </a>
         </span>
       )}
-    </>
+    </div>
   )
 }
