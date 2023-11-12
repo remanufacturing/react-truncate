@@ -18,7 +18,7 @@ jobs:
           pnpm install
           pnpm build
       - name: github-ci
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
           build_dir: dist
