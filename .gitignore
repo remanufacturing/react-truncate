@@ -1,5 +1,8 @@
 .nyc_output
 demo
 lib
+dist
 node_modules
 *.log
+*.rar
+*.zip

@@ -1,180 +1,62 @@
-# React-Truncate
-[![NPM version][npm-image]][npm-url]
-[![Downloads][downloads-image]][npm-url]
-[![Build status][travis-image]][travis-url]
-[![Coverage status][coveralls-image]][coveralls-url]
-[![Dependency status][david-dm-image]][david-dm-url]
-[![Dev dependency status][david-dm-dev-image]][david-dm-dev-url]
+# @re-dev/react-truncate
 
-## Install
-```
-$ npm install react-truncate
-```
+<p>
+  <a href='https://www.npmjs.com/package/@re-dev/react-truncate'>
+    <img src="https://img.shields.io/npm/v/@re-dev/react-truncate?color=f43f5e&label=npm" />
+  </a>
+  <a href="https://www.npmjs.com/package/@re-dev/react-truncate" target="__blank">
+    <img src="https://img.shields.io/npm/dt/@re-dev/react-truncate?color=f43f5e&label=downloads" />
+  </a>
+  <!-- <a href="https://paka.dev/npm/@re-dev/react-truncate" target="__blank">
+    <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=f43f5e" />
+  </a> -->
+  <a href="https://github.com/remanufacturing/react-truncate" target="__blank">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/remanufacturing/react-truncate?style=social" />
+  </a>
+</p>
+
+React component for truncating multi-line spans and adding an ellipsis.
+
+## Why?
+
+This is a Fork version from [react-truncate](https://github.com/pablosichert/react-truncate) . Since the original version has not been maintained for a long time, we plan to solve existing problems through this repository.
 
 ## Usage
-```js
-import Truncate from 'react-truncate';
 
-// ...
+With npm(or yarn, or pnpm):
 
-class Foo extends Component {
-    render() {
-        return (
-            <Truncate lines={3} ellipsis={<span>... <a href='/link/to/article'>Read more</a></span>}>
-                {longText}
-            </Truncate>
-        );
-    }
-}
+```bash
+npm install @bassist/utils
 ```
 
-Hint: (Generally with React) if you want to preserve newlines from plain text, you need to do as follows:
-```js
-//...
-    {text.split('\n').map((line, i, arr) => {
-        const line = <span key={i}>{line}</span>;
+In `.jsx` / `.tsx` or other files:
 
-        if (i === arr.length - 1) {
-            return line;
-        } else {
-            return [line, <br key={i + 'br'} />];
-        }
-    })}
-//...
+```ts
+// Normally, you only need to use the `ShowMore` component
+import { Truncate, ShowMore } from '@re-dev/react-truncate'
 ```
 
-## API
-| Prop | Type | Default | Description | Example |
-| ---- | ---- | ------- | ----------- | ------- |
-| lines | integer, boolean {false} | `1` | Specifies how many lines of text should be preserved until it gets truncated. `false` and any integer < 1 will result in the text not getting clipped at all. | (`false`, `-1`, `0`), `1`, ...  |
-| ellipsis | string, React node | `'…'` | An ellipsis that is added to the end of the text in case it is truncated. | `'...'`, `<span>...</span>`, `<span>... <a href='#' onClick={someHandler}>Read more</a></span>`, `[<span key='some'>Some</span>, <span key='siblings'>siblings<span>]`
-| children | string, React node | | The text to be truncated. Anything that can be evaluated as text. | `'Some text'`, `<p>Some paragraph <a/>with other text-based inline elements<a></p>`, `<span>Some</span><span>siblings</span>` |
-| trimWhitespace | boolean | `false` | If `true`, whitespace will be removed from before the ellipsis (e.g. `words ...` will become `words...` instead) | |
-| width | number | `0` | If not `0`, the calculation of the content will be based on this number. | |
-| onTruncate | function | | Gets invoked on each render. Gets called with `true` when text got truncated and ellipsis was injected, and with `false` otherwise. | `isTruncated => isTruncated !== this.state.isTruncated && this.setState({ isTruncated })` |
+## Documentation
 
-## Known issues
-- Resize content when the **size** of **parent container changed** (use the `width` property or call `ref.onResize()`). See [issue](https://github.com/One-com/react-truncate/issues/49)
-- Text exceeding horizontal boundaries when "viewport" meta tag is not set accordingly for **mobile** devices (font boosting leads to **wrong calculations**). See [issue](https://github.com/One-com/react-truncate/issues/4#issuecomment-226703499)
-- Output in plain text only - no support for **markup/HTML**. See [issue](https://github.com/One-com/react-truncate/issues/8)
-- Wrong line breaks when **custom font** is loading after the component has rendered. See [issue](https://github.com/One-com/react-truncate/issues/16)
-- No support for **letter spacing** / **word spacing**. See [issue](https://github.com/One-com/react-truncate/issues/59)
+New documentation coming soon, please refer to the legacy version for now.
 
-## Integrated example for toggling "read more" text
-```js
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Truncate from 'react-truncate';
+See:
 
-class ReadMore extends Component {
-    constructor(...args) {
-        super(...args);
+- [Truncate.legacy.md](https://github.com/remanufacturing/react-truncate/blob/main/docs/Truncate.legacy.md)
+- [ShowMore.legacy.md](https://github.com/remanufacturing/react-truncate/blob/main/docs/ShowMore.legacy.md)
 
-        this.state = {
-            expanded: false,
-            truncated: false
-        };
+## Release Notes
 
-        this.handleTruncate = this.handleTruncate.bind(this);
-        this.toggleLines = this.toggleLines.bind(this);
-    }
+Please refer to [CHANGELOG](https://github.com/remanufacturing/react-truncate/blob/main/CHANGELOG.md) for details.
 
-    handleTruncate(truncated) {
-        if (this.state.truncated !== truncated) {
-            this.setState({
-                truncated
-            });
-        }
-    }
+## Development Plan
 
-    toggleLines(event) {
-        event.preventDefault();
+Here are some recent development plans.
 
-        this.setState({
-            expanded: !this.state.expanded
-        });
-    }
+If you have good ideas and suggestions, you can provide feedback through issue.
 
-    render() {
-        const {
-            children,
-            more,
-            less,
-            lines
-        } = this.props;
+See: [Projects on GitHub](https://github.com/orgs/remanufacturing/projects/1) .
 
-        const {
-            expanded,
-            truncated
-        } = this.state;
+## License
 
-        return (
-            <div>
-                <Truncate
-                    lines={!expanded && lines}
-                    ellipsis={(
-                        <span>... <a href='#' onClick={this.toggleLines}>{more}</a></span>
-                    )}
-                    onTruncate={this.handleTruncate}
-                >
-                    {children}
-                </Truncate>
-                {!truncated && expanded && (
-                    <span> <a href='#' onClick={this.toggleLines}>{less}</a></span>
-                )}
-            </div>
-        );
-    }
-}
-
-ReadMore.defaultProps = {
-    lines: 3,
-    more: 'Read more',
-    less: 'Show less'
-};
-
-ReadMore.propTypes = {
-    children: PropTypes.node.isRequired,
-    lines: PropTypes.number,
-    less: PropTypes.string,
-    more: PropTypes.string
-};
-
-export default ReadMore;
-```
-
-## Developing
-Install system libraries needed for development dependencies
-- https://github.com/Automattic/node-canvas#installation
-
-Install development dependencies
-```
-$ npm install
-```
-
-Run tests
-```
-$ npm test
-```
-
-Run code linter
-```
-$ npm run lint
-```
-
-Compile to ES5 from /src to /lib
-```
-$ npm run compile
-```
-
-[npm-url]:https://npmjs.org/package/react-truncate
-[downloads-image]:http://img.shields.io/npm/dm/react-truncate.svg
-[npm-image]:https://badge.fury.io/js/react-truncate.svg
-[travis-url]:https://travis-ci.org/pablosichert/react-truncate
-[travis-image]:https://travis-ci.org/pablosichert/react-truncate.svg?branch=master
-[coveralls-url]:https://coveralls.io/r/pablosichert/react-truncate
-[coveralls-image]:https://coveralls.io/repos/pablosichert/react-truncate/badge.svg
-[david-dm-url]:https://david-dm.org/pablosichert/react-truncate
-[david-dm-image]:https://david-dm.org/pablosichert/react-truncate.svg
-[david-dm-dev-url]:https://david-dm.org/pablosichert/react-truncate#info=devDependencies
-[david-dm-dev-image]:https://david-dm.org/pablosichert/react-truncate/dev-status.svg
+MIT License © 2023-PRESENT [chengpeiquan](https://github.com/chengpeiquan)

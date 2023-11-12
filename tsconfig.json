@@ -1,0 +1,17 @@
+{
+  "extends": "@bassist/tsconfig/base.json",
+  "compilerOptions": {
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["vite/client", "node"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "declaration": true
+  },
+  "include": ["src/**/*", "scripts/**/*"],
+  "exclude": ["node_modules", "examples"]
+}
