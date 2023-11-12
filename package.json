@@ -26,6 +26,7 @@
     "build": "run-s build:*",
     "build:lib": "vite build",
     "build:types": "tsx ./scripts/build-types.mts",
+    "build:docs": "pnpm -F docs build",
     "gen:log": "tsx ./scripts/generate-changelog.mts",
     "compile": "shx mkdir -p lib && babel ./src --out-file ./lib/Truncate.js && cross-env BABEL_ENV=CommonJS babel ./src --out-file ./lib/Truncate.CommonJS.js",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov",
