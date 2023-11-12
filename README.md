@@ -26,7 +26,7 @@ This is a Fork version from [react-truncate](https://github.com/pablosichert/rea
 With npm(or yarn, or pnpm):
 
 ```bash
-npm install @bassist/utils
+npm install @re-dev/react-truncate
 ```
 
 In `.jsx` / `.tsx` or other files:
@@ -35,6 +35,8 @@ In `.jsx` / `.tsx` or other files:
 // Normally, you only need to use the `ShowMore` component
 import { Truncate, ShowMore } from '@re-dev/react-truncate'
 ```
+
+See: [Basic Example](https://github.com/remanufacturing/react-truncate/blob/main/examples/basic/src/App.tsx)
 
 ## Documentation
 
