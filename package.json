@@ -7,23 +7,23 @@
   "homepage": "https://github.com/remanufacturing/react-truncate",
   "type": "module",
   "files": [
-    "dist"
+    "lib"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs",
+      "types": "./lib/index.d.ts"
     }
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "pnpm build:lib && pnpm build:types",
+    "build": "run-s build:*",
     "build:lib": "vite build",
     "build:types": "tsx ./scripts/build-types.mts",
     "gen:log": "tsx ./scripts/generate-changelog.mts",
@@ -71,6 +71,7 @@
     "jsdom": "^11.12.0",
     "lint-staged": "^15.0.2",
     "mocha": "^4.1.0",
+    "npm-run-all": "^4.1.5",
     "nyc": "^11.9.0",
     "prettier": "^3.0.3",
     "raf": "^3.4.1",

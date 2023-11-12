@@ -2,8 +2,11 @@ import { defineConfig } from 'vite'
 import banner from 'vite-plugin-banner'
 import pkg from './package.json'
 
+const outDir = 'lib'
+
 export default defineConfig({
   build: {
+    outDir,
     lib: {
       entry: 'src/index.ts',
       name: 'truncate',
@@ -39,6 +42,7 @@ export default defineConfig({
   },
   plugins: [
     banner({
+      outDir,
       content: [
         `/**`,
         ` * name: ${pkg.name}`,
@@ -48,7 +52,6 @@ export default defineConfig({
         ` * homepage: ${pkg.homepage}`,
         ` */`,
       ].join('\n'),
-      debug: true,
     }),
   ],
 })

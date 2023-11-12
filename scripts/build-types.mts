@@ -22,7 +22,7 @@ async function run() {
   if (!Array.isArray(res) || !res.length) return
 
   const [dts] = res
-  const output = resolve(rootPath, `./dist/index.d.ts`)
+  const output = resolve(rootPath, `./lib/index.d.ts`)
   writeFileSync(output, dts)
 }
 run().catch((e) => {
