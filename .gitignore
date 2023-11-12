@@ -6,3 +6,7 @@ node_modules
 *.log
 *.rar
 *.zip
+yarn.lock
+yarn-error.log
+package-lock.json
+examples/*/pnpm-lock.yaml

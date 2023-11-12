@@ -32,9 +32,10 @@ npm install @re-dev/react-truncate
 In `.jsx` / `.tsx` or other files:
 
 ```ts
-// Normally, you only need to use the `ShowMore` component
 import { Truncate, ShowMore } from '@re-dev/react-truncate'
 ```
+
+Normally, you only need to use the `ShowMore` component.
 
 See: [Basic Example](https://github.com/remanufacturing/react-truncate/blob/main/examples/basic/src/App.tsx)
 
