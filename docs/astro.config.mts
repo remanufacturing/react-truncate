@@ -7,6 +7,9 @@ const autogenerates = ['reference', 'examples']
 // https://astro.build/config
 export default defineConfig({
   outDir: '../dist',
+  build: {
+    assets: 'assets',
+  },
   integrations: [
     starlight({
       title: 'React Truncate',
