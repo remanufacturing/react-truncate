@@ -23,6 +23,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
+    "dev": "pnpm -F docs dev",
     "build": "run-s build:*",
     "build:lib": "vite build",
     "build:types": "tsx ./scripts/build-types.mts",

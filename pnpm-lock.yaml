@@ -111,6 +111,12 @@ importers:
       '@astrojs/starlight':
         specifier: ^0.12.0
         version: 0.12.0(astro@3.5.3)
+      '@bassist/utils':
+        specifier: ^0.14.0
+        version: 0.14.0
+      '@re-dev/react-truncate':
+        specifier: workspace:*
+        version: link:..
       astro:
         specifier: ^3.2.3
         version: 3.5.3(@types/node@20.9.0)(typescript@5.2.2)
@@ -611,6 +617,10 @@ packages:
   /@bassist/tsconfig@0.1.1:
     resolution: {integrity: sha512-taV8Afet71n5xUGVBqasQAXjjAUdduN9sV0U7bdQJml0cvFT7o8xmk/yQ+7A2wjVZcjOiDQ7cljqQ9E/9rR4YQ==}
     dev: true
+
+  /@bassist/utils@0.14.0:
+    resolution: {integrity: sha512-NptMVl0GhVNFPNlzhVd8Cl9+GufIRG2F71cjaW4EnkwQ8QLnI7qlE46Kovs1bPgWWlZJvNwXS3hYK5XSxnfaqg==}
+    dev: false
 
   /@emmetio/abbreviation@2.3.3:
     resolution: {integrity: sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA==}

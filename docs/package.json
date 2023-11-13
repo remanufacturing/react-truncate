@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@astrojs/starlight": "^0.12.0",
+    "@bassist/utils": "^0.14.0",
+    "@re-dev/react-truncate": "workspace:*",
     "astro": "^3.2.3",
     "sharp": "^0.32.5"
   },

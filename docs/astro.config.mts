@@ -1,5 +1,8 @@
 import { defineConfig } from 'astro/config'
 import starlight from '@astrojs/starlight'
+import { capitalize } from '@bassist/utils'
+
+const autogenerates = ['reference', 'examples']
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,15 +17,17 @@ export default defineConfig({
         {
           label: 'Guides',
           items: [
-            // Each item here is one entry in the navigation menu.
-            { label: 'Example Guide', link: '/guides/example/' },
+            { label: 'Getting Started', link: '/guides/getting-started' },
           ],
         },
-        {
-          label: 'Reference',
-          autogenerate: { directory: 'reference' },
-        },
+        ...autogenerates.map((i) => {
+          return {
+            label: capitalize(i),
+            autogenerate: { directory: i },
+          }
+        }),
       ],
+      customCss: ['./src/styles/index.css'],
     }),
   ],
 })
