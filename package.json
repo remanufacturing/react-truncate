@@ -1,6 +1,6 @@
 {
   "name": "@re-dev/react-truncate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Provides `Truncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.",
   "author": "chengpeiquan <chengpeiquan@chengpeiquan.com>",
   "license": "MIT",
@@ -28,8 +28,8 @@
     "build:lib": "vite build",
     "build:types": "tsx ./scripts/build-types.mts",
     "build:docs": "pnpm -F docs build",
-    "gen:log": "tsx ./scripts/generate-changelog.mts",
-    "gen:tag": "tsx ./scripts/generate-release.mts",
+    "gen:changelog": "tsx ./scripts/generate-changelog.mts",
+    "gen:release": "tsx ./scripts/generate-release.mts",
     "compile": "shx mkdir -p lib && babel ./src --out-file ./lib/Truncate.js && cross-env BABEL_ENV=CommonJS babel ./src --out-file ./lib/Truncate.CommonJS.js",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov",
     "lint": "eslint .",
