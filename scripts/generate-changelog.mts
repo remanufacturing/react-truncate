@@ -6,7 +6,7 @@ async function run() {
     `-p angular`,
     `-i CHANGELOG.md`,
     `-s`,
-    `--commit-path=.`,
+    `--commit-path=./src`,
   ]
 
   const cmd = changelogArgs.join(' ')
