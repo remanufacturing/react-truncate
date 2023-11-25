@@ -1,3 +1,12 @@
+## [0.1.1](https://github.com/remanufacturing/react-truncate/compare/v0.1.0...v0.1.1) (2023-11-25)
+
+
+### Bug Fixes
+
+* **ShowMore:** add  window resize listener to update content width ([4b3029b](https://github.com/remanufacturing/react-truncate/commit/4b3029bfb610e08906a933cd1067ec8c5e44c44d)), closes [#12](https://github.com/remanufacturing/react-truncate/issues/12)
+
+
+
 # 0.1.0 (2023-11-13)
 
 
