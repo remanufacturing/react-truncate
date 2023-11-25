@@ -22,7 +22,7 @@ export const ShowMore: React.FC<ShowMoreProps> = ({
   ...others
 }) => {
   const parentRef = useRef<HTMLDivElement>(null)
-  const [contentWidth, setContentWidth] = useState(0)
+  const [contentWidth, setContentWidth] = useState(width ?? 0)
   const [truncated, setTruncated] = useState(false)
   const [expanded, setExpanded] = useState(false)
 
@@ -31,11 +31,24 @@ export const ShowMore: React.FC<ShowMoreProps> = ({
     return 0
   }, [expanded, lines])
 
-  useEffect(() => {
+  const updateContentWidth = useCallback(() => {
     if (!parentRef.current) return
     const { clientWidth } = parentRef.current
     setContentWidth(clientWidth)
   }, [])
+
+  useEffect(() => {
+    updateContentWidth()
+  }, [updateContentWidth])
+
+  useEffect(() => {
+    updateContentWidth()
+    window.addEventListener('resize', updateContentWidth)
+
+    return () => {
+      window.removeEventListener('resize', updateContentWidth)
+    }
+  }, [updateContentWidth])
 
   const handleTruncate = useCallback(
     (didTruncate: boolean) => {
@@ -58,7 +71,7 @@ export const ShowMore: React.FC<ShowMoreProps> = ({
     <div ref={parentRef} style={{ width: '100%' }}>
       <Truncate
         {...others}
-        width={width || contentWidth}
+        width={contentWidth}
         lines={expandedLines}
         ellipsis={
           ellipsis || (
