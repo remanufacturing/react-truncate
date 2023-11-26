@@ -4,7 +4,7 @@
   "description": "Provides `Truncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.",
   "author": "chengpeiquan <chengpeiquan@chengpeiquan.com>",
   "license": "MIT",
-  "homepage": "https://github.com/remanufacturing/react-truncate",
+  "homepage": "https://truncate.js.org",
   "type": "module",
   "files": [
     "lib"
