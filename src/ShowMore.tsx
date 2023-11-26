@@ -9,7 +9,6 @@ export interface ShowMoreProps
   less?: string
   anchorClass?: string
   children: React.ReactNode
-  observeParent?: boolean
 }
 
 export const ShowMore = forwardRef<HTMLDivElement, ShowMoreProps>(
