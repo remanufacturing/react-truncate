@@ -37,7 +37,7 @@ import { Truncate, ShowMore } from '@re-dev/react-truncate'
 
 Normally, you only need to use the `ShowMore` component.
 
-See: [Basic Example](https://github.com/remanufacturing/react-truncate/blob/main/examples/basic/src/App.tsx)
+See: [Basic Example](https://truncate.js.org/examples/basic/)
 
 ## Documentation
 
