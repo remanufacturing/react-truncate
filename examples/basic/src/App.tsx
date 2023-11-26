@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { RichText } from 'shared/data'
+import { RichText } from 'example-shared/data'
 import { ShowMore } from '@re-dev/react-truncate'
 
 const App: React.FC = () => {
