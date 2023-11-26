@@ -1,4 +1,6 @@
 import { defineConfig } from 'astro/config'
+import unocss from 'unocss/astro'
+import react from '@astrojs/react'
 import starlight from '@astrojs/starlight'
 import { capitalize } from '@bassist/utils'
 
@@ -11,6 +13,8 @@ export default defineConfig({
     assets: 'assets',
   },
   integrations: [
+    unocss(),
+    react(),
     starlight({
       title: 'React Truncate',
       social: {
