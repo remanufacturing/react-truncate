@@ -1,101 +1,86 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { Truncate, type TruncateProps } from './Truncate'
 
 export interface ShowMoreProps
-  extends Omit<TruncateProps, 'lines' | 'ellipsis'> {
+  extends Omit<TruncateProps, 'lines' | 'ellipsis' | 'width'> {
   lines?: TruncateProps['lines']
   ellipsis?: TruncateProps['ellipsis']
   more?: string
   less?: string
   anchorClass?: string
   children: React.ReactNode
+  observeParent?: boolean
 }
 
-export const ShowMore: React.FC<ShowMoreProps> = ({
-  lines = 3,
-  ellipsis,
-  more = 'Expand',
-  less = 'Collapse',
-  anchorClass,
-  children,
-  width,
-  ...others
-}) => {
-  const parentRef = useRef<HTMLDivElement>(null)
-  const [contentWidth, setContentWidth] = useState(width ?? 0)
-  const [truncated, setTruncated] = useState(false)
-  const [expanded, setExpanded] = useState(false)
-
-  const expandedLines = useMemo(() => {
-    if (!expanded) return lines
-    return 0
-  }, [expanded, lines])
-
-  const updateContentWidth = useCallback(() => {
-    if (!parentRef.current) return
-    const { clientWidth } = parentRef.current
-    setContentWidth(clientWidth)
-  }, [])
-
-  useEffect(() => {
-    updateContentWidth()
-  }, [updateContentWidth])
-
-  useEffect(() => {
-    updateContentWidth()
-    window.addEventListener('resize', updateContentWidth)
-
-    return () => {
-      window.removeEventListener('resize', updateContentWidth)
-    }
-  }, [updateContentWidth])
-
-  const handleTruncate = useCallback(
-    (didTruncate: boolean) => {
-      if (didTruncate !== truncated) {
-        setTruncated(didTruncate)
-      }
+export const ShowMore = forwardRef<HTMLDivElement, ShowMoreProps>(
+  (
+    {
+      lines = 3,
+      ellipsis,
+      more = 'Expand',
+      less = 'Collapse',
+      anchorClass,
+      children,
+      ...others
     },
-    [truncated],
-  )
+    ref,
+  ) => {
+    const [truncated, setTruncated] = useState(false)
+    const [expanded, setExpanded] = useState(false)
 
-  const toggleLines = useCallback(
-    (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-      e.preventDefault()
-      setExpanded((prev) => !prev)
-    },
-    [],
-  )
+    const expandedLines = useMemo(() => {
+      if (!expanded) return lines
+      return 0
+    }, [expanded, lines])
 
-  return (
-    <div ref={parentRef} style={{ width: '100%' }}>
-      <Truncate
-        {...others}
-        width={contentWidth}
-        lines={expandedLines}
-        ellipsis={
-          ellipsis || (
-            <span>
-              ...{' '}
-              <a href="#" className={anchorClass} onClick={toggleLines}>
-                {more}
-              </a>
-            </span>
-          )
+    const handleTruncate = useCallback(
+      (didTruncate: boolean) => {
+        if (didTruncate !== truncated) {
+          setTruncated(didTruncate)
         }
-        onTruncate={handleTruncate}
-      >
-        {children}
-      </Truncate>
+      },
+      [truncated],
+    )
 
-      {!truncated && expanded && (
-        <span>
-          {' '}
-          <a href="#" className={anchorClass} onClick={toggleLines}>
-            {less}
-          </a>
-        </span>
-      )}
-    </div>
-  )
-}
+    const toggleLines = useCallback(
+      (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+        e.preventDefault()
+        setExpanded((prev) => !prev)
+      },
+      [],
+    )
+
+    return (
+      <div ref={ref} style={{ width: '100%' }}>
+        <Truncate
+          {...others}
+          lines={expandedLines}
+          ellipsis={
+            ellipsis || (
+              <span>
+                ...{' '}
+                <a href="#" className={anchorClass} onClick={toggleLines}>
+                  {more}
+                </a>
+              </span>
+            )
+          }
+          onTruncate={handleTruncate}
+        >
+          {children}
+        </Truncate>
+
+        {!truncated && expanded && (
+          <span>
+            {' '}
+            <a href="#" className={anchorClass} onClick={toggleLines}>
+              {less}
+            </a>
+          </span>
+        )}
+      </div>
+    )
+  },
+)
+
+ShowMore.displayName = 'ShowMore'
