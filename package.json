@@ -1,6 +1,6 @@
 {
   "name": "@re-dev/react-truncate",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Provides `Truncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.",
   "author": "chengpeiquan <chengpeiquan@chengpeiquan.com>",
   "license": "MIT",
@@ -33,11 +33,7 @@
     "compile": "shx mkdir -p lib && babel ./src --out-file ./lib/Truncate.js && cross-env BABEL_ENV=CommonJS babel ./src --out-file ./lib/Truncate.CommonJS.js",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov",
     "lint": "eslint .",
-    "prepublish": "shx rm -rf ./lib && npm run compile",
-    "preversion": "npm run test",
-    "report-coverage": "npm run coverage | coveralls",
     "test": "cross-env BABEL_ENV=test mocha --require babel-polyfill --require babel-core/register",
-    "travis": "npm run lint && npm run compile && npm run test",
     "up": "npx npm-check-updates -u",
     "backup": "git add . && git commit -m \"chore: backup\" && git push",
     "prepare": "husky install"
@@ -50,12 +46,18 @@
     "react",
     "truncate",
     "react-truncate",
+    "react-show-more",
+    "react-show-more-text",
     "ellipsis",
     "multiline"
   ],
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0"
   },
   "devDependencies": {
     "@bassist/commit": "^0.1.0",
