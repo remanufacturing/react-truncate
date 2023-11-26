@@ -3,7 +3,7 @@
 
 ### Bug Fixes
 
-* **ShowMore:** remove redundant width constraints to accommodate parent width changes ([01396b1](https://github.com/remanufacturing/react-truncate/commit/01396b18fa30f651ea131574d011979882f17270)), closes [#14](https://github.com/remanufacturing/react-truncate/issues/14)
+* **ShowMore:** remove redundant width constraints to accommodate parent width changes ([01396b1](https://github.com/remanufacturing/react-truncate/commit/fc1aeff4ec720b37ae6fd5f3add87f6d20da6990)), closes [#14](https://github.com/remanufacturing/react-truncate/issues/14)
 
 
 
@@ -12,7 +12,7 @@
 
 ### Bug Fixes
 
-* **ShowMore:** add  window resize listener to update content width ([4b3029b](https://github.com/remanufacturing/react-truncate/commit/4b3029bfb610e08906a933cd1067ec8c5e44c44d)), closes [#12](https://github.com/remanufacturing/react-truncate/issues/12)
+* **ShowMore:** add  window resize listener to update content width ([4b3029b](https://github.com/remanufacturing/react-truncate/commit/3f35055f7fb985875e23bc3bb0765ade6ce14fb7)), closes [#12](https://github.com/remanufacturing/react-truncate/issues/12)
 
 
 
