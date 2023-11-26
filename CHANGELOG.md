@@ -1,3 +1,12 @@
+## [0.1.2](https://github.com/remanufacturing/react-truncate/compare/v0.1.1...v0.1.2) (2023-11-26)
+
+
+### Bug Fixes
+
+* **ShowMore:** remove redundant width constraints to accommodate parent width changes ([01396b1](https://github.com/remanufacturing/react-truncate/commit/01396b18fa30f651ea131574d011979882f17270)), closes [#14](https://github.com/remanufacturing/react-truncate/issues/14)
+
+
+
 ## [0.1.1](https://github.com/remanufacturing/react-truncate/compare/v0.1.0...v0.1.1) (2023-11-25)
 
 
