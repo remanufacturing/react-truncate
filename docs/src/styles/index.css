@@ -10,3 +10,11 @@
 .astro-code {
   border-radius: 8px;
 }
+
+[data-theme='light'] .bg-example {
+  @apply bg-neutral-100;
+}
+
+[data-theme='dark'] .bg-example {
+  @apply bg-dark-900;
+}
