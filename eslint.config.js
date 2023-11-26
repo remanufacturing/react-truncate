@@ -5,6 +5,6 @@ export default defineConfig([
   ...prettier,
   ...react,
   {
-    ignores: ['dist', 'docs', 'test'],
+    ignores: ['dist', 'docs', 'lib', 'test'],
   },
 ])
