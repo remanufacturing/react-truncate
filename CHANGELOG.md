@@ -1,3 +1,11 @@
+# 0.2.0 (2023-11-27)
+
+
+### Features
+
+* **Truncate:** add custom separator to support multiple languages ([7b47463](https://github.com/remanufacturing/react-truncate/commit/7b47463e56c50473e1d20f619f5187c1847a84d9)), closes [#16](https://github.com/remanufacturing/react-truncate/issues/16)
+
+
 ## [0.1.2](https://github.com/remanufacturing/react-truncate/compare/v0.1.1...v0.1.2) (2023-11-26)
 
 
