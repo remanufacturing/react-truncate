@@ -11,6 +11,7 @@ export interface TruncateProps extends DetailedHTMLProps {
   lines: number
   trimWhitespace?: boolean
   width?: number
+  separator?: string
   onTruncate?: (didTruncate: boolean) => void
 }
 
@@ -20,6 +21,7 @@ export const Truncate: React.FC<TruncateProps> = ({
   lines = 1,
   trimWhitespace = false,
   width = 0,
+  separator = ' ',
   onTruncate,
   ...spanProps
 }) => {
@@ -89,25 +91,30 @@ export const Truncate: React.FC<TruncateProps> = ({
   }, [calcTWidth, animationFrame])
 
   // Shim innerText to consistently break lines at <br/> but not at \n
-  const innerText = (node: HTMLSpanElement | null) => {
-    const div = document.createElement('div')
-    const contentKey =
-      'innerText' in window.HTMLElement.prototype ? 'innerText' : 'textContent'
+  const innerText = useCallback(
+    (node: HTMLSpanElement | null) => {
+      const div = document.createElement('div')
+      const contentKey =
+        'innerText' in window.HTMLElement.prototype
+          ? 'innerText'
+          : 'textContent'
 
-    div.innerHTML = node?.innerHTML.replace(/\r\n|\r|\n/g, ' ') || ''
+      div.innerHTML = node?.innerHTML.replace(/\r\n|\r|\n/g, separator) || ''
 
-    let newText = div[contentKey]
+      let newText = div[contentKey]
 
-    const test = document.createElement('div')
-    test.innerHTML = 'foo<br/>bar'
+      const test = document.createElement('div')
+      test.innerHTML = 'foo<br/>bar'
 
-    if (test[contentKey]?.replace(/\r\n|\r/g, '\n') !== 'foo\nbar') {
-      div.innerHTML = div.innerHTML.replace(/<br.*?[/]?>/gi, '\n')
-      newText = div[contentKey]
-    }
+      if (test[contentKey]?.replace(/\r\n|\r/g, '\n') !== 'foo\nbar') {
+        div.innerHTML = div.innerHTML.replace(/<br.*?[/]?>/gi, '\n')
+        newText = div[contentKey]
+      }
 
-    return newText || ''
-  }
+      return newText || ''
+    },
+    [separator],
+  )
 
   const truncate = useCallback(
     (didTruncate: boolean) => {
@@ -140,7 +147,7 @@ export const Truncate: React.FC<TruncateProps> = ({
   const getLines = useCallback(() => {
     const resultLines: Array<string | JSX.Element> = []
     const textLine = innerText(textRef.current)
-    const textLines = textLine.split('\n').map((line) => line.split(' '))
+    const textLines = textLine.split('\n').map((line) => line.split(separator))
     const ellipsisWidth = getEllipsisWidth(ellipsisRef.current) || 0
 
     let didTruncate = true
@@ -156,7 +163,7 @@ export const Truncate: React.FC<TruncateProps> = ({
         continue
       }
 
-      let resultLine: string | JSX.Element = textWords.join(' ') || ''
+      let resultLine: string | JSX.Element = textWords.join(separator) || ''
       if (measureWidth(resultLine) <= targetWidth) {
         if (textLines.length === 1) {
           // Line is end of text and fits without truncating
@@ -169,7 +176,7 @@ export const Truncate: React.FC<TruncateProps> = ({
 
       if (line === lines) {
         // Binary search determining the longest possible line inluding truncate string
-        const textRest = textWords.join(' ')
+        const textRest = textWords.join(separator)
 
         let lower = 0
         let upper = textRest.length - 1
@@ -214,7 +221,7 @@ export const Truncate: React.FC<TruncateProps> = ({
         while (lower <= upper) {
           const middle = Math.floor((lower + upper) / 2)
 
-          const testLine = textWords.slice(0, middle + 1).join(' ')
+          const testLine = textWords.slice(0, middle + 1).join(separator)
 
           if (measureWidth(testLine) <= targetWidth) {
             lower = middle + 1
@@ -230,7 +237,7 @@ export const Truncate: React.FC<TruncateProps> = ({
           continue
         }
 
-        resultLine = textWords.slice(0, lower).join(' ')
+        resultLine = textWords.slice(0, lower).join(separator)
         textLines[0].splice(0, lower)
       }
 
@@ -240,7 +247,16 @@ export const Truncate: React.FC<TruncateProps> = ({
     truncate(didTruncate)
 
     return resultLines
-  }, [ellipsis, lines, measureWidth, truncate, targetWidth, trimWhitespace])
+  }, [
+    innerText,
+    truncate,
+    separator,
+    lines,
+    measureWidth,
+    targetWidth,
+    trimWhitespace,
+    ellipsis,
+  ])
 
   const renderLine = (
     line: string | JSX.Element,
