@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
-import { RichText } from 'example-shared/data'
+import {
+  RichText,
+  StringText,
+  ChineseRichText,
+  ChineseStringText,
+} from 'example-shared/data'
 import { ShowMore } from '@re-dev/react-truncate'
 
 const App: React.FC = () => {
@@ -38,8 +43,40 @@ const App: React.FC = () => {
       </div>
 
       <div style={{ width: `${range}%` }}>
+        <h2>Rich Text</h2>
+
         <ShowMore>
           <RichText />
+        </ShowMore>
+      </div>
+
+      <hr />
+
+      <div style={{ width: `${range}%` }}>
+        <h2>String Text</h2>
+
+        <ShowMore>
+          <StringText />
+        </ShowMore>
+      </div>
+
+      <hr />
+
+      <div style={{ width: `${range}%` }}>
+        <h2>Chinese Rich Text</h2>
+
+        <ShowMore separator="">
+          <ChineseRichText />
+        </ShowMore>
+      </div>
+
+      <hr />
+
+      <div style={{ width: `${range}%` }}>
+        <h2>Chinese String Text</h2>
+
+        <ShowMore separator="">
+          <ChineseStringText />
         </ShowMore>
       </div>
     </div>
