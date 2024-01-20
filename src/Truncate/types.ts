@@ -62,6 +62,8 @@ export interface TruncateProps extends DetailedHTMLProps {
    *  When this option is enabled,
    *  the `lines` option will always be `1`
    *
+   * @since v0.3.0
+   *
    * @default false
    */
   middle?: boolean
@@ -72,6 +74,8 @@ export interface TruncateProps extends DetailedHTMLProps {
    * @description Option take effect considerations:
    *  This option will only take effect
    *  when the `middle` option is enabled
+   *
+   * @since v0.3.0
    *
    * @default 5
    */
