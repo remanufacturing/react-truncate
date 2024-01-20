@@ -45,7 +45,7 @@ const App: React.FC = () => {
       <div style={{ width: `${range}%` }}>
         <h2>Middle Truncate</h2>
 
-        <MiddleTruncate middle>
+        <MiddleTruncate>
           <RichText />
         </MiddleTruncate>
       </div>
@@ -55,7 +55,7 @@ const App: React.FC = () => {
       <div style={{ width: `${range}%` }}>
         <h2>Middle Truncate</h2>
 
-        <MiddleTruncate middle separator="">
+        <MiddleTruncate separator="">
           <ChineseRichText />
         </MiddleTruncate>
       </div>
