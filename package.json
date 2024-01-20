@@ -7,16 +7,16 @@
   "homepage": "https://truncate.js.org",
   "type": "module",
   "files": [
-    "lib"
+    "dist"
   ],
-  "main": "./lib/index.js",
-  "module": "./lib/index.mjs",
-  "types": "./lib/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./lib/index.mjs",
-      "require": "./lib/index.cjs",
-      "types": "./lib/index.d.ts"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
     }
   },
   "publishConfig": {
@@ -25,12 +25,11 @@
   "scripts": {
     "dev": "pnpm -F docs dev",
     "build": "run-s build:*",
-    "build:lib": "vite build",
-    "build:types": "tsx ./scripts/build-types.mts",
+    "build:lib": "tsup",
     "build:docs": "pnpm -F docs build",
     "gen:changelog": "tsx ./scripts/generate-changelog.mts",
     "gen:release": "tsx ./scripts/generate-release.mts",
-    "compile": "shx mkdir -p lib && babel ./src --out-file ./lib/Truncate.js && cross-env BABEL_ENV=CommonJS babel ./src --out-file ./lib/Truncate.CommonJS.js",
+    "compile": "shx mkdir -p lib && babel ./src --out-file ./dist/Truncate.js && cross-env BABEL_ENV=CommonJS babel ./src --out-file ./dist/Truncate.CommonJS.js",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov",
     "lint": "eslint .",
     "test": "cross-env BABEL_ENV=test mocha --require babel-polyfill --require babel-core/register",
@@ -70,7 +69,6 @@
     "conventional-changelog-cli": "^4.1.0",
     "coveralls": "^3.1.0",
     "cross-env": "^5.2.0",
-    "dts-bundle-generator": "^8.1.2",
     "eslint": "^8.53.0",
     "husky": "^8.0.3",
     "jsdom": "^11.12.0",
@@ -82,14 +80,13 @@
     "raf": "^3.4.1",
     "react-test-renderer": "^16.14.0",
     "sinon": "^4.5.0",
+    "tsup": "^8.0.1",
     "tsx": "^4.1.1",
     "typescript": "^5.2.2",
     "unexpected": "^10.40.2",
     "unexpected-dom": "^4.18.0",
     "unexpected-react": "^5.0.4",
-    "unexpected-sinon": "^10.11.2",
-    "vite": "^4.5.0",
-    "vite-plugin-banner": "^0.7.1"
+    "unexpected-sinon": "^10.11.2"
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [

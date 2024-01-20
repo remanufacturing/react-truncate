@@ -8,7 +8,7 @@ const autogenerates = ['reference', 'examples']
 
 // https://astro.build/config
 export default defineConfig({
-  outDir: '../dist',
+  outDir: 'dist',
   build: {
     assets: 'assets',
   },
