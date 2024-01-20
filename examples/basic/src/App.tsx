@@ -53,7 +53,7 @@ const App: React.FC = () => {
       <hr />
 
       <div style={{ width: `${range}%` }}>
-        <h2>Middle Truncate</h2>
+        <h2>Middle Truncate (Chinese)</h2>
 
         <MiddleTruncate separator="">
           <ChineseRichText />
