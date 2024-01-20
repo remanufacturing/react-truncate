@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/remanufacturing/react-truncate/compare/v0.2.0...v0.3.1) (2024-01-20)
+
+
+### Bug Fixes
+
+* **MiddleTruncate:** omit the  prop and set its default value be true ([258b46e](https://github.com/remanufacturing/react-truncate/commit/258b46ea852d6a014899ef440fcac271e522571a))
+
+
+
 # [0.3.0](https://github.com/remanufacturing/react-truncate/compare/v0.2.0...v0.3.0) (2024-01-20)
 
 
