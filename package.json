@@ -1,7 +1,7 @@
 {
   "name": "@re-dev/react-truncate",
   "version": "0.3.0",
-  "description": "Provides `Truncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.",
+  "description": "Provides `Truncate`, `MiddleTruncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.",
   "author": "chengpeiquan <chengpeiquan@chengpeiquan.com>",
   "license": "MIT",
   "homepage": "https://truncate.js.org",
