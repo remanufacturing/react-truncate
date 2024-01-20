@@ -1,7 +1,8 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { Truncate, type TruncateProps } from './Truncate'
 
-export interface ShowMoreProps extends Omit<TruncateProps, 'width'> {
+export interface ShowMoreProps
+  extends Omit<TruncateProps, 'width' | 'middle' | 'end'> {
   more?: string
   less?: string
   anchorClass?: string
