@@ -1,3 +1,12 @@
+## [0.3.2](https://github.com/remanufacturing/react-truncate/compare/v0.3.1...v0.3.2) (2024-01-20)
+
+
+### Bug Fixes
+
+* **Truncate:** when the middle option is enabled, the wrong end fragment is obtained ([0f7d2cf](https://github.com/remanufacturing/react-truncate/commit/0f7d2cf7a01c08ab241327b762a6ee0289971972))
+
+
+
 ## [0.3.1](https://github.com/remanufacturing/react-truncate/compare/v0.2.0...v0.3.1) (2024-01-20)
 
 
