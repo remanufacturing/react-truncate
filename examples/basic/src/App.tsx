@@ -5,7 +5,7 @@ import {
   ChineseRichText,
   ChineseStringText,
 } from 'example-shared/data'
-import { ShowMore } from '@re-dev/react-truncate'
+import { ShowMore, MiddleTruncate } from '@re-dev/react-truncate'
 
 const App: React.FC = () => {
   const [range, setRange] = useState(100)
@@ -41,6 +41,26 @@ const App: React.FC = () => {
           <span>{range}%</span>
         </p>
       </div>
+
+      <div style={{ width: `${range}%` }}>
+        <h2>Middle Truncate</h2>
+
+        <MiddleTruncate middle>
+          <RichText />
+        </MiddleTruncate>
+      </div>
+
+      <hr />
+
+      <div style={{ width: `${range}%` }}>
+        <h2>Middle Truncate</h2>
+
+        <MiddleTruncate middle separator="">
+          <ChineseRichText />
+        </MiddleTruncate>
+      </div>
+
+      <hr />
 
       <div style={{ width: `${range}%` }}>
         <h2>Rich Text</h2>
