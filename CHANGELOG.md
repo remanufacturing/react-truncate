@@ -1,3 +1,15 @@
+# [0.3.0](https://github.com/remanufacturing/react-truncate/compare/v0.2.0...v0.3.0) (2024-01-20)
+
+
+### Features
+
+* **MiddleTruncate:** add a component for truncating string from middle ([90fbe81](https://github.com/remanufacturing/react-truncate/commit/90fbe819c4c73ef61b6fd78a84f3d3647b801865))
+* **ShowMore:** adjust props with MiddleTruncate ([7fbb866](https://github.com/remanufacturing/react-truncate/commit/7fbb866d7e59b62ca1e5a2bdd8abf790d89fc73c))
+* **ShowMore:** adjust props with Truncate ([253892d](https://github.com/remanufacturing/react-truncate/commit/253892de8c31b7a41fd96aa17eaa0d49e10356bf))
+* **Truncate:** supports truncating a string at a specified position in the middle and generating an ellipsis symbol at that position ([7dec6b4](https://github.com/remanufacturing/react-truncate/commit/7dec6b475471f528bbfd3ca883e46b584c3c33be))
+
+
+
 # 0.2.0 (2023-11-27)
 
 
