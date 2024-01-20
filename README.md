@@ -32,10 +32,10 @@ npm install @re-dev/react-truncate
 In `.jsx` / `.tsx` or other files:
 
 ```ts
-import { Truncate, ShowMore } from '@re-dev/react-truncate'
+import { MiddleTruncate, Truncate, ShowMore } from '@re-dev/react-truncate'
 ```
 
-Normally, you only need to use the `ShowMore` component.
+Normally, you only need to use the `MiddleTruncate` or `ShowMore` component.
 
 See: [Basic Example](https://truncate.js.org/examples/basic/)
 
