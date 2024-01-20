@@ -1,7 +1,10 @@
 import React, { forwardRef, useCallback, useState } from 'react'
 import { Truncate, type TruncateProps } from './Truncate'
 
-export type MiddleTruncateProps = Omit<TruncateProps, 'lines' | 'width'>
+export type MiddleTruncateProps = Omit<
+  TruncateProps,
+  'middle' | 'lines' | 'width'
+>
 
 export const MiddleTruncate = forwardRef<HTMLDivElement, MiddleTruncateProps>(
   ({ children, ...rests }, ref) => {
@@ -18,7 +21,7 @@ export const MiddleTruncate = forwardRef<HTMLDivElement, MiddleTruncateProps>(
 
     return (
       <div ref={ref} style={{ width: '100%' }}>
-        <Truncate {...rests} onTruncate={handleTruncate}>
+        <Truncate {...rests} middle onTruncate={handleTruncate}>
           {children}
         </Truncate>
       </div>
