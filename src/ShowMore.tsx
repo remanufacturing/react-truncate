@@ -1,10 +1,7 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { Truncate, type TruncateProps } from './Truncate'
 
-export interface ShowMoreProps
-  extends Omit<TruncateProps, 'lines' | 'ellipsis' | 'width'> {
-  lines?: TruncateProps['lines']
-  ellipsis?: TruncateProps['ellipsis']
+export interface ShowMoreProps extends Omit<TruncateProps, 'width'> {
   more?: string
   less?: string
   anchorClass?: string
@@ -28,8 +25,8 @@ export const ShowMore = forwardRef<HTMLDivElement, ShowMoreProps>(
     const [expanded, setExpanded] = useState(false)
 
     const expandedLines = useMemo(() => {
-      if (!expanded) return lines
-      return 0
+      if (expanded) return 0
+      return lines
     }, [expanded, lines])
 
     const handleTruncate = useCallback(
