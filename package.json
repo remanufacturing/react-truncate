@@ -27,8 +27,8 @@
     "build": "run-s build:*",
     "build:lib": "tsup",
     "build:docs": "pnpm -F docs build",
-    "gen:changelog": "tsx ./scripts/generate-changelog.mts",
-    "gen:release": "tsx ./scripts/generate-release.mts",
+    "gen:changelog": "pnpm exec changelog",
+    "gen:release": "pnpm exec release",
     "compile": "shx mkdir -p lib && babel ./src --out-file ./dist/Truncate.js && cross-env BABEL_ENV=CommonJS babel ./src --out-file ./dist/Truncate.CommonJS.js",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov",
     "lint": "eslint .",
@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:remanufacturing/react-truncate.git"
+    "url": "https://github.com/remanufacturing/react-truncate"
   },
   "keywords": [
     "react",
@@ -59,8 +59,10 @@
     "react-dom": ">=18.2.0"
   },
   "devDependencies": {
+    "@bassist/changelog": "^0.3.0",
     "@bassist/commit": "^0.1.1",
     "@bassist/eslint": "^0.6.1",
+    "@bassist/release": "^0.2.0",
     "@bassist/tsconfig": "^0.1.1",
     "@types/node": "^20.12.2",
     "@types/react": "^18.2.73",
