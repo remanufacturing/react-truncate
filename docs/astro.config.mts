@@ -1,10 +1,14 @@
 import { defineConfig } from 'astro/config'
+import { capitalize } from '@bassist/utils'
 import unocss from 'unocss/astro'
 import react from '@astrojs/react'
 import starlight from '@astrojs/starlight'
-import { capitalize } from '@bassist/utils'
 
-const autogenerates = ['reference', 'examples']
+const autogenerates = {
+  reference: {
+    zh: '参考',
+  },
+}
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,23 +18,46 @@ export default defineConfig({
   },
   integrations: [
     unocss(),
+
     react(),
+
     starlight({
       title: 'React Truncate',
+      defaultLocale: 'root',
+      locales: {
+        root: {
+          label: 'English',
+          lang: 'en',
+        },
+        zh: {
+          label: '简体中文',
+          lang: 'zh',
+        },
+      },
       social: {
         github: 'https://github.com/remanufacturing/react-truncate',
       },
       sidebar: [
         {
           label: 'Guides',
+          translations: {
+            zh: '指南',
+          },
           items: [
-            { label: 'Getting Started', link: '/guides/getting-started' },
+            {
+              label: 'Getting Started',
+              translations: {
+                zh: '快速上手',
+              },
+              link: '/guides/getting-started',
+            },
           ],
         },
-        ...autogenerates.map((i) => {
+        ...Object.entries(autogenerates).map(([key, translations]) => {
           return {
-            label: capitalize(i),
-            autogenerate: { directory: i },
+            label: capitalize(key),
+            translations,
+            autogenerate: { directory: key },
           }
         }),
       ],
