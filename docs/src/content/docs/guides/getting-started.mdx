@@ -1,30 +1,46 @@
 ---
 title: Getting Started
-description: Introduction to the `@re-dev/react-truncate` package.
+description: Introduction to the `@re-dev/react-truncate` package, This package provides a series of React components for text ellipsis scenarios such as truncating multi-line text or ellipsis in the middle.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components'
+import { StatisticalData } from '@components/StatisticalData'
 
-Coming soon...
+This package provides a series of React components for text ellipsis scenarios such as truncating multi-line text or ellipsis in the middle.
+
+<StatisticalData />
+
+## Introduction
+
+This is a Fork version from [react-truncate](https://github.com/pablosichert/react-truncate) (Based on `v2.4.0` ) .
+
+The following upgrades have been made based on this version:
+
+1. Use React Hooks instead of Class syntax to extend support for React 18+
+2. Use TypeScript to refactor the source code and provide more complete type declarations (no need to install additional `@types/react-truncate` package)
+3. Built-in `<ShowMore />` component (the original author’s [another package](https://github.com/pablosichert/react-show-more), which encapsulates `<Truncate />`, exists and Similar problems with Truncate are no longer maintained)
+4. Built-in new `<MiddleTruncate />` component to realize ellipsis in the middle of text (encapsulation of `<Truncate />`)
+
+Since the original version has not been maintained for a long time and the original author [@pablosichert](https://github.com/pablosichert) is no longer active, it is planned to handle some issues that need to be solved through this repository. Thanks to the original author Years of dedication.
 
 ## Installation
 
-With npm(or pnpm, or yarn):
+Run the following command in your terminal to install this package in your project.
 
 <Tabs>
-
-<TabItem label="npm">
-
-```bash
-npm i @re-dev/react-truncate
-```
-
-</TabItem>
 
 <TabItem label="pnpm">
 
 ```bash
 pnpm add @re-dev/react-truncate
+```
+
+</TabItem>
+
+<TabItem label="npm">
+
+```bash
+npm i @re-dev/react-truncate
 ```
 
 </TabItem>
@@ -38,3 +54,9 @@ yarn add @re-dev/react-truncate
 </TabItem>
 
 </Tabs>
+
+This package has two peer dependencies of React, `react` and `react-dom`. Please install them together (version requirements are >=18.2.0).
+
+## License
+
+MIT License © 2023-PRESENT [chengpeiquan](https://github.com/chengpeiquan) .
