@@ -4,7 +4,6 @@
   --sl-color-gray-7: hsl(227, 14%, 13%);
   --sl-color-bg-nav: var(--sl-color-gray-7);
   --sl-color-bg-sidebar: var(--sl-color-gray-7);
-  --sl-content-width: 60rem;
 }
 
 .astro-code {
@@ -17,4 +16,57 @@
 
 [data-theme='dark'] .bg-example {
   @apply bg-dark-900;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: rgb(51, 105, 255);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px rgb(51, 105, 255);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
 }

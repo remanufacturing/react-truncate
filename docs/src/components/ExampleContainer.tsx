@@ -1,7 +1,5 @@
 import React from 'react'
 import clsx from 'clsx'
-import { RichText } from 'example-shared/data'
-import { ShowMore } from '@re-dev/react-truncate'
 
 interface ExampleContainerProps {
   className?: string
@@ -12,6 +10,7 @@ interface ExampleContainerProps {
 export const ExampleContainer: React.FC<ExampleContainerProps> = ({
   className,
   style,
+  children,
 }) => {
   const cls = clsx(
     'bg-example',
@@ -21,9 +20,7 @@ export const ExampleContainer: React.FC<ExampleContainerProps> = ({
 
   return (
     <div className={cls} style={style}>
-      <ShowMore>
-        <RichText />
-      </ShowMore>
+      {children}
     </div>
   )
 }
