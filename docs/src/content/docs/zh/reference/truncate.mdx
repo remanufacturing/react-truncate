@@ -1,0 +1,158 @@
+---
+title: Truncate
+description: Usage of the `Truncate` component.
+---
+
+裁剪文本的基础组件，通常不需要直接使用它，本包提供的 `<ShowMore />` 和 `<MiddleTruncate />` 均基于本组件进行扩展。
+
+## 用法
+
+像普通的组件一样使用它，只需要将长文本作为 `children` prop 传递。
+
+```tsx
+import React from 'react'
+import { Truncate } from '@re-dev/react-truncate'
+
+const MyComponent: React.FC = () => {
+  return (
+    <Truncate
+      lines={3}
+      ellipsis={
+        <span>
+          ... <a href="/link/to/article">Read more</a>
+        </span>
+      }
+      onTruncate={(didTruncate) => {
+        console.log(didTruncate)
+      }}
+    >
+      {longText}
+    </Truncate>
+  )
+}
+```
+
+提示：（通常使用 React）如果你想保留纯文本中的换行符，你需要执行以下操作：
+
+```js
+//...
+{
+  text.split('\n').map((line, i, arr) => {
+    const line = <span key={i}>{line}</span>
+
+    if (i === arr.length - 1) {
+      return line
+    } else {
+      return [line, <br key={i + 'br'} />]
+    }
+  })
+}
+//...
+```
+
+## 类型声明
+
+这是组件的 Props 类型。
+
+```ts
+import type React from 'react'
+
+type DetailedHTMLProps = React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLSpanElement>,
+  HTMLSpanElement
+>
+
+export interface TruncateProps extends DetailedHTMLProps {
+  /**
+   * 待截断的原始文本内容，支持富文本
+   */
+  children: React.ReactNode
+
+  /**
+   * 省略部分的符号
+   *
+   * @default '...'
+   */
+  ellipsis?: React.ReactNode
+
+  /**
+   * 限制当内容溢出时将被截断的行数
+   *
+   * 1. 如果不是安全整数，则默认为 `0`
+   * 2. 如果小于 `0` ，则默认为 `0`
+   * 3. 如果值为 `0` ，则表示不被截断
+   *
+   * @description 选项冲突注意事项：
+   *  当启用`middle`选项时，该选项将始终为 `1`
+   *
+   * @since v0.4.0 添加安全整数和正整数检查
+   *
+   * @default 1
+   */
+  lines?: number
+
+  /**
+   * 如果为 `true` ，省略号之前的空格将被删除
+   * 例如： `words ...` 将成为 `words...` 而不是
+   *
+   * @default false
+   */
+  trimWhitespace?: boolean
+
+  /**
+   * 指定外部元素的宽度，
+   *
+   * 如果指定，则内容的计算将基于此数字。
+   *
+   * 不指定的情况下将根据组件的
+   * `parentElement.getBoundingClientRect().width` 获取
+   */
+  width?: number
+
+  /**
+   * 用于分词的分隔符
+   *
+   * 默认情况下，假定文本使用空格作为分词约定（例如英语），
+   *
+   * 但是不一定适合全部语言，不同的语言可以根据用语习惯指定其他符号，
+   * 例如中文内容时，可传入空字符串，从而得到更好的计算结果。
+   *
+   * @since v0.2.0
+   *
+   * @default ' '
+   */
+  separator?: string
+
+  /**
+   * 启用在中间位置截断
+   *
+   * @description 选项冲突注意事项：
+   *  当启用此选项时，`lines` 选项将始终为 `1`
+   *
+   * @since v0.3.0
+   *
+   * @default false
+   */
+  middle?: boolean
+
+  /**
+   * 从文本末尾开始保留的字符数
+   *
+   * @description 选项生效注意事项：
+   *  该选项仅在 `middle` 选项启用时才会生效
+   *
+   * @since v0.3.0
+   *
+   * @default 5
+   */
+  end?: number
+
+  /**
+   * 触发截断行为时的回调函数
+   *
+   * @param didTruncate - 是否发生截断
+   *
+   */
+  onTruncate?: (didTruncate: boolean) => void
+}
+```
