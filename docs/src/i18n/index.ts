@@ -9,18 +9,20 @@ export const defaultLang = 'en' as const
 
 export const translations = {
   en: {
-    'example.width': 'Width:',
-    'example.lines': 'Lines:',
-    'example.html': 'HTML:',
+    'example.width': 'Parent Width:',
+    'example.lines': 'Default Lines:',
+    'example.html': 'Rich Text:',
+    'example.custom': 'Custom Buttons:',
   },
   zh: {
-    'example.width': '宽度：',
-    'example.lines': '行数：',
-    'example.html': 'HTML：',
+    'example.width': '父级宽度：',
+    'example.lines': '默认行数：',
+    'example.html': '富文本：',
+    'example.custom': '自定义按钮：',
   },
 } as const
 
-type TranslationKey = keyof (typeof translations)[typeof defaultLang]
+export type TranslationKey = keyof (typeof translations)[typeof defaultLang]
 
 export const getTranslation = (lang: Languages, key: TranslationKey) => {
   return translations[lang][key]
