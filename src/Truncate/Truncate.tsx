@@ -5,7 +5,7 @@ import { type TruncateProps } from './types'
 export const Truncate: React.FC<TruncateProps> = ({
   children,
   ellipsis = '...',
-  lines: defaultLines = 1,
+  lines: initialLines = 1,
   trimWhitespace = false,
   width = 0,
   separator = ' ',
@@ -98,6 +98,12 @@ export const Truncate: React.FC<TruncateProps> = ({
     },
     [canvasContext],
   )
+
+  // Adds stricter integer validation and resets invalid values to default value
+  const defaultLines = useMemo(() => {
+    if (!Number.isSafeInteger(initialLines) || initialLines < 0) return 0
+    return initialLines
+  }, [initialLines])
 
   const lines = useMemo(() => {
     return middle ? 1 : defaultLines
@@ -245,7 +251,6 @@ export const Truncate: React.FC<TruncateProps> = ({
         setRenderTextRef(getLines().map(renderLine))
       } else {
         setRenderTextRef(children)
-
         truncate(false)
       }
     }

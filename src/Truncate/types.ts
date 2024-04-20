@@ -12,42 +12,59 @@ export interface TruncateProps extends DetailedHTMLProps {
   children: React.ReactNode
 
   /**
-   * Symbols for omitted parts
+   * Symbols for ellipsis parts
    *
    * @default '...'
    */
   ellipsis?: React.ReactNode
 
   /**
-   * Limit the number of lines that will be truncated
-   * when content overflows
+   * Specifies how many lines of text should be preserved
+   * until it gets truncated.
+   *
+   * If not an safe integer, it will default to 1.
+   * If the value is `0` , it means not truncated.
    *
    * @description Option conflict considerations:
-   *  When the `middle` option is enabled,
-   *  this option will always be `1`
+   *  When the `middle` option is enabled, this option will always be `1`
+   *
+   * @since v0.4.0 add safe and positive integer check
    *
    * @default 1
    */
   lines?: number
 
   /**
-   * Remove space characters from the end of a string
+   * If `true` , whitespace will be removed from before the ellipsis
+   * e.g. `words ...` will become `words...` instead
+   *
+   * @default false
    */
   trimWhitespace?: boolean
 
   /**
-   * Specify the width of the outer element
+   * Specify the width of the outer element,
+   *
+   * If specified, the calculation of the content
+   * will be based on this number.
+   *
+   * If not specified, it will be obtained based on
+   * the component's `parentElement.getBoundingClientRect().width`
    */
   width?: number
 
   /**
-   * The separator used for word segmentation.
+   * The separator for word segmentation
    *
-   * By default, the text is considered to use spaces as
-   * the word segmentation habit (e.g. English).
+   * By default, text is assumed to use whitespace
+   * as a word segmentation convention (e.g. English),
    *
-   * Different language habits can specify other symbols,
-   * such as passing in an empty string (e.g. Chinese)
+   * However, it may not be suitable for all languages.
+   * Different languages can specify other symbols
+   * according to usage habits.
+   *
+   * For example, when it comes to Chinese content,
+   * you can pass in an empty string to get better calculation results.
    *
    * @since v0.2.0
    *
@@ -59,8 +76,7 @@ export interface TruncateProps extends DetailedHTMLProps {
    * Whether to truncate in the middle
    *
    * @description Option conflict considerations:
-   *  When this option is enabled,
-   *  the `lines` option will always be `1`
+   *  When this option is enabled, the `lines` option will always be `1`
    *
    * @since v0.3.0
    *
@@ -69,11 +85,10 @@ export interface TruncateProps extends DetailedHTMLProps {
   middle?: boolean
 
   /**
-   * The number of characters from the end of the text to preserve
+   * Number of characters to keep from the end of the text
    *
    * @description Option take effect considerations:
-   *  This option will only take effect
-   *  when the `middle` option is enabled
+   *  This option will only take effect, when the `middle` option is enabled
    *
    * @since v0.3.0
    *
@@ -82,10 +97,9 @@ export interface TruncateProps extends DetailedHTMLProps {
   end?: number
 
   /**
-   * The callback function when the truncate behavior is triggered
+   * Callback function when truncation behavior is triggered
    *
-   * @param didTruncate - Whether truncate occurred
-   *
+   * @param didTruncate - Whether truncation occurs
    */
   onTruncate?: (didTruncate: boolean) => void
 }
