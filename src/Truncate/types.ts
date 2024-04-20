@@ -22,8 +22,9 @@ export interface TruncateProps extends DetailedHTMLProps {
    * Specifies how many lines of text should be preserved
    * until it gets truncated.
    *
-   * If not an safe integer, it will default to 1.
-   * If the value is `0` , it means not truncated.
+   * 1. If not an safe integer, it will default to `0`
+   * 2. If less than `0` , it will default to `0`
+   * 3. If the value is `0` , it means not truncated
    *
    * @description Option conflict considerations:
    *  When the `middle` option is enabled, this option will always be `1`
