@@ -9,7 +9,7 @@ export const Truncate: React.FC<TruncateProps> = ({
   trimWhitespace = false,
   width = 0,
   separator = ' ',
-  middle = false,
+  middle: middleTruncate = false,
   end = 5,
   onTruncate,
   ...spanProps
@@ -106,8 +106,8 @@ export const Truncate: React.FC<TruncateProps> = ({
   }, [initialLines])
 
   const lines = useMemo(() => {
-    return middle ? 1 : defaultLines
-  }, [defaultLines, middle])
+    return middleTruncate ? 1 : defaultLines
+  }, [defaultLines, middleTruncate])
 
   const endPos = useMemo(() => {
     return Math.floor(end <= 0 ? end : -end)
@@ -137,7 +137,6 @@ export const Truncate: React.FC<TruncateProps> = ({
         if (textLines.length === 1) {
           // Line is end of text and fits without truncating
           didTruncate = false
-
           resultLines.push(resultLine)
           break
         }
@@ -151,8 +150,8 @@ export const Truncate: React.FC<TruncateProps> = ({
         let upper = textRest.length - 1
 
         const sliceStart = endPos === 0 ? textLine.length : endPos
-        const endFragment = middle ? textLine.slice(sliceStart) : ''
-        const endFragmentWidth = middle ? measureWidth(endFragment) : 0
+        const endFragment = middleTruncate ? textLine.slice(sliceStart) : ''
+        const endFragmentWidth = middleTruncate ? measureWidth(endFragment) : 0
 
         while (lower <= upper) {
           const middle = Math.floor((lower + upper) / 2)
@@ -182,7 +181,7 @@ export const Truncate: React.FC<TruncateProps> = ({
           }
         }
 
-        if (middle) {
+        if (middleTruncate) {
           resultLine = (
             <span>
               {lastLineText}
@@ -238,7 +237,7 @@ export const Truncate: React.FC<TruncateProps> = ({
     lines,
     measureWidth,
     targetWidth,
-    middle,
+    middleTruncate,
     endPos,
     trimWhitespace,
     ellipsis,

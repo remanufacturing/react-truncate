@@ -54,7 +54,7 @@ export const ControllableMiddleTruncate: React.FC<{
         lang={lang}
         labelKey="example.end"
         value={end}
-        min="1"
+        min="-10"
         max="10"
         defaultValue={DEFAULT_END_VALUE}
         onChange={(v) => setEnd(v)}
