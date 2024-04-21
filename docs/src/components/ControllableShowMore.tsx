@@ -10,7 +10,15 @@ import {
   ChineseStringText,
   StringText,
 } from './ExampleData'
-import { ExampleContainer, FormRange, FormSwitch } from './ExampleWidgets'
+import {
+  DEFAULT_CUSTOM_VALUE,
+  DEFAULT_HTML_VALUE,
+  DEFAULT_LINES_VALUE,
+  DEFAULT_WIDTH_VALUE,
+  ExampleContainer,
+  FormRange,
+  FormSwitch,
+} from './ExampleWidgets'
 import { type Languages } from '@/i18n'
 
 const CustomButton: React.FC<{
@@ -23,7 +31,7 @@ const CustomButton: React.FC<{
       return type === 'more' ? `展开` : '收起'
     }
     return type === 'more' ? `Show More` : 'Show Less'
-  }, [type])
+  }, [isZh, type])
 
   return (
     <button className="text-xs ml-2 cursor-pointer" onClick={onClick}>
@@ -43,11 +51,6 @@ const CurrentContent: React.FC<{
   return html ? <RichText /> : <StringText />
 }
 
-const DEFAULT_WIDTH_VALUE = 100
-const DEFAULT_LINES_VALUE = 3
-const DEFAULT_HTML_VALUE = true
-const DEFAULT_CUSTOM_VALUE = false
-
 export const ControllableShowMore: React.FC<{
   lang: Languages
 }> = ({ lang }) => {
@@ -58,7 +61,7 @@ export const ControllableShowMore: React.FC<{
 
   const isZh = useMemo(() => {
     return lang === 'zh'
-  }, [])
+  }, [lang])
 
   const ref = useRef<ShowMoreRef>(null)
 
