@@ -7,6 +7,8 @@ import { ControllableMiddleTruncate } from '@/components/ControllableMiddleTrunc
 
 一个 “中间省略” 组件，当内容超过父级宽度的限制时，会出现省略符号（类似 CSS 的 [text-overflow: ellipsis](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-overflow) 效果），但是其省略位置可以指定在文本的中间，而非结尾。
 
+> 该组件处于 Beta 阶段，存在一些还没有解决的问题，请见 [已知问题](#已知问题) 。
+
 ## 用法
 
 像普通组件一样使用它，只需将长文本作为 `children` prop 传递。
@@ -64,4 +66,4 @@ export type MiddleTruncateProps = Omit<
 
 ## 已知问题
 
-目前的 `end` 无法支持超过单行能显示的文字数量，在后续的版本会继续解决。
+1. 目前的 `end` 的值，还无法支持超过单行能显示的文字数量
