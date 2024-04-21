@@ -5,6 +5,7 @@ export default defineConfig({
   entry: ['src/index.ts'],
   target: ['es2020'],
   format: ['cjs', 'esm', 'iife'],
+  globalName: 'ReactTruncate',
   outExtension({ format }) {
     switch (format) {
       case 'cjs': {
