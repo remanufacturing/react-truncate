@@ -16,12 +16,17 @@ export default defineConfig({
   build: {
     assets: 'assets',
   },
+  redirects: {
+    '/': '/guides/getting-started/',
+    '/zh/': '/zh/guides/getting-started/',
+  },
   integrations: [
     unocss(),
 
     react(),
 
     starlight({
+      favicon: '/favicon.ico',
       title: 'React Truncate',
       defaultLocale: 'root',
       locales: {
