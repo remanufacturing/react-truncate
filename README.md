@@ -14,8 +14,6 @@
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/remanufacturing/react-truncate?style=social" />
   </a>
 </p>
-<br>
-<br>
 
 [English](https://truncate.js.org) | [简体中文](https://truncate.js.org/zh/)
 
