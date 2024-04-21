@@ -138,6 +138,8 @@ export interface TruncateProps extends DetailedHTMLProps {
   /**
    * 从文本末尾开始保留的字符数
    *
+   * 始终通过 `Math.floor` 向下取整，并且不论正负数，都始终处理为相对于结尾的位置
+   *
    * @description 选项生效注意事项：
    *  该选项仅在 `middle` 选项启用时才会生效
    *

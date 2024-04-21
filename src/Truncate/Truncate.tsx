@@ -150,7 +150,8 @@ export const Truncate: React.FC<TruncateProps> = ({
         let lower = 0
         let upper = textRest.length - 1
 
-        const endFragment = middle ? textLine.slice(endPos) : ''
+        const sliceStart = endPos === 0 ? textLine.length : endPos
+        const endFragment = middle ? textLine.slice(sliceStart) : ''
         const endFragmentWidth = middle ? measureWidth(endFragment) : 0
 
         while (lower <= upper) {
