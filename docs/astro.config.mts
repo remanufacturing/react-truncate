@@ -65,6 +65,24 @@ export default defineConfig({
             autogenerate: { directory: key },
           }
         }),
+        {
+          label: 'Release Notes',
+          translations: {
+            zh: '发行说明',
+          },
+          items: [
+            {
+              label: 'Changelog',
+              translations: {
+                zh: '更新日志',
+              },
+              link: 'https://github.com/remanufacturing/react-truncate/blob/main/CHANGELOG.md',
+              attrs: {
+                target: '_blank',
+              },
+            },
+          ],
+        },
       ],
       customCss: ['./src/styles/index.css'],
     }),
