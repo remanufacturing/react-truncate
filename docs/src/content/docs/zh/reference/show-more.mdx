@@ -1,0 +1,159 @@
+---
+title: ShowMore
+description: Usage of the `ShowMore` component.
+---
+
+import { ControllableShowMore } from '@/components/ControllableShowMore'
+
+一个 “显示更多” 组件，当内容超过设定的显示行数时，会出现展开按钮以查看更多内容。
+
+## 用法
+
+像普通组件一样使用它，只需将长文本作为 `children` prop 传递。
+
+```tsx
+import React from 'react'
+import { ShowMore } from '@re-dev/react-truncate'
+
+const MyComponent: React.FC = () => {
+  return (
+    <ShowMore
+      lines={3}
+      more="Show More"
+      less="Show Less"
+      onToggle={(expanded) => {
+        console.log(expanded)
+      }}
+    >
+      {longText}
+    </ShowMore>
+  )
+}
+```
+
+## 自定义按钮
+
+如果使用自定义 React Elements 作为 `more` / `less` Props 的值，可以将 Ref 值绑定到 `<ShowMore />` 组件，并通过 ref 接收 `toggleLines` 方法。
+
+```tsx
+import React, { useRef } from 'react'
+import {
+  ShowMore,
+  type ShowMoreRef,
+  type ShowMoreToggleLinesFn,
+} from '@re-dev/react-truncate'
+
+const MyComponent: React.FC = () => {
+  // Toggle 方法会通过 `useImperativeHandle` 回传
+  const ref = useRef<ShowMoreRef>(null)
+
+  // 自定义按钮可以通过该方法展开和折叠
+  const toggleLines: ShowMoreToggleLinesFn = (e) => {
+    ref.current?.toggleLines(e)
+  }
+
+  return (
+    <ShowMore
+      ref={ref}
+      lines={3}
+      more={<MyMoreButton onClick={toggleLines} />}
+      less={<MyLessButton onClick={toggleLines} />}
+    >
+      {longText}
+    </ShowMore>
+  )
+}
+```
+
+这个方式对业务来说十分灵活，除了替换按钮的 UI 外，还可以改变其用途，例如：可以将 “展开查看更多” 替换为点击唤起弹窗或者重定向到另外一个页面的能力。
+
+```tsx
+const MyComponent: React.FC = () => {
+  return (
+    <ShowMore
+      ref={ref}
+      lines={3}
+      // 不在原来的位置展开文本，而是通过打开对话框展示
+      more={<MyMoreButton onClick={openMyDialog} />}
+    >
+      {longText}
+    </ShowMore>
+  )
+}
+```
+
+## 类型声明
+
+这是组件的 Props 类型，继承自 [Truncate](/zh/reference/truncate/) 组件的大部分 Props 。
+
+```ts
+import type React from 'react'
+import { type TruncateProps } from '../Truncate'
+
+export interface ShowMoreProps
+  extends Omit<TruncateProps, 'width' | 'middle' | 'end' | 'ellipsis'> {
+  /**
+   * 在 “展开” 对应的锚元素上显示的文本
+   *
+   * 如果传入一个有效的 React Element ，内置的锚元素将不会被渲染，
+   * 会直接渲染为 React Element （通过 `React.isValidElement` 检查）
+   *
+   * @since v0.4.0 支持 React element
+   */
+  more?: React.ReactNode
+
+  /**
+   * 在 “收起” 对应的锚元素上显示的文本
+   *
+   * 如果传入一个有效的 React Element ，内置的锚元素将不会被渲染，
+   * 会直接渲染为 React Element （通过 `React.isValidElement` 检查）
+   *
+   * @since v0.4.0 支持 React element
+   */
+  less?: React.ReactNode
+
+  /**
+   * 添加到锚元素的类名，仅对内置锚元素有效
+   */
+  anchorClass?: string
+
+  /**
+   * 当组件切换展开/折叠状态时会触发该回调函数
+   *
+   * @param expanded - 当前的展开状态
+   *
+   * @since v0.4.0
+   */
+  onToggle?: (expanded: boolean) => void
+}
+```
+
+该组件支持 React 的引用转发。
+
+```ts
+/**
+ * 如果使用自定义 React Element ，可以使用 `toggleLines` 切换展开和折叠
+ * 这是这个方法的类型
+ *
+ * @since v0.4.0
+ */
+export type ShowMoreToggleLinesFn = (
+  e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+) => void
+
+/**
+ * 如果使用自定义 React Element 作为 `more` / `less` 的 Props 值
+ * 可以将 Ref 值绑定到 `<ShowMore />` 组件上用于接收 `toggleLines` 方法
+ *
+ * @since v0.4.0
+ */
+export type ShowMoreRef = {
+  toggleLines: ShowMoreToggleLinesFn
+}
+```
+
+## 现场演示
+
+这是一个理论上适用于任何项目的基本示例，调整滑块，控制它在不同情况下的显示变化。
+
+<ControllableShowMore client:only="react" lang="zh" />

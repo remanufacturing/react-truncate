@@ -3,4 +3,166 @@ title: ShowMore
 description: Usage of the `ShowMore` component.
 ---
 
-Coming soon...
+import { ControllableShowMore } from '@/components/ControllableShowMore'
+
+A "Show More" component, when the content exceeds the set number of display lines, an expand button will appear to view more content.
+
+## Usage
+
+Use it like a normal component, just pass the long text as the `children` prop.
+
+```tsx
+import React from 'react'
+import { ShowMore } from '@re-dev/react-truncate'
+
+const MyComponent: React.FC = () => {
+  return (
+    <ShowMore
+      lines={3}
+      more="Show More"
+      less="Show Less"
+      onToggle={(expanded) => {
+        console.log(expanded)
+      }}
+    >
+      {longText}
+    </ShowMore>
+  )
+}
+```
+
+## Custom buttons
+
+If use custom React elements for the `more` / `less` props, you can bind the Ref value to the `<ShowMore />` component, and receive the `toggleLines` method through ref.
+
+```tsx
+import React, { useRef } from 'react'
+import {
+  ShowMore,
+  type ShowMoreRef,
+  type ShowMoreToggleLinesFn,
+} from '@re-dev/react-truncate'
+
+const MyComponent: React.FC = () => {
+  // The Toggle method will be passed back through `useImperativeHandle`
+  const ref = useRef<ShowMoreRef>(null)
+
+  // Custom buttons can be expanded and collapsed through this method
+  const toggleLines: ShowMoreToggleLinesFn = (e) => {
+    ref.current?.toggleLines(e)
+  }
+
+  return (
+    <ShowMore
+      ref={ref}
+      lines={3}
+      more={<MyMoreButton onClick={toggleLines} />}
+      less={<MyLessButton onClick={toggleLines} />}
+    >
+      {longText}
+    </ShowMore>
+  )
+}
+```
+
+This method is very flexible for business, in addition to replacing the UI of the button, you can also change its purpose. For example, the `more` button can be replaced with the ability to click to invoke a pop-up window or redirect to another page.
+
+```tsx
+const MyComponent: React.FC = () => {
+  return (
+    <ShowMore
+      ref={ref}
+      lines={3}
+      //Do not expand the text in its original position,
+      // but display it by opening the dialog box
+      more={<MyMoreButton onClick={openMyDialog} />}
+    >
+      {longText}
+    </ShowMore>
+  )
+}
+```
+
+## Type Declarations
+
+This is the Props type of the component, inherits most of the Props from the [Truncate](/reference/truncate/) component.
+
+```ts
+import type React from 'react'
+import { type TruncateProps } from '../Truncate'
+
+export interface ShowMoreProps
+  extends Omit<TruncateProps, 'width' | 'middle' | 'end' | 'ellipsis'> {
+  /**
+   * The label to display in the anchor element to show more
+   *
+   * If a valid React element is passed in,
+   * the built-in anchor element will not be rendered,
+   * and the React element will be rendered directly.
+   * (checked by `React.isValidElement` ).
+   *
+   * @since v0.4.0 supported React element
+   */
+  more?: React.ReactNode
+
+  /**
+   * The label to display in the anchor element to show less
+   *
+   * If a valid React element is passed in,
+   * the built-in anchor element will not be rendered,
+   * and the React element will be rendered directly.
+   * (checked by `React.isValidElement` ).
+   *
+   * @since v0.4.0 supported React element
+   */
+  less?: React.ReactNode
+
+  /**
+   * Class name(s) to add to the anchor elements,
+   * only valid for built-in anchor element,
+   */
+  anchorClass?: string
+
+  /**
+   * This callback function will be triggered
+   * when the component toggles the expanded/collapsed state.
+   *
+   * @param expanded - Current expand status
+   *
+   * @since v0.4.0
+   */
+  onToggle?: (expanded: boolean) => void
+}
+```
+
+This component supports React's reference forwarding.
+
+```ts
+/**
+ * If use custom React elements, You can use the `toggleLines`
+ * method to toggle between expand and collapse.
+ * This is the type of this method.
+ *
+ * @since v0.4.0
+ */
+export type ShowMoreToggleLinesFn = (
+  e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+) => void
+
+/**
+ * If use custom React elements for the `more` / `less` props,
+ * you can bind the Ref value to the `<ShowMore />` component
+ * and receive the `toggleLines` method through ref.
+ *
+ * @since v0.4.0
+ */
+export type ShowMoreRef = {
+  toggleLines: ShowMoreToggleLinesFn
+}
+```
+
+## Live demo
+
+Here is a basic example that could theoretically be suitable for any project. Adjust the slider to control how it displays in different situations.
+
+<ControllableShowMore client:only="react" lang="en" />
