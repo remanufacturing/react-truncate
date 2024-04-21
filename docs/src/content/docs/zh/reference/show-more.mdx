@@ -86,6 +86,8 @@ const MyComponent: React.FC = () => {
 
 这是组件的 Props 类型，继承自 [Truncate](/zh/reference/truncate/) 组件的大部分 Props 。
 
+请注意：从 `TruncateProps` 上被 `Omit` 掉的 Props 代表被忽略，不会传递给 `<Truncate />` 组件。
+
 ```ts
 import type React from 'react'
 import { type TruncateProps } from '../Truncate'

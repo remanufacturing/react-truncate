@@ -87,6 +87,8 @@ const MyComponent: React.FC = () => {
 
 This is the Props type of the component, inherits most of the Props from the [Truncate](/reference/truncate/) component.
 
+Please note: Props removed from `TruncateProps` by `Omit` are ignored and will not be passed to the `<Truncate />` component.
+
 ```ts
 import type React from 'react'
 import { type TruncateProps } from '../Truncate'
