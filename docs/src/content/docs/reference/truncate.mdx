@@ -145,6 +145,10 @@ export interface TruncateProps extends DetailedHTMLProps {
   /**
    * Number of characters to keep from the end of the text
    *
+   * Always rounded down via `Math.floor`,
+   * and always treated as a position relative to the end,
+   * regardless of positive or negative
+   *
    * @description Option take effect considerations:
    *  This option will only take effect, when the `middle` option is enabled
    *
