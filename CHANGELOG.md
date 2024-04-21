@@ -1,3 +1,21 @@
+# [0.4.0](https://github.com/remanufacturing/react-truncate/compare/v0.3.2...v0.4.0) (2024-04-21)
+
+
+### Bug Fixes
+
+* **MiddleTruncate:** ignore omit's props when passed in rests ([3ed2714](https://github.com/remanufacturing/react-truncate/commit/3ed2714ec39bb9914a61844630132ba893afe098))
+* **ShowMore:** ignore omit's props when passed in rests ([ec62636](https://github.com/remanufacturing/react-truncate/commit/ec62636952d6c6621bbde3b214c5a207ae52bec9))
+* **Truncate:** fixed a calculation error where end is 0 when middle mode is enabled ([84f8424](https://github.com/remanufacturing/react-truncate/commit/84f84248719e10673fd4ae1aa978d468d4765e0d))
+
+
+### Features
+
+* **ShowMore:** add custom buttons support and toggle state change callback ([71bcb94](https://github.com/remanufacturing/react-truncate/commit/71bcb944d23e8def9c31f9a10e632b5509bd6444))
+* **Truncate:** add safe and positive integer check for the lines prop value ([9f84142](https://github.com/remanufacturing/react-truncate/commit/9f8414227100e012befc33019e77199c33dcf733))
+* **Truncate:** update comments for types ([bf1c365](https://github.com/remanufacturing/react-truncate/commit/bf1c3650180dc841b5ff558988410c1642e13723))
+
+
+
 ## [0.3.2](https://github.com/remanufacturing/react-truncate/compare/v0.3.1...v0.3.2) (2024-01-20)
 
 
