@@ -1,6 +1,12 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import clsx from 'clsx'
 import { getTranslation, type Languages, type TranslationKey } from '@/i18n'
+
+export const DEFAULT_WIDTH_VALUE = 100
+export const DEFAULT_LINES_VALUE = 3
+export const DEFAULT_HTML_VALUE = true
+export const DEFAULT_CUSTOM_VALUE = false
+export const DEFAULT_END_VALUE = 5
 
 export const ExampleContainer: React.FC<{
   style?: React.CSSProperties
@@ -50,6 +56,7 @@ type SharedItemProps = Omit<
 
 interface FormRangeProps extends SharedItemProps {
   onChange: (v: number) => void
+  percentable?: boolean
 }
 
 export const FormRange: React.FC<FormRangeProps> = ({
@@ -57,8 +64,14 @@ export const FormRange: React.FC<FormRangeProps> = ({
   labelKey,
   value,
   onChange,
+  percentable = true,
   ...rests
 }) => {
+  const label = useMemo(() => {
+    const suffix = percentable ? '%' : ''
+    return `${value}${suffix}`
+  }, [percentable, value])
+
   return (
     <ExampleFormItem>
       <ExampleFormLabel lang={lang} labelKey={labelKey} />
@@ -70,7 +83,7 @@ export const FormRange: React.FC<FormRangeProps> = ({
         {...rests}
       />
 
-      <span>{value}%</span>
+      <span>{label}</span>
     </ExampleFormItem>
   )
 }

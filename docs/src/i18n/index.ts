@@ -13,12 +13,14 @@ export const translations = {
     'example.lines': 'Default Lines:',
     'example.html': 'Rich Text:',
     'example.custom': 'Custom Buttons:',
+    'example.end': 'End Position:',
   },
   zh: {
     'example.width': '父级宽度：',
     'example.lines': '默认行数：',
     'example.html': '富文本：',
-    'example.custom': '自定义按钮：',
+    'example.custom': 'Custom Buttons:',
+    'example.end': '结束位置：',
   },
 } as const
 

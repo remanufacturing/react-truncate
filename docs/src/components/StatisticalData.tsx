@@ -33,7 +33,7 @@ export const StatisticalData: React.FC = () => {
             title={i.title}
             href={i.link}
             target="__blank"
-            ref="sponsored nofollow noopener noreferrer"
+            rel="sponsored nofollow noopener noreferrer"
           >
             <img alt={i.title} src={i.image} />
           </a>
