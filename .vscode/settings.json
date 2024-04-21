@@ -1,4 +1,12 @@
 {
   "eslint.experimental.useFlatConfig": true,
-  "cSpell.words": ["astro", "astrojs", "clsx", "iife", "tsconfigs", "tsup"]
+  "cSpell.words": [
+    "astro",
+    "astrojs",
+    "clsx",
+    "iife",
+    "percentable",
+    "tsconfigs",
+    "tsup"
+  ]
 }

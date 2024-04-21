@@ -90,7 +90,14 @@ export interface TruncateProps extends DetailedHTMLProps {
    *
    * Always rounded down via `Math.floor`,
    * and always treated as a position relative to the end,
-   * regardless of positive or negative
+   * regardless of positive or negative.
+   *
+   * But if the end position exceeds the text length,
+   * the truncation position will be processed at the end.
+   *
+   * @todo The current `end` cannot support more than the number of
+   *  characters that can be displayed on a single line, and this
+   *  will be solved in subsequent versions.
    *
    * @description Option take effect considerations:
    *  This option will only take effect, when the `middle` option is enabled
