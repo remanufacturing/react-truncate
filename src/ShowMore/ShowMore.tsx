@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useState,
 } from 'react'
-import { Truncate } from '../Truncate'
+import { Truncate, type TruncateProps } from '../Truncate'
 import { ToggleButton } from './ToggleButton'
 import {
   type ShowMoreToggleLinesFn,
@@ -27,6 +27,10 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
     },
     ref,
   ) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { width, middle, end, ellipsis, ...truncateProps } =
+      rests as TruncateProps
+
     const [truncated, setTruncated] = useState(false)
     const [expanded, setExpanded] = useState(false)
 
@@ -63,7 +67,7 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
     return (
       <div style={{ width: '100%' }}>
         <Truncate
-          {...rests}
+          {...truncateProps}
           lines={expandedLines}
           ellipsis={
             <ToggleButton
