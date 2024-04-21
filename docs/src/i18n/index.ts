@@ -19,7 +19,7 @@ export const translations = {
     'example.width': '父级宽度：',
     'example.lines': '默认行数：',
     'example.html': '富文本：',
-    'example.custom': 'Custom Buttons:',
+    'example.custom': '自定义按钮:',
     'example.end': '结束位置：',
   },
 } as const
