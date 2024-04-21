@@ -7,21 +7,21 @@
   <a href="https://www.npmjs.com/package/@re-dev/react-truncate" target="__blank">
     <img src="https://img.shields.io/npm/dt/@re-dev/react-truncate?color=f43f5e&label=downloads" />
   </a>
-  <!-- <a href="https://paka.dev/npm/@re-dev/react-truncate" target="__blank">
+  <a href="https://truncate.js.org" target="__blank">
     <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=f43f5e" />
-  </a> -->
+  </a>
   <a href="https://github.com/remanufacturing/react-truncate" target="__blank">
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/remanufacturing/react-truncate?style=social" />
   </a>
 </p>
+<br>
+<br>
 
-React component for truncating multi-line spans and adding an ellipsis.
+[English](https://truncate.js.org) | [简体中文](https://truncate.js.org/zh/)
 
-## Why?
+Provides `Truncate`, `MiddleTruncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.
 
-This is a Fork version from [react-truncate](https://github.com/pablosichert/react-truncate) . Since the original version has not been maintained for a long time, we plan to solve existing problems through this repository.
-
-## Usage
+## Installation
 
 With npm(or yarn, or pnpm):
 
@@ -29,36 +29,23 @@ With npm(or yarn, or pnpm):
 npm install @re-dev/react-truncate
 ```
 
-In `.jsx` / `.tsx` or other files:
-
-```ts
-import { MiddleTruncate, Truncate, ShowMore } from '@re-dev/react-truncate'
-```
-
-Normally, you only need to use the `MiddleTruncate` or `ShowMore` component.
-
-See: [Basic Example](https://truncate.js.org/examples/basic/)
-
 ## Documentation
 
-New documentation coming soon, please refer to the legacy version for now.
+- [Truncate](https://truncate.js.org/reference/truncate/)
 
-See:
+A basic component for cropping text. Usually there is no need to use it directly. `<ShowMore />` and `<MiddleTruncate />` provided by this package are both extended based on this component.
 
-- [Truncate.legacy.md](https://github.com/remanufacturing/react-truncate/blob/main/docs/Truncate.legacy.md)
-- [ShowMore.legacy.md](https://github.com/remanufacturing/react-truncate/blob/main/docs/ShowMore.legacy.md)
+- [ShowMore](https://truncate.js.org/reference/show-more/)
+
+A "Show More" component, when the content exceeds the set number of display lines, an expand button will appear to view more content.
+
+- [MiddleTruncate](https://truncate.js.org/reference/middle-truncate/)
+
+A "middle ellipsis" component, when the content exceeds the limit of the parent's width, an ellipsis symbol will appear (similar to CSS's text-overflow: ellipsis effect), but its omission position can be specified in the middle of the text instead of the end.
 
 ## Release Notes
 
 Please refer to [CHANGELOG](https://github.com/remanufacturing/react-truncate/blob/main/CHANGELOG.md) for details.
-
-## Development Plan
-
-Here are some recent development plans.
-
-If you have good ideas and suggestions, you can provide feedback through issue.
-
-See: [Projects on GitHub](https://github.com/orgs/remanufacturing/projects/1) .
 
 ## License
 
