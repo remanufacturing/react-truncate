@@ -1,0 +1,63 @@
+---
+title: MiddleTruncate
+description: Usage of the `MiddleTruncate` component.
+---
+
+import { ControllableMiddleTruncate } from '@/components/ControllableMiddleTruncate'
+
+一个 “中间省略” 组件，当内容超过父级宽度的限制时，会出现省略符号（类似 CSS 的 [text-overflow: ellipsis](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-overflow) 效果），但是其省略位置可以指定在文本的中间，而非结尾。
+
+## 用法
+
+像普通组件一样使用它，只需将长文本作为 `children` prop 传递。
+
+```tsx
+import React from 'react'
+import { MiddleTruncate } from '@re-dev/react-truncate'
+
+const MyComponent: React.FC = () => {
+  return <MiddleTruncate end={10}>{longText}</MiddleTruncate>
+}
+```
+
+## 何时使用？
+
+例如有以下多个同名文件的文件路径（或者快递的收件地址等末尾的信息更重要的场景）：
+
+```bash
+path/to/foo/bar/baz.jpg
+path/to/foo/bar/baz.mp4
+```
+
+如果使用末尾省略，会得到一组看起来一样的省略文本，无法直观了解它们之间的区别：
+
+```bash
+path/to/foo/bar/baz...
+path/to/foo/bar/baz...
+```
+
+如果使用中间省略，例如本例子，通过查找最后一级 `/` 所在的位置，对 `<MiddleTruncate />` 设置其 `end` 属性，以保留最后一级文件名称，会得到一个清晰的省略结果：
+
+```bash
+path/to/foo/.../baz.jpg
+path/to/foo/.../baz.mp4
+```
+
+## 类型声明
+
+这是组件的 Props 类型，继承自 [Truncate](/zh/reference/truncate/) 组件的大部分 Props 。
+
+请注意：从 `TruncateProps` 上被 `Omit` 掉的 Props 代表被忽略，不会传递给 `<Truncate />` 组件。
+
+```tsx
+export type MiddleTruncateProps = Omit<
+  TruncateProps,
+  'middle' | 'lines' | 'width'
+>
+```
+
+## 现场演示
+
+这是一个理论上适用于任何项目的基本示例，调整滑块，控制它在不同情况下的显示变化。
+
+<ControllableMiddleTruncate client:only="react" lang="zh" />
