@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { getEllipsisWidth, innerText, renderLine, trimRight } from './utils'
+import {
+  getEllipsisWidth,
+  getMiddleTruncateFragments,
+  innerText,
+  renderLine,
+  trimRight,
+} from './utils'
 import { type TruncateProps } from './types'
 
 export const Truncate: React.FC<TruncateProps> = ({
@@ -10,7 +16,7 @@ export const Truncate: React.FC<TruncateProps> = ({
   width = 0,
   separator = ' ',
   middle: middleTruncate = false,
-  end = 5,
+  end: initialEnd = 5,
   onTruncate,
   ...spanProps
 }) => {
@@ -109,14 +115,17 @@ export const Truncate: React.FC<TruncateProps> = ({
     return middleTruncate ? 1 : defaultLines
   }, [defaultLines, middleTruncate])
 
-  const endPos = useMemo(() => {
-    return Math.floor(end <= 0 ? end : -end)
-  }, [end])
+  // Make sure the end position is negative or 0
+  const end = useMemo(() => {
+    const absVal = Math.abs(initialEnd)
+    const val = Number.isFinite(absVal) ? Math.floor(absVal) : 0
+    return val > 0 ? -val : val
+  }, [initialEnd])
 
   const getLines = useCallback(() => {
     const resultLines: Array<string | JSX.Element> = []
-    const textLine = innerText(textRef.current, separator)
-    const textLines = textLine.split('\n').map((line) => line.split(separator))
+    const fullText = innerText(textRef.current, separator)
+    const textLines = fullText.split('\n').map((line) => line.split(separator))
     const ellipsisWidth = getEllipsisWidth(ellipsisRef.current) || 0
 
     let didTruncate = true
@@ -149,18 +158,11 @@ export const Truncate: React.FC<TruncateProps> = ({
         let lower = 0
         let upper = textRest.length - 1
 
-        const sliceStart = endPos === 0 ? textLine.length : endPos
-        const endFragment = middleTruncate ? textLine.slice(sliceStart) : ''
-        const endFragmentWidth = middleTruncate ? measureWidth(endFragment) : 0
-
         while (lower <= upper) {
           const middle = Math.floor((lower + upper) / 2)
           const testLine = textRest.slice(0, middle + 1)
 
-          if (
-            measureWidth(testLine) + ellipsisWidth + endFragmentWidth <=
-            targetWidth
-          ) {
+          if (measureWidth(testLine) + ellipsisWidth <= targetWidth) {
             lower = middle + 1
           } else {
             upper = middle - 1
@@ -181,10 +183,19 @@ export const Truncate: React.FC<TruncateProps> = ({
           }
         }
 
-        if (middleTruncate) {
+        if (middleTruncate && end !== 0) {
+          const { startFragment, endFragment } = getMiddleTruncateFragments({
+            end,
+            lastLineText,
+            fullText,
+            targetWidth,
+            ellipsisWidth,
+            measureWidth,
+          })
+
           resultLine = (
             <span>
-              {lastLineText}
+              {startFragment}
               {ellipsis}
               {endFragment}
             </span>
@@ -237,9 +248,9 @@ export const Truncate: React.FC<TruncateProps> = ({
     lines,
     measureWidth,
     targetWidth,
-    middleTruncate,
-    endPos,
     trimWhitespace,
+    end,
+    middleTruncate,
     ellipsis,
   ])
 

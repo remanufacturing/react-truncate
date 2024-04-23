@@ -46,3 +46,43 @@ export const innerText = (node: HTMLSpanElement | null, separator: string) => {
 
   return newText || ''
 }
+
+interface GetResultOptions {
+  end: number
+  lastLineText: string
+  fullText: string
+  targetWidth: number
+  ellipsisWidth: number
+  measureWidth: (textVal: string) => number
+}
+
+export const getMiddleTruncateFragments = ({
+  end,
+  lastLineText,
+  fullText,
+  targetWidth,
+  ellipsisWidth,
+  measureWidth,
+}: GetResultOptions) => {
+  const length = lastLineText.length
+  const absEnd = Math.abs(end)
+  const startSliceIndex = absEnd > length ? 0 : length - absEnd
+  let startFragment = lastLineText.slice(0, startSliceIndex)
+
+  const endSliceIndex = startSliceIndex === 0 ? -length : end
+  const endFragment = fullText.slice(endSliceIndex)
+
+  let fullWidth =
+    measureWidth(startFragment) + measureWidth(endFragment) + ellipsisWidth
+
+  while (fullWidth > targetWidth) {
+    startFragment = startFragment.slice(0, startFragment.length - 1)
+    fullWidth =
+      measureWidth(startFragment) + measureWidth(endFragment) + ellipsisWidth
+  }
+
+  return {
+    startFragment,
+    endFragment,
+  }
+}
