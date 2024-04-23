@@ -7,8 +7,6 @@ import { ControllableMiddleTruncate } from '@/components/ControllableMiddleTrunc
 
 A "middle ellipsis" component, when the content exceeds the limit of the parent's width, an ellipsis symbol will appear (similar to CSS's [text-overflow: ellipsis](https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow) effect), but its omission position can be specified in the middle of the text instead of the end.
 
-> This component is in the Beta stage and there are some unresolved issues, see [TODO](#todo) .
-
 ## Usage
 
 Use it like a normal component, just pass the long text as the `children` prop.
@@ -63,7 +61,3 @@ export type MiddleTruncateProps = Omit<
 Here is a basic example that could theoretically be suitable for any project. Adjust the slider to control how it displays in different situations.
 
 <ControllableMiddleTruncate client:only="react" lang="en" />
-
-## TODO
-
-1. The current `end` value cannot support more than the number of characters that can be displayed on a single line
