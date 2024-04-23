@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/remanufacturing/react-truncate/compare/v0.4.0...v0.4.1) (2024-04-23)
+
+
+### Bug Fixes
+
+* **Truncate:** fix the calculation result deviation problem of middle truncate ([f1625ac](https://github.com/remanufacturing/react-truncate/commit/f1625acbfd9f5756d532e2f9ecc31f694ea8c6bb))
+
+
+
 # [0.4.0](https://github.com/remanufacturing/react-truncate/compare/v0.3.2...v0.4.0) (2024-04-21)
 
 
