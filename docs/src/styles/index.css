@@ -1,9 +1,31 @@
+/* Dark mode colors. */
 :root {
-  --sl-color-black: hsl(224, 10%, 10%);
-  /* --sl-color-black: rgba(17, 17, 17, 1); */
-  --sl-color-gray-7: hsl(227, 14%, 13%);
-  --sl-color-bg-nav: var(--sl-color-gray-7);
-  --sl-color-bg-sidebar: var(--sl-color-gray-7);
+  --sl-color-accent-low: #332000;
+  --sl-color-accent: #8be1f7;
+  --sl-color-accent-high: #7addf7;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #eeeeee;
+  --sl-color-gray-2: #c2c2c2;
+  --sl-color-gray-3: #8b8b8b;
+  --sl-color-gray-4: #585858;
+  --sl-color-gray-5: #383838;
+  --sl-color-gray-6: #272727;
+  --sl-color-black: #181818;
+}
+/* Light mode colors. */
+:root[data-theme='light'] {
+  --sl-color-accent-low: #ebd3b1;
+  --sl-color-accent: #44bddd;
+  --sl-color-accent-high: #29c1e9;
+  --sl-color-white: #181818;
+  --sl-color-gray-1: #272727;
+  --sl-color-gray-2: #383838;
+  --sl-color-gray-3: #585858;
+  --sl-color-gray-4: #8b8b8b;
+  --sl-color-gray-5: #c2c2c2;
+  --sl-color-gray-6: #eeeeee;
+  --sl-color-gray-7: #f6f6f6;
+  --sl-color-black: #ffffff;
 }
 
 .astro-code {
@@ -58,11 +80,11 @@
 }
 
 input:checked + .slider {
-  background-color: rgb(51, 105, 255);
+  background-color: var(--sl-color-accent-high);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px rgb(51, 105, 255);
+  box-shadow: 0 0 1px var(--sl-color-accent-high);
 }
 
 input:checked + .slider:before {

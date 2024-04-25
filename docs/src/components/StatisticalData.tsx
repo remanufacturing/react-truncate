@@ -4,16 +4,17 @@ import pkg from '../../../package.json'
 const name = pkg.name
 const repoUrl = pkg.repository.url
 const repo = repoUrl.replace('https://github.com/', '')
+const color = '29c1e9'
 
 const options = [
   {
     link: `https://www.npmjs.com/package/${name}`,
-    image: `https://img.shields.io/npm/v/${name}?color=f43f5e&label=npm`,
+    image: `https://img.shields.io/npm/v/${name}?color=${color}&label=npm`,
     title: 'The latest version',
   },
   {
     link: `https://www.npmjs.com/package/${name}`,
-    image: `https://img.shields.io/npm/dt/${name}?color=f43f5e&label=downloads`,
+    image: `https://img.shields.io/npm/dt/${name}?color=${color}&label=downloads`,
     title: 'Download counts',
   },
   {
