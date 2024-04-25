@@ -1,19 +1,25 @@
-# @re-dev/react-truncate
+<p align='center'>
+  <img src="./docs/public/logo.png" width="200" alt="@re-dev/react-truncate" />
+</p>
 
-<p>
+<h1 align='center'>@re-dev/react-truncate</h1>
+
+<p align='center'>
   <a href='https://www.npmjs.com/package/@re-dev/react-truncate'>
-    <img src="https://img.shields.io/npm/v/@re-dev/react-truncate?color=f43f5e&label=npm" />
+    <img src="https://img.shields.io/npm/v/@re-dev/react-truncate?color=29c1e9&label=npm" />
   </a>
   <a href="https://www.npmjs.com/package/@re-dev/react-truncate" target="__blank">
-    <img src="https://img.shields.io/npm/dt/@re-dev/react-truncate?color=f43f5e&label=downloads" />
+    <img src="https://img.shields.io/npm/dt/@re-dev/react-truncate?color=29c1e9&label=downloads" />
   </a>
   <a href="https://truncate.js.org" target="__blank">
-    <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=f43f5e" />
+    <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=29c1e9" />
   </a>
   <a href="https://github.com/remanufacturing/react-truncate" target="__blank">
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/remanufacturing/react-truncate?style=social" />
   </a>
 </p>
+<br>
+<br>
 
 [English](https://truncate.js.org) | [简体中文](https://truncate.js.org/zh/)
 
