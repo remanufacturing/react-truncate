@@ -114,9 +114,9 @@ export const Contributors: React.FC<{
             href={i.homepage}
             target="_blank"
             rel="noreferrer"
-            className="flex flex-col items-center no-underline hover:underline"
+            className="flex flex-col items-center no-underline group"
           >
-            <div className="w-16 h-16 rounded-full overflow-hidden">
+            <div className="w-16 h-16 rounded-full overflow-hidden group-hover:opacity-70 transition-opacity">
               <img
                 className="w-full h-full object-cover"
                 src={i.avatar}
