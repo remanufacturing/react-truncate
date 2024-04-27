@@ -96,7 +96,9 @@ export const Contributors: React.FC<{
       : 'Failed to obtain data, please refresh the page.'
   }, [lang])
 
-  const cls = clsx('flex flex-wrap gap-6 w-full mt-6')
+  const cls = clsx('flex flex-wrap gap-6 w-full mt-6', {
+    '<lg:justify-center': !!items.length,
+  })
 
   if (!items.length) {
     return <div className={cls}>{emptyTips}</div>
