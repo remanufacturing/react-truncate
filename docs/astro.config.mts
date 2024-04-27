@@ -52,6 +52,13 @@ export default defineConfig({
               },
               link: '/guides/getting-started',
             },
+            {
+              label: 'About',
+              translations: {
+                zh: '关于',
+              },
+              link: '/guides/about',
+            },
           ],
         },
         ...Object.entries(autogenerates).map(([key, translations]) => {
