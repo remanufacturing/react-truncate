@@ -4,6 +4,7 @@
     "astro",
     "astrojs",
     "clsx",
+    "dompurify",
     "iife",
     "percentable",
     "tsconfigs",

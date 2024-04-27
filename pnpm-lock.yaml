@@ -114,9 +114,6 @@ importers:
       '@astrojs/starlight':
         specifier: ^0.21.5
         version: 0.21.5(astro@4.6.1(@types/node@20.12.7)(typescript@5.4.5))
-      '@bassist/utils':
-        specifier: ^0.16.0
-        version: 0.16.0
       '@re-dev/about':
         specifier: ^0.1.3
         version: 0.1.3
@@ -501,9 +498,6 @@ packages:
 
   '@bassist/utils@0.14.0':
     resolution: {integrity: sha512-NptMVl0GhVNFPNlzhVd8Cl9+GufIRG2F71cjaW4EnkwQ8QLnI7qlE46Kovs1bPgWWlZJvNwXS3hYK5XSxnfaqg==}
-
-  '@bassist/utils@0.16.0':
-    resolution: {integrity: sha512-fxLMF7HkWd+8/sEHrbzSxerGI2J3XtebjqB07NsnOWBDMt67+/N+NbXwwbPEjYNbwXic6mVB0nqAFrqQ8H305A==}
 
   '@ctrl/tinycolor@3.6.1':
     resolution: {integrity: sha512-SITSV6aIXsuVNV3f3O0f2n/cgyEDWoSqtZMYiAmcsYHydcKrOz3gUxB/iXd/Qf08+IZX4KpgNbvUdMBmWz+kcA==}
@@ -6094,8 +6088,6 @@ snapshots:
       unocss: 0.59.2(postcss@8.4.38)(rollup@4.13.2)(vite@5.2.7(@types/node@20.12.7))
 
   '@bassist/utils@0.14.0': {}
-
-  '@bassist/utils@0.16.0': {}
 
   '@ctrl/tinycolor@3.6.1': {}
 
