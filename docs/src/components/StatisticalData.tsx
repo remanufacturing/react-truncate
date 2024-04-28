@@ -91,9 +91,7 @@ export const Contributors: React.FC<{
   }, [])
 
   const emptyTips = useMemo(() => {
-    return lang === 'zh'
-      ? '获取数据失败，请刷新页面重试。'
-      : 'Failed to obtain data, please refresh the page.'
+    return lang === 'zh' ? '加载中...' : 'Loading...'
   }, [lang])
 
   const cls = clsx('flex flex-wrap gap-6 w-full mt-6', {
