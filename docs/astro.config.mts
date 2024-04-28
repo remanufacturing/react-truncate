@@ -10,6 +10,48 @@ const autogenerates = {
   },
 }
 
+interface OgConfig {
+  tag: 'meta'
+  attrs: {
+    property: string
+    content: string
+  }
+}
+
+const ogTypes = ['og', 'twitter'] as const
+
+const ogConfigs = [
+  {
+    name: 'card',
+    content: 'summary_large_image',
+  },
+  {
+    name: 'description',
+    content:
+      'Provides `Truncate`, `MiddleTruncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.',
+  },
+  {
+    name: 'image',
+    content: 'https://truncate.js.org/logo.png',
+  },
+]
+
+const getHead = () => {
+  const [og, twitter] = ogTypes.map((type) => {
+    return ogConfigs.map<OgConfig>(({ name, content }) => {
+      return {
+        tag: 'meta',
+        attrs: {
+          property: `${type}:${name}`,
+          content,
+        },
+      }
+    })
+  })
+
+  return [...og!, ...twitter!]
+}
+
 // https://astro.build/config
 export default defineConfig({
   outDir: 'dist',
@@ -24,6 +66,7 @@ export default defineConfig({
     starlight({
       favicon: '/favicon.ico',
       title: 'React Truncate',
+      head: getHead(),
       defaultLocale: 'root',
       locales: {
         root: {
