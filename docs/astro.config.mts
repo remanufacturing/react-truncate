@@ -26,13 +26,25 @@ const ogConfigs = [
     content: 'summary_large_image',
   },
   {
+    name: 'title',
+    content: 'React Truncate',
+  },
+  {
     name: 'description',
     content:
       'Provides `Truncate`, `MiddleTruncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.',
   },
   {
+    name: 'url',
+    content: 'https://truncate.js.org/',
+  },
+  {
     name: 'image',
     content: 'https://truncate.js.org/og-image.jpg',
+  },
+  {
+    name: 'type',
+    content: 'article',
   },
 ]
 
