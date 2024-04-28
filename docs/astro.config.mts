@@ -32,7 +32,7 @@ const ogConfigs = [
   },
   {
     name: 'image',
-    content: 'https://truncate.js.org/logo.png',
+    content: 'https://truncate.js.org/og-image.png',
   },
 ]
 
