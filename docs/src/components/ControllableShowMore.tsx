@@ -89,6 +89,7 @@ export const ControllableShowMore: React.FC<{
         max="10"
         defaultValue={DEFAULT_LINES_VALUE}
         onChange={(v) => setLines(v)}
+        percentable={false}
       />
 
       <FormSwitch
