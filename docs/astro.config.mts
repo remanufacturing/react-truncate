@@ -1,15 +1,14 @@
 import { defineConfig } from 'astro/config'
 import { capitalize } from '@bassist/utils'
-import unocss from 'unocss/astro'
 import react from '@astrojs/react'
 import starlight from '@astrojs/starlight'
+import tailwind from '@astrojs/tailwind'
 
 const autogenerates = {
   reference: {
     zh: '参考',
   },
 }
-
 interface OgConfig {
   tag: 'meta'
   attrs: {
@@ -17,9 +16,7 @@ interface OgConfig {
     content: string
   }
 }
-
 const ogTypes = ['og', 'twitter'] as const
-
 const ogConfigs = [
   {
     name: 'card',
@@ -47,7 +44,6 @@ const ogConfigs = [
     content: 'article',
   },
 ]
-
 const getHead = () => {
   const [og, twitter] = ogTypes.map((type) => {
     return ogConfigs.map<OgConfig>(({ name, content }) => {
@@ -60,7 +56,6 @@ const getHead = () => {
       }
     })
   })
-
   return [...og!, ...twitter!]
 }
 
@@ -71,8 +66,6 @@ export default defineConfig({
     assets: 'assets',
   },
   integrations: [
-    unocss(),
-
     react(),
 
     starlight({
@@ -120,7 +113,9 @@ export default defineConfig({
           return {
             label: capitalize(key),
             translations,
-            autogenerate: { directory: key },
+            autogenerate: {
+              directory: key,
+            },
           }
         }),
         {
@@ -144,5 +139,7 @@ export default defineConfig({
       ],
       customCss: ['./src/styles/index.css'],
     }),
+
+    tailwind(),
   ],
 })
