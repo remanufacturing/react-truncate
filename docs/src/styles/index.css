@@ -37,7 +37,7 @@
 }
 
 [data-theme='dark'] .bg-example {
-  @apply bg-dark-900;
+  @apply bg-slate-950;
 }
 
 .switch {

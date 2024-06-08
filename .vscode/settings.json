@@ -7,6 +7,7 @@
     "dompurify",
     "iife",
     "percentable",
+    "tailwindcss",
     "tsconfigs",
     "tsup"
   ]

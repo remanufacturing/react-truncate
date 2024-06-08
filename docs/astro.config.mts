@@ -68,6 +68,10 @@ export default defineConfig({
   integrations: [
     react(),
 
+    tailwind({
+      applyBaseStyles: false,
+    }),
+
     starlight({
       favicon: '/favicon.ico',
       title: 'React Truncate',
@@ -137,9 +141,7 @@ export default defineConfig({
           ],
         },
       ],
-      customCss: ['./src/styles/index.css'],
+      customCss: ['./src/styles/globals.css', './src/styles/index.css'],
     }),
-
-    tailwind(),
   ],
 })
