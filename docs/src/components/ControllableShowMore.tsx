@@ -5,12 +5,7 @@ import {
   type ShowMoreToggleLinesFn,
 } from '@re-dev/react-truncate'
 import {
-  RichText,
-  ChineseRichText,
-  ChineseStringText,
-  StringText,
-} from './ExampleData'
-import {
+  CurrentContent,
   DEFAULT_CUSTOM_VALUE,
   DEFAULT_HTML_VALUE,
   DEFAULT_LINES_VALUE,
@@ -38,17 +33,6 @@ const CustomButton: React.FC<{
       {label}
     </button>
   )
-}
-
-const CurrentContent: React.FC<{
-  isZh: boolean
-  html: boolean
-}> = ({ isZh, html }) => {
-  if (isZh) {
-    return html ? <ChineseRichText /> : <ChineseStringText />
-  }
-
-  return html ? <RichText /> : <StringText />
 }
 
 export const ControllableShowMore: React.FC<{

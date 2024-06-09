@@ -1,12 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { MiddleTruncate } from '@re-dev/react-truncate'
 import {
-  RichText,
-  ChineseRichText,
-  ChineseStringText,
-  StringText,
-} from './ExampleData'
-import {
+  CurrentContent,
   DEFAULT_END_VALUE,
   DEFAULT_HTML_VALUE,
   DEFAULT_WIDTH_VALUE,
@@ -15,17 +10,6 @@ import {
   FormSwitch,
 } from './ExampleWidgets'
 import { type Languages } from '@/i18n'
-
-const CurrentContent: React.FC<{
-  isZh: boolean
-  html: boolean
-}> = ({ isZh, html }) => {
-  if (isZh) {
-    return html ? <ChineseRichText /> : <ChineseStringText />
-  }
-
-  return html ? <RichText /> : <StringText />
-}
 
 export const ControllableMiddleTruncate: React.FC<{
   lang: Languages

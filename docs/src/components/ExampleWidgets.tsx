@@ -1,6 +1,14 @@
 import React, { useMemo } from 'react'
 import clsx from 'clsx'
 import { getTranslation, type Languages, type TranslationKey } from '@/i18n'
+import {
+  RichText,
+  ChineseRichText,
+  ChineseStringText,
+  StringText,
+  ShorterStringText,
+  ShorterChineseStringText,
+} from './ExampleData'
 
 export const DEFAULT_WIDTH_VALUE = 100
 export const DEFAULT_LINES_VALUE = 3
@@ -115,4 +123,18 @@ export const FormSwitch: React.FC<FormSwitchProps> = ({
       </label>
     </ExampleFormItem>
   )
+}
+
+export const CurrentContent: React.FC<{
+  isZh: boolean
+  html?: boolean
+  shorter?: boolean
+}> = ({ isZh, html = false, shorter = false }) => {
+  if (isZh) {
+    if (shorter) return <ShorterChineseStringText />
+    return html ? <ChineseRichText /> : <ChineseStringText />
+  }
+
+  if (shorter) return <ShorterStringText />
+  return html ? <RichText /> : <StringText />
 }
