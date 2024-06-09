@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { MiddleTruncate } from '@re-dev/react-truncate'
 import {
   CurrentContent,
@@ -9,18 +9,16 @@ import {
   FormRange,
   FormSwitch,
 } from './ExampleWidgets'
-import { type Languages } from '@/i18n'
+import { useLang, type Languages } from '@/i18n'
 
 export const ControllableMiddleTruncate: React.FC<{
   lang: Languages
 }> = ({ lang }) => {
+  const { isZh } = useLang(lang)
+
   const [width, setWidth] = useState(DEFAULT_WIDTH_VALUE)
   const [end, setEnd] = useState(DEFAULT_END_VALUE)
   const [html, setHtml] = useState(DEFAULT_HTML_VALUE)
-
-  const isZh = useMemo(() => {
-    return lang === 'zh'
-  }, [lang])
 
   return (
     <>

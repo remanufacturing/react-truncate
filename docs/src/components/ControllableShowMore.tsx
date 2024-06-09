@@ -14,7 +14,7 @@ import {
   FormRange,
   FormSwitch,
 } from './ExampleWidgets'
-import { type Languages } from '@/i18n'
+import { useLang, type Languages } from '@/i18n'
 
 const CustomButton: React.FC<{
   type: 'more' | 'less'
@@ -38,14 +38,12 @@ const CustomButton: React.FC<{
 export const ControllableShowMore: React.FC<{
   lang: Languages
 }> = ({ lang }) => {
+  const { isZh } = useLang(lang)
+
   const [width, setWidth] = useState(DEFAULT_WIDTH_VALUE)
   const [lines, setLines] = useState(DEFAULT_LINES_VALUE)
   const [html, setHtml] = useState(DEFAULT_HTML_VALUE)
   const [custom, setCustom] = useState(DEFAULT_CUSTOM_VALUE)
-
-  const isZh = useMemo(() => {
-    return lang === 'zh'
-  }, [lang])
 
   const ref = useRef<ShowMoreRef>(null)
 

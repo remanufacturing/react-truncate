@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 export const languages = {
   en: 'English',
   zh: '简体中文',
@@ -28,4 +30,12 @@ export type TranslationKey = keyof (typeof translations)[typeof defaultLang]
 
 export const getTranslation = (lang: Languages, key: TranslationKey) => {
   return translations[lang][key]
+}
+
+export const useLang = (lang: Languages) => {
+  const isZh = useMemo(() => lang === 'zh', [lang])
+
+  return {
+    isZh,
+  }
 }
