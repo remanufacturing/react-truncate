@@ -9,6 +9,7 @@ import {
   ControllableShowMore,
   CustomButtonShowMore,
   DialogShowMore,
+  TooltipShowMore,
 } from '@/components/examples/show-more'
 
 A "Show More" component, when the content exceeds the set number of display lines, an expand button will appear to view more content.
@@ -37,6 +38,8 @@ const MyComponent: React.FC = () => {
 ## Advanced Usage
 
 You can pass different props to achieve the display mode for different business scenarios.
+
+> Note: This package does not provide UI components that are not related to the core functions. You can refer to the sample code and implement it yourself with the UI framework components you are using, such as: [Shadcn UI](https://github.com/shadcn-ui/ui) , [Material UI](https://github.com/mui/material-ui) , etc.
 
 ### Custom buttons
 
@@ -102,6 +105,38 @@ const MyComponent: React.FC = () => {
     >
       {longText}
     </ShowMore>
+  )
+}
+```
+
+</CodeCollapser>
+
+### With Tooltip
+
+This is an excellent use of [#16](https://github.com/remanufacturing/react-truncate/discussions/16)! For cases where the original text is not very long, you can use components such as Tooltip to allow users to easily view the full content without having to manually click the expand button to view the full text.
+
+Hover the mouse over the text to view the full text.
+
+<TooltipShowMore client:only="react" lang="en" />
+
+<CodeCollapser client:only="react" lang='en'>
+
+This is pseudo code. For example code, see [TooltipShowMore.tsx](https://github.com/remanufacturing/react-truncate/blob/main/docs/src/components/examples/show-more/TooltipShowMore.tsx) 。
+
+```tsx
+const MyComponent: React.FC = () => {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <ShowMore lines={3} more={null}>
+            {longText}
+          </ShowMore>
+        </TooltipTrigger>
+
+        <TooltipContent>{longText}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 ```

@@ -9,6 +9,7 @@ import {
   ControllableShowMore,
   CustomButtonShowMore,
   DialogShowMore,
+  TooltipShowMore,
 } from '@/components/examples/show-more'
 
 一个 “显示更多” 组件，当内容超过设定的显示行数时，会出现展开按钮以查看更多内容。
@@ -37,6 +38,8 @@ const MyComponent: React.FC = () => {
 ## 高级用法
 
 可以传递不同的 Props ，实现不同业务场景需要的展示形式。
+
+> 注：本包不提供与核心功能无关的 UI 组件，您可以参考示例的代码，配合您正在使用的 UI 框架组件自行实现，例如： [Shadcn UI](https://github.com/shadcn-ui/ui) 、 [Material UI](https://github.com/mui/material-ui) 等等。
 
 ### 自定义按钮
 
@@ -101,6 +104,38 @@ const MyComponent: React.FC = () => {
     >
       {longText}
     </ShowMore>
+  )
+}
+```
+
+</CodeCollapser>
+
+### 配合文字提示
+
+这是来自 [#16](https://github.com/remanufacturing/react-truncate/discussions/16) 的优秀用法！对于原始文本并不是很长的情况，可以借助 Tooltip 等组件实现允许用户轻松查看完整内容、而无需手动点击展开按钮才能够查看全文的能力。
+
+将鼠标悬停在这段文字上面以查看全文。
+
+<TooltipShowMore client:only="react" lang="zh" />
+
+<CodeCollapser client:only="react" lang='zh'>
+
+此为伪代码，示例代码见 [TooltipShowMore.tsx](https://github.com/remanufacturing/react-truncate/blob/main/docs/src/components/examples/show-more/TooltipShowMore.tsx) 。
+
+```tsx
+const MyComponent: React.FC = () => {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <ShowMore lines={3} more={null}>
+            {longText}
+          </ShowMore>
+        </TooltipTrigger>
+
+        <TooltipContent>{longText}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 ```

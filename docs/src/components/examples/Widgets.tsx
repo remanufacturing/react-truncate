@@ -16,23 +16,30 @@ export const DEFAULT_HTML_VALUE = true
 export const DEFAULT_CUSTOM_VALUE = false
 export const DEFAULT_END_VALUE = 5
 
-const ExampleContainer: React.FC<{
-  style?: React.CSSProperties
-  children: React.ReactNode
-}> = ({ style, children }) => {
+const ExampleContainer = React.forwardRef<
+  HTMLDivElement,
+  {
+    style?: React.CSSProperties
+    children: React.ReactNode
+  }
+>(({ style, children, ...rests }, ref) => {
   return (
     <div
+      ref={ref}
       className="w-full box-border p-3 bg-[var(--sl-color-gray-6)] my-6"
       style={{
         border:
           '1px solid color-mix(in srgb, var(--sl-color-gray-5), transparent 25%)',
         ...style,
       }}
+      {...rests}
     >
       {children}
     </div>
   )
-}
+})
+
+ExampleContainer.displayName = 'ExampleContainer'
 
 interface ExampleFormLabelProps {
   lang: Languages
