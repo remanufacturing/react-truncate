@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 import { MiddleTruncate } from '@re-dev/react-truncate'
 import {
-  CurrentContent,
   DEFAULT_END_VALUE,
   DEFAULT_HTML_VALUE,
   DEFAULT_WIDTH_VALUE,
-  ExampleContainer,
-  FormRange,
-  FormSwitch,
-} from './ExampleWidgets'
+  EW,
+} from '@/components/examples/Widgets'
 import { useLang, type Languages } from '@/i18n'
 
 export const ControllableMiddleTruncate: React.FC<{
@@ -22,7 +19,7 @@ export const ControllableMiddleTruncate: React.FC<{
 
   return (
     <>
-      <FormRange
+      <EW.Range
         lang={lang}
         labelKey="example.width"
         value={width}
@@ -32,7 +29,7 @@ export const ControllableMiddleTruncate: React.FC<{
         onChange={(v) => setWidth(v)}
       />
 
-      <FormRange
+      <EW.Range
         lang={lang}
         labelKey="example.end"
         value={end}
@@ -43,18 +40,18 @@ export const ControllableMiddleTruncate: React.FC<{
         percentable={false}
       />
 
-      <FormSwitch
+      <EW.Switch
         lang={lang}
         labelKey="example.html"
         checked={html}
         onChange={(v) => setHtml(v)}
       />
 
-      <ExampleContainer style={{ width: `${width}%` }}>
+      <EW.Container style={{ width: `${width}%` }}>
         <MiddleTruncate separator={isZh ? '' : ' '} end={end}>
-          <CurrentContent isZh={isZh} html={html} />
+          <EW.Content isZh={isZh} html={html} />
         </MiddleTruncate>
-      </ExampleContainer>
+      </EW.Container>
     </>
   )
 }

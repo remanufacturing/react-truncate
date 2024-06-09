@@ -8,7 +8,7 @@ import {
   StringText,
   ShorterStringText,
   ShorterChineseStringText,
-} from './ExampleData'
+} from './Data'
 
 export const DEFAULT_WIDTH_VALUE = 100
 export const DEFAULT_LINES_VALUE = 3
@@ -16,14 +16,18 @@ export const DEFAULT_HTML_VALUE = true
 export const DEFAULT_CUSTOM_VALUE = false
 export const DEFAULT_END_VALUE = 5
 
-export const ExampleContainer: React.FC<{
+const ExampleContainer: React.FC<{
   style?: React.CSSProperties
   children: React.ReactNode
 }> = ({ style, children }) => {
   return (
     <div
-      className="bg-example rounded-xl my-3 lg:my-6 box-border p-3"
-      style={style}
+      className="w-full box-border p-3 bg-[var(--sl-color-gray-6)] my-6"
+      style={{
+        border:
+          '1px solid color-mix(in srgb, var(--sl-color-gray-5), transparent 25%)',
+        ...style,
+      }}
     >
       {children}
     </div>
@@ -67,7 +71,7 @@ interface FormRangeProps extends SharedItemProps {
   percentable?: boolean
 }
 
-export const FormRange: React.FC<FormRangeProps> = ({
+const FormRange: React.FC<FormRangeProps> = ({
   lang,
   labelKey,
   value,
@@ -101,7 +105,7 @@ interface FormSwitchProps extends Omit<SharedItemProps, 'value'> {
   onChange: (v: boolean) => void
 }
 
-export const FormSwitch: React.FC<FormSwitchProps> = ({
+const FormSwitch: React.FC<FormSwitchProps> = ({
   lang,
   labelKey,
   checked,
@@ -125,7 +129,7 @@ export const FormSwitch: React.FC<FormSwitchProps> = ({
   )
 }
 
-export const CurrentContent: React.FC<{
+const CurrentContent: React.FC<{
   isZh: boolean
   html?: boolean
   shorter?: boolean
@@ -137,4 +141,17 @@ export const CurrentContent: React.FC<{
 
   if (shorter) return <ShorterStringText />
   return html ? <RichText /> : <StringText />
+}
+
+// Abbreviation of `ExampleWidgets`
+export class EW {
+  // Layout
+  static Container = ExampleContainer
+
+  // Content
+  static Content = CurrentContent
+
+  // Form
+  static Range = FormRange
+  static Switch = FormSwitch
 }

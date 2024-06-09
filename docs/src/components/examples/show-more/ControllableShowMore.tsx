@@ -5,15 +5,12 @@ import {
   type ShowMoreToggleLinesFn,
 } from '@re-dev/react-truncate'
 import {
-  CurrentContent,
   DEFAULT_CUSTOM_VALUE,
   DEFAULT_HTML_VALUE,
   DEFAULT_LINES_VALUE,
   DEFAULT_WIDTH_VALUE,
-  ExampleContainer,
-  FormRange,
-  FormSwitch,
-} from './ExampleWidgets'
+  EW,
+} from '@/components/examples/Widgets'
 import { useLang, type Languages } from '@/i18n'
 
 const CustomButton: React.FC<{
@@ -53,7 +50,7 @@ export const ControllableShowMore: React.FC<{
 
   return (
     <>
-      <FormRange
+      <EW.Range
         lang={lang}
         labelKey="example.width"
         value={width}
@@ -63,7 +60,7 @@ export const ControllableShowMore: React.FC<{
         onChange={(v) => setWidth(v)}
       />
 
-      <FormRange
+      <EW.Range
         lang={lang}
         labelKey="example.lines"
         value={lines}
@@ -74,21 +71,21 @@ export const ControllableShowMore: React.FC<{
         percentable={false}
       />
 
-      <FormSwitch
+      <EW.Switch
         lang={lang}
         labelKey="example.html"
         checked={html}
         onChange={(v) => setHtml(v)}
       />
 
-      <FormSwitch
+      <EW.Switch
         lang={lang}
         labelKey="example.custom"
         checked={custom}
         onChange={(v) => setCustom(v)}
       />
 
-      <ExampleContainer style={{ width: `${width}%` }}>
+      <EW.Container style={{ width: `${width}%` }}>
         <ShowMore
           ref={ref}
           lines={lines}
@@ -104,9 +101,9 @@ export const ControllableShowMore: React.FC<{
             ) : undefined
           }
         >
-          <CurrentContent isZh={isZh} html={html} />
+          <EW.Content isZh={isZh} html={html} />
         </ShowMore>
-      </ExampleContainer>
+      </EW.Container>
     </>
   )
 }
