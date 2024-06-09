@@ -3,37 +3,50 @@ title: ShowMore
 description: Usage of the `ShowMore` component.
 ---
 
-import { ControllableShowMore } from '@/components/ControllableShowMore'
+import { CodeCollapser } from '@/components/CodeCollapser'
+import {
+  BasicShowMore,
+  ControllableShowMore,
+  CustomButtonShowMore,
+  DialogShowMore,
+} from '@/components/examples/show-more'
 
 一个 “显示更多” 组件，当内容超过设定的显示行数时，会出现展开按钮以查看更多内容。
 
-## 用法
+## 基础用法
 
 像普通组件一样使用它，只需将长文本作为 `children` prop 传递。
+
+<BasicShowMore client:only="react" lang="zh" />
+
+<CodeCollapser client:only="react" lang='zh'>
+
+此为伪代码，示例代码见 [BasicShowMore.tsx](https://github.com/remanufacturing/react-truncate/blob/main/docs/src/components/examples/show-more/BasicShowMore.tsx) 。
 
 ```tsx
 import React from 'react'
 import { ShowMore } from '@re-dev/react-truncate'
 
 const MyComponent: React.FC = () => {
-  return (
-    <ShowMore
-      lines={3}
-      more="Show More"
-      less="Show Less"
-      onToggle={(expanded) => {
-        console.log(expanded)
-      }}
-    >
-      {longText}
-    </ShowMore>
-  )
+  return <ShowMore lines={3}>{longText}</ShowMore>
 }
 ```
 
-## 自定义按钮
+</CodeCollapser>
+
+## 高级用法
+
+可以传递不同的 Props ，实现不同业务场景需要的展示形式。
+
+### 自定义按钮
 
 如果使用自定义 React Elements 作为 `more` / `less` Props 的值，可以将 Ref 值绑定到 `<ShowMore />` 组件，并通过 ref 接收 `toggleLines` 方法。
+
+<CustomButtonShowMore client:only="react" lang="zh" />
+
+<CodeCollapser client:only="react" lang='zh'>
+
+此为伪代码，示例代码见 [CustomButtonShowMore.tsx](https://github.com/remanufacturing/react-truncate/blob/main/docs/src/components/examples/show-more/CustomButtonShowMore.tsx) 。
 
 ```tsx
 import React, { useRef } from 'react'
@@ -65,7 +78,17 @@ const MyComponent: React.FC = () => {
 }
 ```
 
-这个方式对业务来说十分灵活，除了替换按钮的 UI 外，还可以改变其用途，例如：可以将 “展开查看更多” 替换为点击唤起弹窗或者重定向到另外一个页面的能力。
+</CodeCollapser>
+
+### 以弹窗展示
+
+除了替换按钮的 UI 外，还可以改变其用途，例如：可以将 “展开查看更多” 替换为点击唤起弹窗，或者重定向到另外一个页面的能力。
+
+<DialogShowMore client:only="react" lang="zh" />
+
+<CodeCollapser client:only="react" lang='zh'>
+
+此为伪代码，示例代码见 [DialogShowMore.tsx](https://github.com/remanufacturing/react-truncate/blob/main/docs/src/components/examples/show-more/DialogShowMore.tsx) 。
 
 ```tsx
 const MyComponent: React.FC = () => {
@@ -81,6 +104,8 @@ const MyComponent: React.FC = () => {
   )
 }
 ```
+
+</CodeCollapser>
 
 ## 类型声明
 

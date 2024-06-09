@@ -3,37 +3,50 @@ title: ShowMore
 description: Usage of the `ShowMore` component.
 ---
 
-import { ControllableShowMore } from '@/components/ControllableShowMore'
+import { CodeCollapser } from '@/components/CodeCollapser'
+import {
+  BasicShowMore,
+  ControllableShowMore,
+  CustomButtonShowMore,
+  DialogShowMore,
+} from '@/components/examples/show-more'
 
 A "Show More" component, when the content exceeds the set number of display lines, an expand button will appear to view more content.
 
-## Usage
+## Basic Usage
 
 Use it like a normal component, just pass the long text as the `children` prop.
+
+<BasicShowMore client:only="react" lang="en" />
+
+<CodeCollapser client:only="react" lang='en'>
+
+This is pseudo code. For example code, see [BasicShowMore.tsx](https://github.com/remanufacturing/react-truncate/blob/main/docs/src/components/examples/show-more/BasicShowMore.tsx) .
 
 ```tsx
 import React from 'react'
 import { ShowMore } from '@re-dev/react-truncate'
 
 const MyComponent: React.FC = () => {
-  return (
-    <ShowMore
-      lines={3}
-      more="Show More"
-      less="Show Less"
-      onToggle={(expanded) => {
-        console.log(expanded)
-      }}
-    >
-      {longText}
-    </ShowMore>
-  )
+  return <ShowMore lines={3}>{longText}</ShowMore>
 }
 ```
 
-## Custom buttons
+</CodeCollapser>
+
+## Advanced Usage
+
+You can pass different props to achieve the display mode for different business scenarios.
+
+### Custom buttons
 
 If use custom React elements for the `more` / `less` props, you can bind the Ref value to the `<ShowMore />` component, and receive the `toggleLines` method through ref.
+
+<CustomButtonShowMore client:only="react" lang="en" />
+
+<CodeCollapser client:only="react" lang='en'>
+
+This is pseudo code. For example code, see [CustomButtonShowMore.tsx](https://github.com/remanufacturing/react-truncate/blob/main/docs/src/components/examples/show-more/CustomButtonShowMore.tsx) .
 
 ```tsx
 import React, { useRef } from 'react'
@@ -65,7 +78,17 @@ const MyComponent: React.FC = () => {
 }
 ```
 
-This method is very flexible for business, in addition to replacing the UI of the button, you can also change its purpose. For example, the `more` button can be replaced with the ability to click to invoke a pop-up window or redirect to another page.
+</CodeCollapser>
+
+### With Dialog
+
+In addition to replacing the UI of the button, you can also change its purpose. For example, the `more` button can be replaced with the ability to click to invoke a pop-up window or redirect to another page.
+
+<DialogShowMore client:only="react" lang="en" />
+
+<CodeCollapser client:only="react" lang='en'>
+
+This is pseudo code. For example code, see [DialogShowMore.tsx](https://github.com/remanufacturing/react-truncate/blob/main/docs/src/components/examples/show-more/DialogShowMore.tsx) .
 
 ```tsx
 const MyComponent: React.FC = () => {
@@ -73,7 +96,7 @@ const MyComponent: React.FC = () => {
     <ShowMore
       ref={ref}
       lines={3}
-      //Do not expand the text in its original position,
+      // Do not expand the text in its original position,
       // but display it by opening the dialog box
       more={<MyMoreButton onClick={openMyDialog} />}
     >
@@ -82,6 +105,8 @@ const MyComponent: React.FC = () => {
   )
 }
 ```
+
+</CodeCollapser>
 
 ## Type Declarations
 

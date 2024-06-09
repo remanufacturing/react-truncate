@@ -7,7 +7,7 @@ import {
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { EW } from '@/components/examples/Widgets'
-import type { Languages } from '@/i18n'
+import { useLang, type Languages } from '@/i18n'
 
 const IconButton: React.FC<{
   type: 'more' | 'less'
@@ -29,12 +29,12 @@ const IconButton: React.FC<{
       {prefix}
 
       <Button
-        className="ml-2"
+        className="ml-2 cursor-pointer"
         variant="outline"
         size="icon-sm"
         onClick={onClick}
       >
-        <Icon className="h-4 w-4 cursor-pointer" />
+        <Icon className="h-4 w-4" />
       </Button>
     </>
   )
@@ -43,9 +43,7 @@ const IconButton: React.FC<{
 export const CustomButtonShowMore: React.FC<{
   lang: Languages
 }> = ({ lang }) => {
-  const isZh = useMemo(() => {
-    return lang === 'zh'
-  }, [lang])
+  const { isZh } = useLang(lang)
 
   const ref = useRef<ShowMoreRef>(null)
 
@@ -57,7 +55,7 @@ export const CustomButtonShowMore: React.FC<{
     <EW.Container>
       <ShowMore
         ref={ref}
-        lines={2}
+        lines={3}
         separator={isZh ? '' : ' '}
         more={<IconButton type="more" onClick={toggleLines} />}
         less={<IconButton type="less" onClick={toggleLines} />}
