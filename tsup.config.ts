@@ -1,37 +1,21 @@
 import { defineConfig } from 'tsup'
+import {
+  defaultBundleFormatConfig,
+  getBundleExtension,
+  getBundleBanner,
+} from '@bassist/node-utils'
 import pkg from './package.json'
 
 export default defineConfig({
   entry: ['src/index.ts'],
   target: ['es2020'],
-  format: ['cjs', 'esm', 'iife'],
+  format: defaultBundleFormatConfig,
   globalName: 'ReactTruncate',
-  outExtension({ format }) {
-    switch (format) {
-      case 'cjs': {
-        return { js: `.cjs` }
-      }
-      case 'esm': {
-        return { js: `.mjs` }
-      }
-      default: {
-        return { js: `.js` }
-      }
-    }
-  },
+  outExtension: (ctx) => getBundleExtension(ctx),
   outDir: 'dist',
   dts: true,
   banner: {
-    js: [
-      `/**`,
-      ` * name: ${pkg.name}`,
-      ` * version: v${pkg.version}`,
-      ` * description: ${pkg.description}`,
-      ` * author: ${pkg.author}`,
-      ` * homepage: ${pkg.homepage}`,
-      ` * license: ${pkg.license}`,
-      ` */`,
-    ].join('\n'),
+    js: getBundleBanner(pkg),
   },
   bundle: true,
   minify: true,

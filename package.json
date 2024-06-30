@@ -62,6 +62,7 @@
     "@bassist/changelog": "^0.3.0",
     "@bassist/commit": "^0.1.1",
     "@bassist/eslint": "^0.6.1",
+    "@bassist/node-utils": "^0.4.0",
     "@bassist/release": "^0.2.0",
     "@bassist/tsconfig": "^0.1.1",
     "@types/node": "^20.12.7",
