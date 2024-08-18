@@ -1,3 +1,12 @@
+## [0.4.2](https://github.com/remanufacturing/react-truncate/compare/v0.4.1...v0.4.2) (2024-08-18)
+
+
+### Bug Fixes
+
+* fix: removes dependency on react and react-dom ([0918b4a](https://github.com/remanufacturing/react-truncate/commit/0918b4a85f8374833323af835698f7e966cc57d5))
+
+
+
 ## [0.4.1](https://github.com/remanufacturing/react-truncate/compare/v0.4.0...v0.4.1) (2024-04-23)
 
 
