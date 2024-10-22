@@ -64,7 +64,10 @@ export const Truncate: React.FC<TruncateProps> = ({
       style.fontFamily,
     ].join(' ')
 
-    if (canvasContext) canvasContext.font = font
+    if (canvasContext) {
+      canvasContext.font = font
+      canvasContext.letterSpacing = style.letterSpacing
+    }
 
     setTargetWidth(newTargetWidth)
   }, [canvasContext, width])
