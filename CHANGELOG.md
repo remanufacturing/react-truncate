@@ -1,3 +1,12 @@
+## [0.4.3](https://github.com/remanufacturing/react-truncate/compare/v0.4.2...v0.4.3) (2024-10-22)
+
+
+### Bug Fixes
+
+* **Truncate:**: include letter-spacing for more accurate measurements on Truncate ([16c5a3b](https://github.com/remanufacturing/react-truncate/commit/16c5a3bc7d790dbfa324dce6e8b99fdbab3e9934))
+
+
+
 ## [0.4.2](https://github.com/remanufacturing/react-truncate/compare/v0.4.1...v0.4.2) (2024-08-18)
 
 
