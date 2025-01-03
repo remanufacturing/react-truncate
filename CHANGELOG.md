@@ -1,3 +1,12 @@
+## [0.4.4](https://github.com/remanufacturing/react-truncate/compare/v0.4.3...v0.4.4) (2025-01-03)
+
+
+### Bug Fixes
+
+* **ShowMore:** Ensure onTruncate callback is called in ShowMore component ([f4e221e](https://github.com/remanufacturing/react-truncate/commit/f4e221e4f07ea90bac1271e9bd15443e1f1377d5))
+
+
+
 ## [0.4.3](https://github.com/remanufacturing/react-truncate/compare/v0.4.2...v0.4.3) (2024-10-22)
 
 

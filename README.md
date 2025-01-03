@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/npm/v/@re-dev/react-truncate?color=29c1e9&label=npm" />
   </a>
   <a href="https://www.npmjs.com/package/@re-dev/react-truncate" target="__blank">
-    <img src="https://img.shields.io/npm/dt/@re-dev/react-truncate?color=29c1e9&label=downloads" />
+    <img src="https://img.shields.io/npm/dy/@re-dev/react-truncate?color=29c1e9&label=downloads" />
   </a>
   <a href="https://truncate.js.org" target="__blank">
     <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=29c1e9" />
