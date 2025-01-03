@@ -22,6 +22,7 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
       less = 'Collapse',
       anchorClass,
       onToggle,
+      onTruncate,
       children,
       ...rests
     },
@@ -77,7 +78,13 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
               toggleLines={toggleLines}
             />
           }
-          onTruncate={handleTruncate}
+          onTruncate={(disTruncate) => {
+            handleTruncate(disTruncate)
+
+            if (!expanded) {
+              onTruncate?.(disTruncate)
+            }
+          }}
         >
           {children}
         </Truncate>
