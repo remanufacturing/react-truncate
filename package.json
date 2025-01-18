@@ -1,6 +1,6 @@
 {
   "name": "@re-dev/react-truncate",
-  "version": "0.4.4",
+  "version": "0.4.6",
   "description": "Provides `Truncate`, `MiddleTruncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.",
   "author": "chengpeiquan <chengpeiquan@chengpeiquan.com>",
   "license": "MIT",
@@ -9,7 +9,7 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -19,6 +19,9 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "browser": "./dist/index.js",
+  "unpkg": "./dist/index.js",
+  "jsdelivr": "./dist/index.js",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
