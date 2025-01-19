@@ -1,3 +1,21 @@
+## [0.4.6](https://github.com/remanufacturing/react-truncate/compare/v0.4.5...v0.4.6) (2025-01-19)
+
+
+### Bug Fixes
+
+* **build:** adjust the entry file and CDN configuration ([1b762e6](https://github.com/remanufacturing/react-truncate/commit/1b762e69d92e88c900f8f7a52666ef1ec3c038c6))
+
+
+
+## [0.4.5](https://github.com/remanufacturing/react-truncate/compare/v0.4.4...v0.4.5) (2025-01-17)
+
+
+### Bug Fixes
+
+* **build:** iife bundler corruption ([c29f135](https://github.com/remanufacturing/react-truncate/commit/c29f135e98b4479c886dd7c34feef72f052c2946))
+
+
+
 ## [0.4.4](https://github.com/remanufacturing/react-truncate/compare/v0.4.3...v0.4.4) (2025-01-03)
 
 
