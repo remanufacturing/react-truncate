@@ -17,7 +17,7 @@ This is a Fork version from [react-truncate](https://github.com/pablosichert/rea
 
 The following upgrades have been made based on this version:
 
-1. Use React Hooks instead of Class syntax to extend support for React 18+
+1. Use React Hooks instead of Class syntax to extend support for React 18+ / 19+
 2. Use TypeScript to refactor the source code and provide more complete type declarations (no need to install additional `@types/react-truncate` package)
 3. Built-in `<ShowMore />` component (the original author’s [another package](https://github.com/pablosichert/react-show-more), which encapsulates `<Truncate />`, exists and Similar problems with Truncate are no longer maintained)
 4. Built-in new `<MiddleTruncate />` component to realize ellipsis in the middle of text (encapsulation of `<Truncate />`)
@@ -57,6 +57,141 @@ yarn add @re-dev/react-truncate
 </Tabs>
 
 This package has two peer dependencies of React, `react` and `react-dom`. Please install them together (version requirements are React 16+ ).
+
+## With CDN
+
+If you’re using a CDN for your project, please ensure that the version is `v0.4.6` or later. The CDN entry file provides an [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE) that registers a global variable named `ReactTruncate` (accessible as `window.ReactTruncate` ).
+
+<Tabs>
+
+<TabItem label="UNPKG">
+
+```html
+<script src="https://unpkg.com/@re-dev/react-truncate" crossorigin></script>
+```
+
+</TabItem>
+
+<TabItem label="jsDelivr">
+
+```html
+<script
+  src="https://cdn.jsdelivr.net/npm/@re-dev/react-truncate"
+  crossorigin
+></script>
+```
+
+</TabItem>
+
+</Tabs>
+
+Note: Make sure to include the React CDN before this script to avoid runtime errors.
+
+```html
+<!-- React and ReactDOM -->
+<script
+  src="https://unpkg.com/react@18/umd/react.production.min.js"
+  crossorigin
+></script>
+<script
+  src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+  crossorigin
+></script>
+```
+
+## Bundles
+
+This package provides three build formats, allowing you to choose the one that best fits your development environment or runtime requirements.
+
+| Filename  | Target Environment | Description                                               |
+| :-------: | :----------------: | :-------------------------------------------------------- |
+| index.mjs | Node.js & Browsers | ESM module, suitable for modern browsers and bundlers     |
+| index.cjs |      Node.js       | CommonJS module, designed for Node.js and legacy bundlers |
+| index.js  |      Browsers      | IIFE module, designed for direct use in browsers          |
+
+How It Works?
+
+- When using `import` , the ESM file (index.mjs) will be automatically resolved in supported environments.
+- When using `require` , the CommonJS file (index.cjs) will be automatically resolved.
+- For browser environments, use the IIFE file (index.js), which registers a global variable.
+
+What about exports in package.json?
+
+Here’s how this package defines its entry points for various environments and tools. You can also view the full [package.json](https://github.com/remanufacturing/react-truncate/blob/main/package.json) for reference:
+
+```json
+{
+  "name": "@re-dev/react-truncate",
+  "files": ["dist"],
+  "main": "./dist/index.cjs", // CommonJS entry for Node.js
+  "module": "./dist/index.mjs", // ESM entry for modern bundlers
+  "types": "./dist/index.d.ts", // TypeScript types declaration
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs", // ESM import path
+      "require": "./dist/index.cjs", // CommonJS require path
+      "types": "./dist/index.d.ts" // Explicit TypeScript types path
+    }
+  },
+  "browser": "./dist/index.js", // Browser-specific entry (IIFE)
+  "unpkg": "./dist/index.js", // UNPKG CDN entry (IIFE)
+  "jsdelivr": "./dist/index.js" // jsDelivr CDN entry (IIFE)
+}
+```
+
+## Test environment
+
+This package is compatible with popular testing tools like [Jest](https://github.com/jestjs/jest) , and by default, the `main` field will be used as the entry point during testing. However, different projects may also encounter test environment operation errors or warnings. Here are some common scenarios and solutions:
+
+1. Canvas-Related Errors:
+
+Since this package rely on the Canvas API (which is not natively available in Node.js), errors might occur when running test scripts. To resolve this, you can install a Canvas implementation like [node-canvas](https://github.com/Automattic/node-canvas):
+
+<Tabs>
+
+<TabItem label="pnpm">
+
+```bash
+pnpm add -D canvas
+```
+
+</TabItem>
+
+<TabItem label="npm">
+
+```bash
+npm i -D canvas
+```
+
+</TabItem>
+
+<TabItem label="yarn">
+
+```bash
+yarn add -D canvas
+```
+
+</TabItem>
+
+</Tabs>
+
+Refer to the error log for further details about any missing dependencies.
+
+2. Using a Different Entry Point
+
+If you want to use the ESM module instead of the default CommonJS entry during testing, you can configure Jest’s [moduleNameMapper](https://jestjs.io/docs/configuration#modulenamemapper-objectstring-string--arraystring) to override the default mapping.
+
+For example:
+
+```js
+// jest.config.js
+module.exports = {
+  moduleNameMapper: {
+    '^@re-dev/react-truncate$':
+      '<rootDir>/node_modules/@re-dev/react-truncate/dist/index.mjs',
+  },
+}
+```
 
 ## Acknowledgement
 

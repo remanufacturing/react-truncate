@@ -17,7 +17,7 @@ import { Developer } from '@/components/Developer'
 
 在该版本的基础上进行了以下升级：
 
-1. 使用 React Hooks 代替 Class 语法，扩展对 React 18+ 的支持
+1. 使用 React Hooks 代替 Class 语法，扩展对 React 18+ / 19+ 的支持
 2. 使用 TypeScript 重构源代码，提供更完善的类型声明（不再需要额外安装 `@types/react-truncate` 包）
 3. 内置了 `<ShowMore />` 组件（原作者的 [另一个包](https://github.com/pablosichert/react-show-more) ，对 `<Truncate />` 的封装，存在和 Truncate 相似的问题，也不再维护了）
 4. 内置了新增的 `<MiddleTruncate />` 组件实现文本在中间位置的省略裁剪（对 `<Truncate />` 的封装）
@@ -57,6 +57,141 @@ yarn add @re-dev/react-truncate
 </Tabs>
 
 本包存在两个 React 的对等依赖 `react` 和 `react-dom` ，请一并安装（版本要求均为 React 16+ ）。
+
+## 使用 CDN
+
+如果您的项目使用了 CDN，请确保版本为 `v0.4.6` 或更高版本。CDN 入口文件提供了一个 [IIFE](https://developer.mozilla.org/zh-CN/docs/Glossary/IIFE) ，它注册了一个名为 `ReactTruncate` 的全局变量（可通过 `window.ReactTruncate` 访问）。
+
+<Tabs>
+
+<TabItem label="UNPKG">
+
+```html
+<script src="https://unpkg.com/@re-dev/react-truncate" crossorigin></script>
+```
+
+</TabItem>
+
+<TabItem label="jsDelivr">
+
+```html
+<script
+  src="https://cdn.jsdelivr.net/npm/@re-dev/react-truncate"
+  crossorigin
+></script>
+```
+
+</TabItem>
+
+</Tabs>
+
+注意：请确保在此脚本之前包含 React CDN，以避免运行时错误。
+
+```html
+<!-- React and ReactDOM -->
+<script
+  src="https://unpkg.com/react@18/umd/react.production.min.js"
+  crossorigin
+></script>
+<script
+  src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+  crossorigin
+></script>
+```
+
+## 构建产物
+
+本包提供了三种构建格式，允许您选择最适合您的开发环境或运行时要求的格式。
+
+|  文件名   |     目标环境     | 描述                                           |
+| :-------: | :--------------: | :--------------------------------------------- |
+| index.mjs | Node.js 和浏览器 | ESM 模块，适用于现代浏览器和打包器             |
+| index.cjs |     Node.js      | CommonJS 模块，专为 Node.js 和传统捆绑程序设计 |
+| index.js  |      浏览器      | IIFE 模块，专为在浏览器中直接使用而设计        |
+
+它是如何工作的？
+
+- 使用 `import` 时，ESM 文件 (index.mjs) 将在受支持的环境中自动解析。
+- 使用 `require` 时，CommonJS 文件 (index.cjs) 将自动解析。
+- 对于浏览器环境，请使用 IIFE 文件 (index.js)，它会注册一个全局变量。
+
+package.json 中的导出内容是怎么样的？
+
+以下是本包定义其针对各种环境和工具的入口点，您还可以查看完整的 [package.json](https://github.com/remanufacturing/react-truncate/blob/main/package.json) 以供参考：
+
+```json
+{
+  "name": "@re-dev/react-truncate",
+  "files": ["dist"],
+  "main": "./dist/index.cjs", // Node.js 的 CommonJS 入口
+  "module": "./dist/index.mjs", // 现代打包器的 ESM 入口
+  "types": "./dist/index.d.ts", // TypeScript 类型声明
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs", // ESM 导入路径
+      "require": "./dist/index.cjs", // CommonJS 引入路径
+      "types": "./dist/index.d.ts" // 指定 TypeScript 类型路径
+    }
+  },
+  "browser": "./dist/index.js", //浏览器特定入口 (IIFE)
+  "unpkg": "./dist/index.js", // UNPKG CDN 入口 (IIFE)
+  "jsdelivr": "./dist/index.js" // jsDelivr CDN 入口 (IIFE)
+}
+```
+
+## 测试环境
+
+此包与流行的测试工具（如 [Jest](https://github.com/jestjs/jest)）兼容，默认情况下，`main` 字段将用作测试期间的入口点。但不同的项目也可能遇到测试环境运行错误或警告，以下是一些常见的场景及解决方法：
+
+1. 与 Canvas 相关的错误：
+
+由于此包依赖于 Canvas API（Node.js 中没有原生提供），因此在运行测试脚本时可能会出现错误。要解决此问题，您可以安装 Canvas 实现，例如 [node-canvas](https://github.com/Automattic/node-canvas)：
+
+<Tabs>
+
+<TabItem label="pnpm">
+
+```bash
+pnpm add -D canvas
+```
+
+</TabItem>
+
+<TabItem label="npm">
+
+```bash
+npm i -D canvas
+```
+
+</TabItem>
+
+<TabItem label="yarn">
+
+```bash
+yarn add -D canvas
+```
+
+</TabItem>
+
+</Tabs>
+
+有关任何缺失依赖项的更多详细信息，请参阅错误日志。
+
+2. 使用不同的入口点
+
+如果您想在测试期间使用 ESM 模块而不是默认的 CommonJS 入口，您可以配置 Jest 的 [moduleNameMapper](https://jestjs.io/zh-Hans/docs/configuration#modulenamemapper-objectstring-string--arraystring) 来覆盖默认映射。
+
+例如：
+
+```js
+// jest.config.js
+module.exports = {
+  moduleNameMapper: {
+    '^@re-dev/react-truncate$':
+      '<rootDir>/node_modules/@re-dev/react-truncate/dist/index.mjs',
+  },
+}
+```
 
 ## 致谢
 
