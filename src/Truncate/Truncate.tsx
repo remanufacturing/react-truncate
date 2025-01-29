@@ -23,7 +23,7 @@ export const Truncate: React.FC<TruncateProps> = ({
   const [canvasContext, setCanvasContext] =
     useState<CanvasRenderingContext2D | null>()
   const [renderTextRef, setRenderTextRef] = useState<
-    (string | JSX.Element)[] | React.ReactNode
+    (string | React.JSX.Element)[] | React.ReactNode
   >()
   const [targetWidth, setTargetWidth] = useState<number>(0)
   const [animationFrame, setAnimationFrame] = useState<number>(0)
@@ -126,7 +126,7 @@ export const Truncate: React.FC<TruncateProps> = ({
   }, [initialEnd])
 
   const getLines = useCallback(() => {
-    const resultLines: Array<string | JSX.Element> = []
+    const resultLines: Array<string | React.JSX.Element> = []
     const fullText = innerText(textRef.current, separator)
     const textLines = fullText.split('\n').map((line) => line.split(separator))
     const ellipsisWidth = getEllipsisWidth(ellipsisRef.current) || 0
@@ -144,7 +144,8 @@ export const Truncate: React.FC<TruncateProps> = ({
         continue
       }
 
-      let resultLine: string | JSX.Element = textWords.join(separator) || ''
+      let resultLine: string | React.JSX.Element =
+        textWords.join(separator) || ''
       if (measureWidth(resultLine) <= targetWidth) {
         if (textLines.length === 1) {
           // Line is end of text and fits without truncating
