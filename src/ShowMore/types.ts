@@ -2,7 +2,10 @@ import type React from 'react'
 import { type TruncateProps } from '../Truncate'
 
 export interface ShowMoreProps
-  extends Omit<TruncateProps, 'width' | 'middle' | 'end' | 'ellipsis'> {
+  extends Omit<
+    TruncateProps,
+    'width' | 'middle' | 'end' | 'ellipsis' | 'onToggle'
+  > {
   /**
    * The label to display in the anchor element to show more
    *
