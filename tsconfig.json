@@ -8,10 +8,10 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node"],
+    "types": ["node", "vitest/globals", "@testing-library/jest-dom"],
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "declaration": true
   },
-  "include": ["src/**/*", "scripts/**/*"],
+  "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules", "examples"]
 }

@@ -30,6 +30,7 @@ pnpm-debug.log*
 
 # others
 .nyc_output
+coverage
 demo
 *.rar
 *.zip
