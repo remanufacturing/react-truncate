@@ -9,9 +9,9 @@ export const trimRight = (textVal: string) => {
 }
 
 export const renderLine = (
-  line: string | JSX.Element,
+  line: string | React.JSX.Element,
   i: number,
-  arr: (string | JSX.Element)[],
+  arr: (string | React.JSX.Element)[],
 ) => {
   if (i === arr.length - 1) {
     return <span key={i}>{line}</span>
