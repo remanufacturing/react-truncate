@@ -102,9 +102,7 @@ export const Truncate: React.FC<TruncateProps> = ({
   )
 
   const measureWidth = useCallback(
-    (textVal: string) => {
-      return canvasContext?.measureText(textVal).width || 0
-    },
+    (textVal: string) => canvasContext?.measureText(textVal).width || 0,
     [canvasContext],
   )
 
@@ -114,9 +112,10 @@ export const Truncate: React.FC<TruncateProps> = ({
     return initialLines
   }, [initialLines])
 
-  const lines = useMemo(() => {
-    return middleTruncate ? 1 : defaultLines
-  }, [defaultLines, middleTruncate])
+  const lines = useMemo(
+    () => (middleTruncate ? 1 : defaultLines),
+    [defaultLines, middleTruncate],
+  )
 
   // Make sure the end position is negative or 0
   const end = useMemo(() => {
