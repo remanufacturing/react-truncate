@@ -14,7 +14,7 @@ export interface TruncateProps extends DetailedHTMLProps {
   /**
    * Symbols for ellipsis parts
    *
-   * @default '...'
+   * @default '…'
    */
   ellipsis?: React.ReactNode
 
@@ -37,7 +37,7 @@ export interface TruncateProps extends DetailedHTMLProps {
 
   /**
    * If `true` , whitespace will be removed from before the ellipsis
-   * e.g. `words ...` will become `words...` instead
+   * e.g. `words …` will become `words…` instead
    *
    * @default false
    */
