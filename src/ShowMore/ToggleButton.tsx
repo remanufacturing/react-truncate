@@ -14,9 +14,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
   className,
   toggleLines,
 }) => {
-  const prefix = useMemo(() => {
-    return type === 'more' ? `... ` : ' '
-  }, [type])
+  const prefix = useMemo(() => (type === 'more' ? `… ` : ' '), [type])
 
   if (isValidElement(label)) {
     return label
