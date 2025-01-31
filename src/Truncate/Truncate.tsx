@@ -271,12 +271,13 @@ export const Truncate: React.FC<TruncateProps> = ({
   }, [children, lines, targetWidth, getLines, truncate])
 
   return (
-    <span {...spanProps} ref={targetRef}>
+    <span {...spanProps} ref={targetRef} data-testid="truncate-root">
       <span>{renderTextRef}</span>
       <span ref={textRef}>{children}</span>
       <span
         ref={ellipsisRef}
         style={{ position: 'fixed', visibility: 'hidden', top: 0, left: 0 }}
+        data-testid="truncate-ellipsis"
       >
         {ellipsis}
       </span>
