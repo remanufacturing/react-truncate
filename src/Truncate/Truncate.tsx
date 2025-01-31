@@ -10,7 +10,7 @@ import { type TruncateProps } from './types'
 
 export const Truncate: React.FC<TruncateProps> = ({
   children,
-  ellipsis = '...',
+  ellipsis = '…',
   lines: initialLines = 1,
   trimWhitespace = false,
   width = 0,
