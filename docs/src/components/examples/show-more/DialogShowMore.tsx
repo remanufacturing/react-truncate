@@ -17,7 +17,7 @@ const ExpandButton: React.FC = () => {
   return (
     <DialogTrigger asChild>
       <span>
-        <span>...</span>
+        <span>…</span>
 
         <Button
           className="ml-2 cursor-pointer"

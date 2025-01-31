@@ -32,15 +32,15 @@ path/to/foo/bar/baz.mp4
 If you use trailing truncation, you will get a set of omitted text that looks the same, and you can't intuitively understand the difference between them:
 
 ```bash
-path/to/foo/bar/baz...
-path/to/foo/bar/baz...
+path/to/foo/bar/baz…
+path/to/foo/bar/baz…
 ```
 
 If you use middle truncation, such as this example, by finding the position of the last level `/` and setting its `end` prop on `<MiddleTruncate />` to retain the last level file name, you will get a clear truncation result:
 
 ```bash
-path/to/foo/.../baz.jpg
-path/to/foo/.../baz.mp4
+path/to/foo/…/baz.jpg
+path/to/foo/…/baz.mp4
 ```
 
 ## Type Declarations

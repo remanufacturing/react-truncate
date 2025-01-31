@@ -91,7 +91,7 @@ export const Contributors: React.FC<{
   }, [])
 
   const emptyTips = useMemo(() => {
-    return lang === 'zh' ? '加载中...' : 'Loading...'
+    return lang === 'zh' ? '加载中...' : 'Loading…'
   }, [lang])
 
   const cls = clsx('flex flex-wrap gap-6 w-full mt-6', {
