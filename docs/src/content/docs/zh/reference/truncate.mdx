@@ -19,7 +19,7 @@ const MyComponent: React.FC = () => {
       lines={3}
       ellipsis={
         <span>
-          ... <a href="/link/to/article">Read more</a>
+          … <a href="/link/to/article">Read more</a>
         </span>
       }
       onTruncate={(didTruncate) => {
@@ -71,7 +71,7 @@ export interface TruncateProps extends DetailedHTMLProps {
   /**
    * 省略部分的符号
    *
-   * @default '...'
+   * @default '…'
    */
   ellipsis?: React.ReactNode
 
@@ -93,7 +93,7 @@ export interface TruncateProps extends DetailedHTMLProps {
 
   /**
    * 如果为 `true` ，省略号之前的空格将被删除
-   * 例如： `words ...` 将成为 `words...` 而不是
+   * 例如： `words …` 将成为 `words…` 而不是
    *
    * @default false
    */

@@ -32,15 +32,15 @@ path/to/foo/bar/baz.mp4
 如果使用末尾省略，会得到一组看起来一样的省略文本，无法直观了解它们之间的区别：
 
 ```bash
-path/to/foo/bar/baz...
-path/to/foo/bar/baz...
+path/to/foo/bar/baz…
+path/to/foo/bar/baz…
 ```
 
 如果使用中间省略，例如本例子，通过查找最后一级 `/` 所在的位置，对 `<MiddleTruncate />` 设置其 `end` 属性，以保留最后一级文件名称，会得到一个清晰的省略结果：
 
 ```bash
-path/to/foo/.../baz.jpg
-path/to/foo/.../baz.mp4
+path/to/foo/…/baz.jpg
+path/to/foo/…/baz.mp4
 ```
 
 ## 类型声明

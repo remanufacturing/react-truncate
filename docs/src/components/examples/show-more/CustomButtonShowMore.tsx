@@ -21,7 +21,7 @@ const IconButton: React.FC<{
   }, [type])
 
   const prefix = useMemo(() => {
-    return type === 'more' ? <span>...</span> : null
+    return type === 'more' ? <span>…</span> : null
   }, [type])
 
   return (
