@@ -23,7 +23,12 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
   return (
     <span>
       {prefix}
-      <a href="#" className={className} onClick={toggleLines}>
+      <a
+        href="#"
+        className={className}
+        onClick={toggleLines}
+        data-testid={`${type}-button`}
+      >
         {label}
       </a>
     </span>
