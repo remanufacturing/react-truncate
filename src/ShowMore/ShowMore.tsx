@@ -66,7 +66,7 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
     }, [expanded, onToggle])
 
     return (
-      <div style={{ width: '100%' }}>
+      <div style={{ width: '100%' }} data-testid="show-more-root">
         <Truncate
           {...truncateProps}
           lines={expandedLines}
