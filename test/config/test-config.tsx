@@ -21,9 +21,10 @@ export const separator = ' '
 
 // Default expand text for ShowMore.tsx
 export const expandText = ellipsis + ' Expand'
+export const collapseText = ' Collapse'
 
 // In the test file, a root box will be unified as the test container
-const getRootElement = () => {
+export const getRootElement = () => {
   const root = screen.getByRole('root')
 
   try {
@@ -69,6 +70,18 @@ export const getRootInnerText = () => {
 
 export const getMultiLineText = (lines: string[], ellipsisText = ellipsis) => {
   return lines.join('\n') + ellipsisText
+}
+
+// Get the more button for ShowMore.tsx
+export const getMoreButton = () => {
+  const root = getRootElement()
+  return within(root).getByTestId('more-button')
+}
+
+// Get the less button for ShowMore.tsx
+export const getLessButton = () => {
+  const root = getRootElement()
+  return within(root).getByTestId('less-button')
 }
 
 /**
