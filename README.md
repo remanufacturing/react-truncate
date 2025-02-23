@@ -14,11 +14,11 @@
   <a href="https://truncate.js.org" target="__blank">
     <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=29c1e9" />
   </a>
+  <a href="https://codecov.io/gh/remanufacturing/react-truncate">
+    <img alt="Test Coverage" src="https://codecov.io/gh/remanufacturing/react-truncate/graph/badge.svg?color=29c1e9" />
+  </a>
   <a href="https://github.com/remanufacturing/react-truncate" target="__blank">
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/remanufacturing/react-truncate?style=social" />
-  </a>
-  <a href="https://codecov.io/gh/remanufacturing/react-truncate">
-    <img alt="Test Coverage" src="https://codecov.io/gh/remanufacturing/react-truncate/graph/badge.svg" />
   </a>
 </p>
 <br>
