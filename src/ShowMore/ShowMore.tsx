@@ -22,7 +22,6 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
       less = 'Collapse',
       anchorClass,
       onToggle,
-      onTruncate,
       children,
       ...rests
     },
@@ -32,22 +31,12 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
     const { width, middle, end, ellipsis, ...truncateProps } =
       rests as TruncateProps
 
-    const [truncated, setTruncated] = useState(false)
     const [expanded, setExpanded] = useState(false)
 
     const expandedLines = useMemo(() => {
       if (expanded) return 0
       return lines
     }, [expanded, lines])
-
-    const handleTruncate = useCallback(
-      (didTruncate: boolean) => {
-        if (didTruncate !== truncated) {
-          setTruncated(didTruncate)
-        }
-      },
-      [truncated],
-    )
 
     const toggleLines: ShowMoreToggleLinesFn = useCallback((e) => {
       e.preventDefault()
@@ -78,18 +67,11 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
               toggleLines={toggleLines}
             />
           }
-          onTruncate={(disTruncate) => {
-            handleTruncate(disTruncate)
-
-            if (!expanded) {
-              onTruncate?.(disTruncate)
-            }
-          }}
         >
           {children}
         </Truncate>
 
-        {!truncated && expanded && (
+        {expanded && (
           <ToggleButton
             type="less"
             label={less}
