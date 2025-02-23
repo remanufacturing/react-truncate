@@ -17,6 +17,9 @@
   <a href="https://github.com/remanufacturing/react-truncate" target="__blank">
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/remanufacturing/react-truncate?style=social" />
   </a>
+  <a href="https://codecov.io/gh/remanufacturing/react-truncate">
+    <img alt="Test Coverage" src="https://codecov.io/gh/remanufacturing/react-truncate/graph/badge.svg" />
+  </a>
 </p>
 <br>
 <br>
