@@ -153,7 +153,30 @@ import type React from 'react'
 import { type TruncateProps } from '../Truncate'
 
 export interface ShowMoreProps
-  extends Omit<TruncateProps, 'width' | 'middle' | 'end' | 'ellipsis'> {
+  extends Omit<
+    TruncateProps,
+    'width' | 'middle' | 'end' | 'ellipsis' | 'onToggle'
+  > {
+  /**
+   * 初始化时的扩展状态
+   *
+   * @default false
+   *
+   * @since v0.5.0
+   */
+  defaultExpanded?: boolean
+
+  /**
+   * 受控属性
+   *
+   * 展开状态由父组件控制
+   *
+   * @default undefined
+   *
+   * @since v0.5.0
+   */
+  expanded?: boolean
+
   /**
    * 在 “展开” 对应的锚元素上显示的文本
    *
