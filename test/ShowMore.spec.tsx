@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactIs from 'react-is'
+import sinon from 'sinon'
 import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
@@ -243,54 +244,46 @@ describe('<ShowMore />', () => {
           })
         })
       })
+    })
 
-      describe('onToggle', () => {
-        let expanded = false
+    describe('onToggle', () => {
+      let expanded = false
 
-        const onToggle = (didExpand: boolean) => {
-          expanded = didExpand
-        }
+      const onToggle = (didExpand: boolean) => {
+        expanded = didExpand
+      }
 
-        it('should trigger the callback when the component is toggled', async () => {
-          render(
-            <Box onToggle={onToggle}>
-              This text should stop at here and not contain the next lines
-            </Box>,
-          )
+      it('should trigger the callback when the component is toggled', async () => {
+        render(
+          <Box onToggle={onToggle}>
+            This text should stop at here and not contain the next lines
+          </Box>,
+        )
 
-          expect(expanded).toBe(false)
+        expect(expanded).toBe(false)
 
-          const moreButton = getMoreButton()
-          expect(moreButton).toBeInTheDocument()
+        const moreButton = getMoreButton()
+        expect(moreButton).toBeInTheDocument()
 
-          await userEvent.click(moreButton)
+        await userEvent.click(moreButton)
 
-          expect(expanded).toBe(true)
-        })
+        expect(expanded).toBe(true)
       })
+    })
 
-      describe('onTruncate', () => {
-        let truncated = false
+    describe('onTruncate', () => {
+      it('should trigger the callback when the component is truncated', async () => {
+        const handleTruncate = sinon.spy()
 
-        const onTruncate = (disTruncate: boolean) => {
-          truncated = disTruncate
-        }
+        render(
+          <Box lines={1} onTruncate={handleTruncate}>
+            {testMessage}
+          </Box>,
+        )
 
-        it('should trigger the callback when the component is truncated', async () => {
-          render(
-            <Box onTruncate={onTruncate}>
-              This text should stop at here and not contain the next lines
-            </Box>,
-          )
-
-          expect(truncated).toBe(false)
-
-          const moreButton = getMoreButton()
-          expect(moreButton).toBeInTheDocument()
-
-          await userEvent.click(moreButton)
-
-          expect(truncated).toBe(true)
+        await waitFor(() => {
+          expect(handleTruncate.calledOnce).toBeTruthy()
+          expect(handleTruncate.lastCall.args[0]).toBeTruthy()
         })
       })
     })
