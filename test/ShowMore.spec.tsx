@@ -6,6 +6,7 @@ import { render, screen, waitFor, within } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import {
   collapseText,
+  ellipsis,
   expandText,
   getLessButton,
   getMoreButton,
@@ -243,6 +244,16 @@ describe('<ShowMore />', () => {
             expect(moreButtonAfterCollapse).toBeInTheDocument()
           })
         })
+      })
+
+      it('should hide ellipsis when using valid React element as custom toggle buttons', () => {
+        render(
+          <Box lines={1} more={<button>More</button>}>
+            {testMessage}
+          </Box>,
+        )
+
+        expect(screen.queryByText(ellipsis)).not.toBeInTheDocument()
       })
     })
 
