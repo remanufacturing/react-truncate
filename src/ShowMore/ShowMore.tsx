@@ -1,12 +1,11 @@
 import React, {
   forwardRef,
   useCallback,
-  useEffect,
   useImperativeHandle,
-  useMemo,
+  useRef,
   useState,
 } from 'react'
-import { Truncate, type TruncateProps } from '../Truncate'
+import { Truncate, type TruncateProps } from '@/Truncate'
 import { ToggleButton } from './ToggleButton'
 import {
   type ShowMoreToggleLinesFn,
@@ -17,6 +16,8 @@ import {
 export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
   (
     {
+      defaultExpanded = false,
+      expanded: controlledExpanded,
       lines = 3,
       more = 'Expand',
       less = 'Collapse',
@@ -31,17 +32,37 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
     const { width, middle, end, ellipsis, ...truncateProps } =
       rests as TruncateProps
 
-    const [expanded, setExpanded] = useState(false)
+    // To force update without triggering unnecessary state updates
+    // useState({}) is used here to trigger a re-render without changing any component state.
+    // This approach forces a re-render while keeping the component's internal state untouched,
+    // as we don't need to modify any of the data — just trigger a fresh render when `expandedStateRef` changes.
+    const [, setState] = useState({})
+    const forceUpdate = useCallback(() => setState({}), [])
 
-    const expandedLines = useMemo(() => {
-      if (expanded) return 0
-      return lines
-    }, [expanded, lines])
+    // Supports initial state, controlled and uncontrolled mode
+    const expandedStateRef = useRef(defaultExpanded)
+    const isControlled = typeof controlledExpanded === 'boolean'
+    const finalExpanded = isControlled
+      ? controlledExpanded
+      : expandedStateRef.current
 
-    const toggleLines: ShowMoreToggleLinesFn = useCallback((e) => {
-      e.preventDefault()
-      setExpanded((prev) => !prev)
-    }, [])
+    const toggleLines: ShowMoreToggleLinesFn = useCallback(
+      (e) => {
+        e.preventDefault()
+
+        const newExpanded = !finalExpanded
+
+        // Only update `expandedStateRef` in uncontrolled mode
+        if (!isControlled) {
+          expandedStateRef.current = newExpanded
+          forceUpdate()
+        }
+
+        // Call the provided onToggle function if available
+        onToggle?.(newExpanded)
+      },
+      [finalExpanded, isControlled, onToggle, forceUpdate],
+    )
 
     useImperativeHandle(ref, () => {
       return {
@@ -49,16 +70,11 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
       }
     })
 
-    useEffect(() => {
-      if (typeof onToggle !== 'function') return
-      onToggle(expanded)
-    }, [expanded, onToggle])
-
     return (
       <div style={{ width: '100%' }} data-testid="show-more-root">
         <Truncate
           {...truncateProps}
-          lines={expandedLines}
+          lines={finalExpanded ? 0 : lines}
           ellipsis={
             <ToggleButton
               type="more"
@@ -71,7 +87,7 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
           {children}
         </Truncate>
 
-        {expanded && (
+        {finalExpanded && (
           <ToggleButton
             type="less"
             label={less}

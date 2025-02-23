@@ -287,5 +287,69 @@ describe('<ShowMore />', () => {
         })
       })
     })
+
+    it('should be expanded by default', async () => {
+      render(
+        <Box lines={1} defaultExpanded={true}>
+          {testMessage}
+        </Box>,
+      )
+
+      // Make sure the "less" button is rendered,
+      // indicating that the content has been expanded
+      const lessButton = getLessButton()
+      expect(lessButton).toBeInTheDocument()
+
+      // Confirm that the text is expanded
+      const content = screen.getByText(testMessage)
+      expect(content).toBeInTheDocument()
+    })
+
+    describe('Controlled mode', () => {
+      it('should be expanded when the `expanded` prop is true', async () => {
+        const onToggle = sinon.spy()
+
+        render(
+          <Box lines={1} expanded={true} onToggle={onToggle}>
+            {testMessage}
+          </Box>,
+        )
+
+        const lessButton = getLessButton()
+        expect(lessButton).toBeInTheDocument()
+
+        const content = screen.getByText(testMessage)
+        expect(content).toBeInTheDocument()
+      })
+
+      it('should toggle when the `onToggle` callback is triggered', async () => {
+        const TestComponent: React.FC = () => {
+          const [expanded, setExpanded] = React.useState(true)
+
+          return (
+            <>
+              <p>expanded: {expanded.toString()}</p>
+              <Box lines={1} expanded={expanded} onToggle={setExpanded}>
+                {testMessage}
+              </Box>
+            </>
+          )
+        }
+
+        render(<TestComponent />)
+
+        // Check the initial state is expanded
+        expect(screen.getByText('expanded: true')).toBeInTheDocument()
+
+        // Click the less button to collapse
+        const lessButton = getLessButton()
+        expect(lessButton).toBeInTheDocument()
+
+        await userEvent.click(lessButton)
+
+        // Check the state is collapsed
+        expect(screen.getByText('expanded: false')).toBeInTheDocument()
+      })
+    })
   })
 })
