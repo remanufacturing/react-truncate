@@ -7,6 +7,26 @@ export interface ShowMoreProps
     'width' | 'middle' | 'end' | 'ellipsis' | 'onToggle'
   > {
   /**
+   * Expansion state when initialized
+   *
+   * @default false
+   *
+   * @since v0.5.0
+   */
+  defaultExpanded?: boolean
+
+  /**
+   * Controlled property
+   *
+   * The expanded state is controlled by the parent component
+   *
+   * @default undefined
+   *
+   * @since v0.5.0
+   */
+  expanded?: boolean
+
+  /**
    * The label to display in the anchor element to show more
    *
    * If a valid React element is passed in,
