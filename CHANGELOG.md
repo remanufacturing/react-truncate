@@ -1,3 +1,21 @@
+# [0.5.0](https://github.com/remanufacturing/react-truncate/compare/v0.4.6...v0.5.0) (2025-02-23)
+
+
+### Bug Fixes
+
+* remove unnecessary internal state and callback function wrappers ([844cb01](https://github.com/remanufacturing/react-truncate/commit/844cb018ecaf6547a253c58bea38cbe4567a2004))
+* **ShowMore:** should use English ellipsis instead of three dots ([90c6e78](https://github.com/remanufacturing/react-truncate/commit/90c6e78beb7f3421c4adccbc30caf288bc192648))
+* **ShowMore:** types of property 'onToggle' are incompatible ([f5c3b1e](https://github.com/remanufacturing/react-truncate/commit/f5c3b1ed45f4cec450699072bfcd509365003831))
+* **Truncate:** should use English ellipsis instead of three dots ([ed20c05](https://github.com/remanufacturing/react-truncate/commit/ed20c05f6cc593f70ee2f0a7b816cacd34f8ebe1))
+* **Truncate:** type error of namespace 'JSX' not found ([a9eaa4b](https://github.com/remanufacturing/react-truncate/commit/a9eaa4b0226a8693ee0da0840ebd0b10071656e0))
+
+
+### Features
+
+* **ShowMore:** add  and  props for initialization and controlled state ([e038387](https://github.com/remanufacturing/react-truncate/commit/e038387141ae96184aab5653d2ceb2034796d2f8))
+
+
+
 ## [0.4.6](https://github.com/remanufacturing/react-truncate/compare/v0.4.5...v0.4.6) (2025-01-19)
 
 
