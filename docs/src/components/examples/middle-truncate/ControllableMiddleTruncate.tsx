@@ -7,6 +7,7 @@ import {
   EW,
 } from '@/components/examples/Widgets'
 import { useLang, type Languages } from '@/i18n'
+import { useRefreshKey } from '@/hooks/use-refresh-key'
 
 export const ControllableMiddleTruncate: React.FC<{
   lang: Languages
@@ -17,6 +18,8 @@ export const ControllableMiddleTruncate: React.FC<{
   const [end, setEnd] = useState(DEFAULT_END_VALUE)
   const [html, setHtml] = useState(DEFAULT_HTML_VALUE)
 
+  const { refreshKey } = useRefreshKey([width, end])
+
   return (
     <>
       <EW.Range
@@ -26,7 +29,7 @@ export const ControllableMiddleTruncate: React.FC<{
         min="50"
         max="100"
         defaultValue={DEFAULT_WIDTH_VALUE}
-        onChange={(v) => setWidth(v)}
+        onChange={setWidth}
       />
 
       <EW.Range
@@ -36,7 +39,7 @@ export const ControllableMiddleTruncate: React.FC<{
         min="-100"
         max="100"
         defaultValue={DEFAULT_END_VALUE}
-        onChange={(v) => setEnd(v)}
+        onChange={setEnd}
         percentable={false}
       />
 
@@ -44,11 +47,11 @@ export const ControllableMiddleTruncate: React.FC<{
         lang={lang}
         labelKey="example.html"
         checked={html}
-        onChange={(v) => setHtml(v)}
+        onChange={setHtml}
       />
 
       <EW.Container style={{ width: `${width}%` }}>
-        <MiddleTruncate separator={isZh ? '' : ' '} end={end}>
+        <MiddleTruncate separator={isZh ? '' : ' '} end={end} key={refreshKey}>
           <EW.Content isZh={isZh} html={html} />
         </MiddleTruncate>
       </EW.Container>

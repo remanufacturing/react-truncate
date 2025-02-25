@@ -12,6 +12,7 @@ import {
   EW,
 } from '@/components/examples/Widgets'
 import { useLang, type Languages } from '@/i18n'
+import { useRefreshKey } from '@/hooks/use-refresh-key'
 
 const CustomButton: React.FC<{
   type: 'more' | 'less'
@@ -47,6 +48,8 @@ export const ControllableShowMore: React.FC<{
   const toggleLines: ShowMoreToggleLinesFn = (e) => {
     ref.current?.toggleLines(e)
   }
+
+  const { refreshKey } = useRefreshKey([width, lines, html, custom])
 
   return (
     <>
@@ -87,6 +90,7 @@ export const ControllableShowMore: React.FC<{
 
       <EW.Container style={{ width: `${width}%` }}>
         <ShowMore
+          key={refreshKey}
           ref={ref}
           lines={lines}
           separator={isZh ? '' : ' '}
