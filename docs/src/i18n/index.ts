@@ -25,6 +25,10 @@ export const translations = {
     'collapser.collapse': 'Collapse',
     'collapser.expand': 'Expand',
     'collapser.name': 'Code',
+
+    // AppliesTo
+    'appliesTo.title': 'Applies to:',
+    'appliesTo.relatedIssues': 'Related issues:',
   },
   zh: {
     separator: '',
@@ -41,6 +45,10 @@ export const translations = {
     'collapser.collapse': '收起',
     'collapser.expand': '展开',
     'collapser.name': '代码',
+
+    // AppliesTo
+    'appliesTo.title': '适用于：',
+    'appliesTo.relatedIssues': '相关 issue ：',
   },
 } as const
 

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
+import clsx from 'clsx'
 import pkg from '../../../package.json'
 import type { Languages } from '@/i18n'
-import clsx from 'clsx'
 
 const name = pkg.name
 const repoUrl = pkg.repository.url
@@ -17,8 +17,13 @@ const options = [
   },
   {
     link: `https://www.npmjs.com/package/${name}`,
-    image: `https://img.shields.io/npm/dt/${name}?color=${color}&label=downloads`,
+    image: `https://img.shields.io/npm/dy/${name}?color=${color}&label=downloads`,
     title: 'Download counts',
+  },
+  {
+    link: `https://codecov.io/gh/${repo}`,
+    image: `https://codecov.io/gh/${repo}/graph/badge.svg?token=K9W9KRBTMA&color=${color}`,
+    title: 'Test Coverage',
   },
   {
     link: repoUrl,

@@ -105,6 +105,13 @@ export default defineConfig({
               link: '/guides/getting-started',
             },
             {
+              label: 'Frequently Asked Questions',
+              translations: {
+                zh: '常见问题',
+              },
+              link: '/guides/faq',
+            },
+            {
               label: 'About',
               translations: {
                 zh: '关于',
