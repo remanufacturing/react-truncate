@@ -2,12 +2,13 @@ import React from 'react'
 import ReactIs from 'react-is'
 import sinon from 'sinon'
 import { createRoot } from 'react-dom/client'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import {
   ellipsis,
   getMultiLineText,
   getRootInnerText,
+  measureWidth,
   mockWindowApis,
   numCharacters,
   separator,
@@ -15,7 +16,12 @@ import {
   width,
 } from './config/test-config'
 import { Truncate, type TruncateProps } from '@/Truncate'
-import { getEllipsisWidth, innerText, trimRight } from '@/Truncate/utils'
+import {
+  getEllipsisWidth,
+  getMiddleTruncateFragments,
+  innerText,
+  trimRight,
+} from '@/Truncate/utils'
 
 type BoxProps = Omit<TruncateProps, 'ref' | 'children'> &
   React.PropsWithChildren
@@ -227,6 +233,41 @@ describe('<Truncate />', () => {
             expect(getRootInnerText()).toBe(ellipsis)
           })
         })
+
+        it('should remove whitespace only lines when trimWhitespace is true', async () => {
+          render(
+            <Box lines={3} trimWhitespace>
+              <br />
+              <br />
+              <br />
+            </Box>,
+          )
+
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(ellipsis)
+          })
+        })
+
+        it('should trim previous lines when encountering empty lines', async () => {
+          render(
+            <Box lines={3} trimWhitespace>
+              First Line
+              <br />
+              <br />
+              <br />
+              <br />
+              Second Line
+              <br />
+              <br />
+              Third Line
+            </Box>,
+          )
+
+          await waitFor(() => {
+            const result = 'First Line' + ellipsis
+            expect(getRootInnerText()).toBe(result)
+          })
+        })
       })
     })
 
@@ -354,8 +395,9 @@ describe('<Truncate />', () => {
         const container = document.createElement('div')
         const root = createRoot(container)
 
-        root.render(<Empty />)
-        root.unmount()
+        // https://react.dev/reference/react/act
+        await act(async () => root.render(<Empty />))
+        await act(async () => root.unmount())
 
         expect(events.size).toBe(0)
       } finally {
@@ -411,39 +453,281 @@ describe('<Truncate />', () => {
           }
         })
       })
+
+      describe('when innerText is not available', () => {
+        it('should fallback to textContent when innerText is not available', () => {
+          const span = document.createElement('span')
+          span.innerHTML = 'Test'
+
+          const originalInnerText = Object.getOwnPropertyDescriptor(
+            window.HTMLElement.prototype,
+            'innerText',
+          )
+
+          try {
+            console.log(
+              'before delete check',
+              'innerText' in window.HTMLElement.prototype,
+            ) // true
+
+            // @ts-expect-error Need to force test this case
+            delete window.HTMLElement.prototype.innerText
+
+            console.log(
+              'after delete check',
+              'innerText' in window.HTMLElement.prototype,
+            ) // false
+
+            const result = innerText(span, separator)
+            expect(result).toBe('Test')
+          } finally {
+            // Restore the original innerText property
+            if (originalInnerText) {
+              Object.defineProperty(
+                window.HTMLElement.prototype,
+                'innerText',
+                originalInnerText,
+              )
+            }
+
+            console.log(
+              'finally check',
+              'innerText' in window.HTMLElement.prototype,
+            ) // false
+          }
+        })
+      })
     })
-  })
 
-  describe('ellipsisWidth', () => {
-    it('should equal node.offsetWidth', () => {
-      const offsetWidth = () => 123
+    describe('ellipsisWidth', () => {
+      it('should equal node.offsetWidth', () => {
+        const offsetWidth = () => 123
 
-      const node = {} as HTMLSpanElement
+        const node = {} as HTMLSpanElement
 
-      Object.defineProperty(node, 'offsetWidth', {
-        get: offsetWidth,
+        Object.defineProperty(node, 'offsetWidth', {
+          get: offsetWidth,
+        })
+
+        expect(getEllipsisWidth(node)).toBe(123)
       })
 
-      expect(getEllipsisWidth(node)).toBe(123)
-    })
-  })
+      // When getLines is called, if no ellipsis element is found,
+      // ellipsisWidth will be set to 0
+      it('should use 0 as ellipsisWidth when getEllipsisWidth returns undefined in component', async () => {
+        const TextBox = () => {
+          React.useEffect(() => {
+            const ellipsisRef = screen.getByTestId('truncate-ellipsis')
+            if (ellipsisRef) {
+              console.log('ellipsisRef is exist.')
 
-  describe('trimRight', () => {
-    it('should remove whitespace from the end of text', () => {
-      expect(trimRight('some spaces here  ')).toBe('some spaces here')
-      expect(trimRight('some other whitespace here  \r\n')).toBe(
-        'some other whitespace here',
-      )
-      expect(trimRight('\n  ')).toBe('')
+              // Force overwrite offsetWidth and make it return undefined
+              Object.defineProperty(ellipsisRef, 'offsetWidth', {
+                get: () => undefined,
+              })
+            }
+          }, [])
+
+          return <Box lines={1}>{testMessage}</Box>
+        }
+
+        render(<TextBox />)
+
+        await waitFor(() => {
+          const result = testMessage.slice(0, numCharacters) + ellipsis
+          expect(getRootInnerText()).toBe(result)
+        })
+      })
     })
 
-    it('should leave other text unchanged', () => {
-      expect(trimRight('  whitespace on the left')).toBe(
-        '  whitespace on the left',
-      )
-      expect(trimRight(' just a \n lot of text really')).toBe(
-        ' just a \n lot of text really',
-      )
+    describe('trimRight', () => {
+      it('should remove whitespace from the end of text', () => {
+        expect(trimRight('some spaces here  ')).toBe('some spaces here')
+        expect(trimRight('some other whitespace here  \r\n')).toBe(
+          'some other whitespace here',
+        )
+        expect(trimRight('\n  ')).toBe('')
+      })
+
+      it('should leave other text unchanged', () => {
+        expect(trimRight('  whitespace on the left')).toBe(
+          '  whitespace on the left',
+        )
+        expect(trimRight(' just a \n lot of text really')).toBe(
+          ' just a \n lot of text really',
+        )
+      })
+    })
+
+    describe('getMiddleTruncateFragments', () => {
+      const targetWidth = width
+      const ellipsisWidth = measureWidth(ellipsis)
+
+      it('should return correct fragments when text fits within target width', () => {
+        const options = {
+          end: -5,
+          lastLineText: 'This is a long text',
+          fullText: 'This is a long text',
+          targetWidth,
+          ellipsisWidth,
+          measureWidth,
+        }
+
+        const result = getMiddleTruncateFragments(options)
+
+        expect(result).toEqual({
+          startFragment: 'This is a ',
+          endFragment: ' text',
+        })
+      })
+
+      it('should truncate startFragment when text exceeds target width', () => {
+        const options = {
+          end: -5,
+          lastLineText:
+            'This is a very long text that exceeds the target width',
+          fullText: 'This is a very long text that exceeds the target width',
+          targetWidth,
+          ellipsisWidth,
+          measureWidth,
+        }
+
+        const result = getMiddleTruncateFragments(options)
+
+        expect(result).toEqual({
+          startFragment: 'This is a ',
+          endFragment: 'width',
+        })
+      })
+
+      it('should return correct fragments when lastLineText is empty', () => {
+        const options = {
+          end: -5,
+          lastLineText: '',
+          fullText: 'This is a long text',
+          targetWidth: 200,
+          ellipsisWidth,
+          measureWidth,
+        }
+
+        const result = getMiddleTruncateFragments(options)
+
+        expect(result).toEqual({
+          startFragment: '',
+          endFragment: 'This is a long text',
+        })
+      })
+
+      it('should handle cases where end is greater than lastLineText length', () => {
+        const options = {
+          end: -20,
+          lastLineText: 'This is a long text',
+          fullText: 'This is a long text',
+          targetWidth: 200,
+          ellipsisWidth,
+          measureWidth,
+        }
+
+        const result = getMiddleTruncateFragments(options)
+
+        expect(result).toEqual({
+          startFragment: '',
+          endFragment: 'This is a long text',
+        })
+      })
+    })
+
+    describe('Testing side effects of other props values', () => {
+      // More lines of test cases in `./ShowMore.spec.tsx`
+      describe('lines', () => {
+        it('should get 0 when get an invalid line number', async () => {
+          render(<Box lines={0}>{testMessage}</Box>)
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(testMessage)
+          })
+        })
+
+        it('should get 0 when lines is a negative number', async () => {
+          render(<Box lines={-1}>{testMessage}</Box>)
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(testMessage)
+          })
+        })
+
+        it('should get 0 when lines is NaN', async () => {
+          render(<Box lines={NaN}>{testMessage}</Box>)
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(testMessage)
+          })
+        })
+
+        it('should get 0 when lines is Infinity', async () => {
+          render(<Box lines={Infinity}>{testMessage}</Box>)
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(testMessage)
+          })
+        })
+      })
+
+      // More lines of test cases in `./MiddleTruncate.spec.tsx`
+      describe('end', () => {
+        const resultMessage = testMessage.slice(0, 15) + ellipsis
+
+        it('should return 0 when end is 0', async () => {
+          render(
+            <Box middle end={0}>
+              {testMessage}
+            </Box>,
+          )
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(resultMessage)
+          })
+        })
+
+        it('should return 0 when end is NaN', async () => {
+          render(
+            <Box middle end={NaN}>
+              {testMessage}
+            </Box>,
+          )
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(resultMessage)
+          })
+        })
+
+        it('should return 0 when end is Infinity', async () => {
+          render(
+            <Box middle end={Infinity}>
+              {testMessage}
+            </Box>,
+          )
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(resultMessage)
+          })
+        })
+
+        it('should return 0 when end is -Infinity', async () => {
+          render(
+            <Box middle end={-Infinity}>
+              {testMessage}
+            </Box>,
+          )
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(resultMessage)
+          })
+        })
+
+        it('should return 0 when end is a string', async () => {
+          render(
+            <Box middle end={'string' as unknown as number}>
+              {testMessage}
+            </Box>,
+          )
+          await waitFor(() => {
+            expect(getRootInnerText()).toBe(resultMessage)
+          })
+        })
+      })
     })
   })
 })

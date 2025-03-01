@@ -7,7 +7,7 @@ import { screen, within } from '@testing-library/react'
  */
 
 const characterWidth = 6 // px
-const measureWidth = (text: string) => text.length * characterWidth
+export const measureWidth = (text: string) => text.length * characterWidth
 
 // Mock out a box that's 16 characters wide
 export const numCharacters = 16
