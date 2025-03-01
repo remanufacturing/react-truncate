@@ -1,0 +1,77 @@
+---
+title: Frequently Asked Questions
+description: Answers to problems that may be easily encountered by developers, as well as some interesting problems reported in GitHub issues.
+---
+
+import { AppliesTo, RelatedIssues } from '@/components/AppliesTo'
+
+## Why is the component not updated when only the container width changes?
+
+<AppliesTo client:only="react" lang="en" />
+<RelatedIssues client:only="react" lang="en" issues={[18]} />
+
+Currently, the component has a built-in listener for the [Window: resize event](https://developer.mozilla.org/en-US/docs/Web/API/Window/resize_event) . When this event is triggered, the component recalculates its width and updates the displayed content.
+
+However, in some cases, such as when using [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) , only the container element’s width changes while the browser window width remains the same. In these scenarios, the component will not automatically adjust its size.
+
+### Reasons for not processing
+
+To avoid unnecessary performance overhead, the component does not include a built-in [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) for parent elements. Therefore, when the container size changes without a window resize event, developers need to decide when to trigger a re-render to ensure the component responds correctly to layout adjustments.
+
+### Recommended solution
+
+Recommend to use a `key` to trigger re-truncate, nodes will re-render when a `key` is updated, this is [React's ability](https://react.dev/reference/react/useState#resetting-state-with-a-key) .
+
+#### Trigger via callback API
+
+Set a variable and bind `key={refreshKey}` to the element that needs to respond to resize changes.
+
+```tsx
+const [refreshKey, setRefreshKey] = useState(Date.now())
+
+// e.g. `<Truncate key={refreshKey} />`
+```
+
+When the element triggers a resize change, update this value.
+
+```tsx
+const onResize = () => setRefreshKey(Date.now())
+
+// e.g. `<Panel onResize={onResize} />`
+```
+
+> Online demo: [CodeSandbox](https://codesandbox.io/p/sandbox/react-resizable-panels-forked-tjt38f?file=%2Fsrc%2FApp.js)
+
+#### Trigger via dependency
+
+If there is a State dependency that can trigger React.useEffect, you can also implement it this way, declaring a common Hook.
+
+```ts
+// e.g. src/hooks/use-refresh-key.ts
+import React from 'react'
+
+export const useRefreshKey = (deps: unknown[]) => {
+  const [refreshKey, setRefreshKey] = React.useState(Date.now())
+
+  React.useEffect(() => {
+    requestAnimationFrame(() => {
+      setRefreshKey(Date.now())
+    })
+  }, [deps])
+
+  return {
+    refreshKey,
+  }
+}
+```
+
+Treat the related state as a dependency. When the dependency changes, the value of `refreshKey` will be automatically updated.
+
+```tsx
+const [width, setWidth] = useState(DEFAULT_WIDTH_VALUE)
+const [lines, setLines] = useState(DEFAULT_LINES_VALUE)
+
+const { refreshKey } = useRefreshKey([width, lines])
+
+// e.g. `<Truncate key={refreshKey} />`
+```
