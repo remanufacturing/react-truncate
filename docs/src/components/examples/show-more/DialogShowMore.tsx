@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react'
 import { ShowMore } from '@re-dev/react-truncate'
 import { Expand } from 'lucide-react'
+import React, { useMemo } from 'react'
+import { EW } from '@/components/examples/Widgets'
 import {
   Button,
   Dialog,
@@ -10,8 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui'
-import { EW } from '@/components/examples/Widgets'
-import { getTranslation, useLang, type Languages } from '@/i18n'
+import { type Languages, getTranslation, useLang } from '@/i18n'
 
 const ExpandButton: React.FC = () => {
   return (
@@ -24,7 +24,7 @@ const ExpandButton: React.FC = () => {
           variant="outline"
           size="icon-sm"
         >
-          <Expand className="h-4 w-4" />
+          <Expand className="size-4" />
         </Button>
       </span>
     </DialogTrigger>

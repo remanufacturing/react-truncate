@@ -1,6 +1,6 @@
-import type { Config } from 'tailwindcss'
-import animatePlugin from 'tailwindcss-animate'
 import starlightPlugin from '@astrojs/starlight-tailwind'
+import animatePlugin from 'tailwindcss-animate'
+import type { Config } from 'tailwindcss'
 
 const config = {
   darkMode: ['class', '[data-theme="dark"]'],

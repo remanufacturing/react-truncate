@@ -1,15 +1,32 @@
 // @ts-check
-import { defineConfig, prettier, react } from '@bassist/eslint'
+import {
+  createGetConfigNameFactory,
+  defineFlatConfig,
+  imports,
+  javascript,
+  jsx,
+  node,
+  react,
+  typescript,
+} from '@bassist/eslint-config'
 
-export default defineConfig([
-  ...prettier,
+const getConfigName = createGetConfigNameFactory('react-truncate')
+
+export default defineFlatConfig([
+  ...imports,
+  ...typescript,
+  ...jsx,
+  ...javascript,
+  ...node,
   ...react,
   {
     rules: {
       '@typescript-eslint/no-extraneous-class': 'off',
+      '@typescript-eslint/triple-slash-reference': 'off',
     },
   },
   {
-    ignores: ['dist', 'lib', 'test'],
+    name: getConfigName('ignore'),
+    ignores: ['**/dist/**', '**/lib/**', '**/legacy/**'],
   },
 ])

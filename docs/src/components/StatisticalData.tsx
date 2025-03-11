@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
 import clsx from 'clsx'
+import React, { useMemo } from 'react'
 import pkg from '../../../package.json'
 import type { Languages } from '@/i18n'
 
@@ -56,7 +56,7 @@ const getContributors = async (cols = 10) => {
   try {
     const url = `https://contrib.nn.ci/api?repo=${repo}&cols=${cols}&no_bot`
     return await fetch(url).then((res) => res.text() || '')
-  } catch (e) {
+  } catch {
     return ''
   }
 }
@@ -99,7 +99,7 @@ export const Contributors: React.FC<{
     return lang === 'zh' ? '加载中...' : 'Loading…'
   }, [lang])
 
-  const cls = clsx('flex flex-wrap gap-6 w-full mt-6', {
+  const cls = clsx('mt-6 flex w-full flex-wrap gap-6', {
     '<lg:justify-center': !!items.length,
   })
 
@@ -117,11 +117,11 @@ export const Contributors: React.FC<{
             href={i.homepage}
             target="_blank"
             rel="noreferrer"
-            className="flex flex-col items-center no-underline group"
+            className="group flex flex-col items-center no-underline"
           >
-            <div className="w-16 h-16 rounded-full overflow-hidden group-hover:opacity-70 transition-opacity">
+            <div className="size-16 overflow-hidden rounded-full transition-opacity group-hover:opacity-70">
               <img
-                className="w-full h-full object-cover"
+                className="size-full object-cover"
                 src={i.avatar}
                 alt={i.username}
               />

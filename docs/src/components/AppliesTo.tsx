@@ -1,6 +1,6 @@
 import React, { Fragment, useMemo } from 'react'
+import { type Languages, getTranslation } from '@/i18n'
 import pkg from '../../../package.json'
-import { getTranslation, type Languages } from '@/i18n'
 
 const repoUrl = pkg.repository.url
 
@@ -24,7 +24,7 @@ export const AppliesTo: React.FC<AppliesToProps> = ({
   })
 
   return (
-    <blockquote className="flex items-center gap-2 w-full mt-6">
+    <blockquote className="mt-6 flex w-full items-center gap-2">
       {title}
       <span className="flex items-center gap-3">{componentsDisplay}</span>
     </blockquote>
@@ -32,7 +32,7 @@ export const AppliesTo: React.FC<AppliesToProps> = ({
 }
 
 const formatGitHubIssue = (url: string) => {
-  const pattern = /github\.com\/([^\/]+\/[^\/]+)\/issues\/(\d+)/
+  const pattern = /github\.com\/([^/]+\/[^/]+)\/issues\/(\d+)/
   const match = url.match(pattern)
 
   if (match) {
@@ -89,7 +89,7 @@ export const RelatedIssues: React.FC<{
   }, [issues])
 
   return (
-    <blockquote className="flex items-center gap-2 w-full">
+    <blockquote className="flex w-full items-center gap-2">
       {title}
       <span className="flex items-center gap-2">{issuesDisplay}</span>
     </blockquote>

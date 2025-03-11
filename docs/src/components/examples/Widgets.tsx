@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react'
 import clsx from 'clsx'
-import { getTranslation, type Languages, type TranslationKey } from '@/i18n'
+import React, { useMemo } from 'react'
+import { type Languages, type TranslationKey, getTranslation } from '@/i18n'
 import {
-  RichText,
   ChineseRichText,
   ChineseStringText,
-  StringText,
-  ShorterStringText,
+  RichText,
   ShorterChineseStringText,
+  ShorterStringText,
+  StringText,
 } from './Data'
 
 export const DEFAULT_WIDTH_VALUE = 100
@@ -26,7 +26,7 @@ const ExampleContainer = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="w-full box-border p-3 bg-[var(--sl-color-gray-6)] my-6"
+      className="my-6 box-border w-full bg-[var(--sl-color-gray-6)] p-3"
       style={{
         border:
           '1px solid color-mix(in srgb, var(--sl-color-gray-5), transparent 25%)',
@@ -50,14 +50,17 @@ const ExampleFormLabel: React.FC<ExampleFormLabelProps> = ({
   lang,
   labelKey,
 }) => {
-  const titleCls = clsx('flex flex-shrink-0', lang === 'zh' ? 'w-24' : 'w-34')
+  const titleCls = clsx(
+    'flex shrink-0',
+    lang === 'zh' ? 'w-[96px]' : 'w-[136px]',
+  )
   return <span className={titleCls}>{getTranslation(lang, labelKey)}</span>
 }
 
 const ExampleFormItem: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
-  return <div className="flex items-center gap-3 my-6">{children}</div>
+  return <div className="my-6 flex items-center gap-3">{children}</div>
 }
 
 const inputCls = 'w-100 max-w-3/4 cursor-pointer'

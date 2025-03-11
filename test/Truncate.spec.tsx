@@ -1,9 +1,16 @@
+import { act, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
+import { createRoot } from 'react-dom/client'
+import { renderToString } from 'react-dom/server'
 import ReactIs from 'react-is'
 import sinon from 'sinon'
-import { createRoot } from 'react-dom/client'
-import { act, render, screen, waitFor } from '@testing-library/react'
-import { renderToString } from 'react-dom/server'
+import { Truncate, type TruncateProps } from '@/Truncate'
+import {
+  getEllipsisWidth,
+  getMiddleTruncateFragments,
+  innerText,
+  trimRight,
+} from '@/Truncate/utils'
 import {
   ellipsis,
   getMultiLineText,
@@ -15,13 +22,6 @@ import {
   testMessage,
   width,
 } from './config/test-config'
-import { Truncate, type TruncateProps } from '@/Truncate'
-import {
-  getEllipsisWidth,
-  getMiddleTruncateFragments,
-  innerText,
-  trimRight,
-} from '@/Truncate/utils'
 
 type BoxProps = Omit<TruncateProps, 'ref' | 'children'> &
   React.PropsWithChildren
@@ -59,7 +59,7 @@ describe('<Truncate />', () => {
   })
 
   describe('in a server environment', () => {
-    it('should render initial static markup', async () => {
+    it('should render initial static markup', () => {
       const markup = renderToString(<Truncate>{testMessage}</Truncate>)
       expect(markup).toContain(testMessage)
 
@@ -139,13 +139,13 @@ describe('<Truncate />', () => {
       it('should end truncating when a single word is bigger than its line', async () => {
         render(
           <Box lines={2}>
-            Thereisasuperlongwordinthefirstline so that the next lines won't be
-            visible
+            Thereisasuperlongwordinthefirstline so that the next lines
+            won&apos;t be visible
           </Box>,
         )
 
         await waitFor(() => {
-          const result = 'Thereisasuperlo' + ellipsis
+          const result = `Thereisasuperlo${ellipsis}`
           expect(getRootInnerText()).toBe(result)
         })
       })
@@ -155,7 +155,7 @@ describe('<Truncate />', () => {
 
         render(
           <Box lines={2} ellipsis={<a href="#">{ellipsisText}</a>}>
-            I'm curious what the next lines of text will say!
+            I&apos;m curious what the next lines of text will say!
           </Box>,
         )
 
@@ -172,19 +172,19 @@ describe('<Truncate />', () => {
         const { rerender } = render(<Box lines={1}>Some old content here</Box>)
 
         await waitFor(() => {
-          const result = `Some old conten` + ellipsis
+          const result = `Some old conten${ellipsis}`
           expect(getRootInnerText()).toBe(result)
         })
 
         rerender(<Box lines={1}>Some new content here</Box>)
 
         await waitFor(() => {
-          const result = `Some new conten` + ellipsis
+          const result = `Some new conten${ellipsis}`
           expect(getRootInnerText()).toBe(result)
         })
       })
 
-      it('should render without an error when the last line is exactly as wide as the container', async () => {
+      it('should render without an error when the last line is exactly as wide as the container', () => {
         expect(() => {
           render(
             <Box lines={2}>{new Array(numCharacters).fill('a').join('')}</Box>,
@@ -212,7 +212,7 @@ describe('<Truncate />', () => {
           })
         })
 
-        it('should render empty text without an error', async () => {
+        it('should render empty text without an error', () => {
           expect(() => {
             render(<Box lines={1} trimWhitespace></Box>)
           }).not.toThrow()
@@ -264,7 +264,7 @@ describe('<Truncate />', () => {
           )
 
           await waitFor(() => {
-            const result = 'First Line' + ellipsis
+            const result = `First Line${ellipsis}`
             expect(getRootInnerText()).toBe(result)
           })
         })
@@ -365,7 +365,7 @@ describe('<Truncate />', () => {
       })
     })
 
-    it('should clean up all event listeners on window when unmounting', async () => {
+    it('should clean up all event listeners on window when unmounting', () => {
       const stubs: Partial<
         Record<'addEventListener' | 'removeEventListener', sinon.SinonStub>
       > = {}
@@ -396,8 +396,8 @@ describe('<Truncate />', () => {
         const root = createRoot(container)
 
         // https://react.dev/reference/react/act
-        await act(async () => root.render(<Empty />))
-        await act(async () => root.unmount())
+        act(() => root.render(<Empty />))
+        act(() => root.unmount())
 
         expect(events.size).toBe(0)
       } finally {
@@ -407,7 +407,7 @@ describe('<Truncate />', () => {
 
     describe('innerText', () => {
       describe('browser implements \\n for <br/>', () => {
-        it('should have newlines only at <br/>', async () => {
+        it('should have newlines only at <br/>', () => {
           const node = document.createElement('div')
           node.innerHTML = 'foo<br/>bar\nbaz'
           expect(innerText(node, separator)).toBe('foo\nbar baz')
@@ -465,6 +465,7 @@ describe('<Truncate />', () => {
           )
 
           try {
+            // eslint-disable-next-line no-console
             console.log(
               'before delete check',
               'innerText' in window.HTMLElement.prototype,
@@ -473,6 +474,7 @@ describe('<Truncate />', () => {
             // @ts-expect-error Need to force test this case
             delete window.HTMLElement.prototype.innerText
 
+            // eslint-disable-next-line no-console
             console.log(
               'after delete check',
               'innerText' in window.HTMLElement.prototype,
@@ -490,6 +492,7 @@ describe('<Truncate />', () => {
               )
             }
 
+            // eslint-disable-next-line no-console
             console.log(
               'finally check',
               'innerText' in window.HTMLElement.prototype,
@@ -519,6 +522,7 @@ describe('<Truncate />', () => {
           React.useEffect(() => {
             const ellipsisRef = screen.getByTestId('truncate-ellipsis')
             if (ellipsisRef) {
+              // eslint-disable-next-line no-console
               console.log('ellipsisRef is exist.')
 
               // Force overwrite offsetWidth and make it return undefined

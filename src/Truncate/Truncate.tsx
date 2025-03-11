@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { type TruncateProps } from './types'
 import {
   getEllipsisWidth,
   getMiddleTruncateFragments,
@@ -6,7 +7,6 @@ import {
   renderLine,
   trimRight,
 } from './utils'
-import { type TruncateProps } from './types'
 
 export const Truncate: React.FC<TruncateProps> = ({
   children,
