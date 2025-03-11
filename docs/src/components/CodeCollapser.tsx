@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { getTranslation, type Languages } from '@/i18n'
+import { type Languages, getTranslation } from '@/i18n'
 
 export const CodeCollapser: React.FC<{
   open?: boolean
@@ -24,7 +24,7 @@ export const CodeCollapser: React.FC<{
   }, [lang, open])
 
   return (
-    <details className="w-full my-6" open={open} onToggle={onToggle}>
+    <details className="my-6 w-full" open={open} onToggle={onToggle}>
       <summary>{summary}</summary>
 
       {children}

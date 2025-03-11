@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
 import { MiddleTruncate } from '@re-dev/react-truncate'
+import React, { useState } from 'react'
 import {
   DEFAULT_END_VALUE,
   DEFAULT_HTML_VALUE,
   DEFAULT_WIDTH_VALUE,
   EW,
 } from '@/components/examples/Widgets'
-import { useLang, type Languages } from '@/i18n'
 import { useRefreshKey } from '@/hooks/use-refresh-key'
+import { type Languages, useLang } from '@/i18n'
 
 export const ControllableMiddleTruncate: React.FC<{
   lang: Languages

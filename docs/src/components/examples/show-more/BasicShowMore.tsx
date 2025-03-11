@@ -1,7 +1,7 @@
-import React from 'react'
 import { ShowMore } from '@re-dev/react-truncate'
+import React from 'react'
 import { EW } from '@/components/examples/Widgets'
-import { useLang, type Languages } from '@/i18n'
+import { type Languages, useLang } from '@/i18n'
 
 export const BasicShowMore: React.FC<{
   lang: Languages

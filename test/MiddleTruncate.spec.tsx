@@ -1,8 +1,9 @@
+import { render, waitFor } from '@testing-library/react'
 import React from 'react'
+import { renderToString } from 'react-dom/server'
 import ReactIs from 'react-is'
 import sinon from 'sinon'
-import { render, waitFor } from '@testing-library/react'
-import { renderToString } from 'react-dom/server'
+import { MiddleTruncate, type MiddleTruncateProps } from '@/MiddleTruncate'
 import {
   characterWidth,
   ellipsis,
@@ -12,7 +13,6 @@ import {
   testMessage,
   width,
 } from './config/test-config'
-import { MiddleTruncate, type MiddleTruncateProps } from '@/MiddleTruncate'
 
 type BoxProps = Omit<MiddleTruncateProps, 'ref' | 'children'> &
   React.PropsWithChildren
@@ -64,7 +64,7 @@ describe('<MiddleTruncate />', () => {
   })
 
   describe('in a server environment', () => {
-    it('should render initial static markup', async () => {
+    it('should render initial static markup', () => {
       const markup = renderToString(
         <MiddleTruncate>{testMessage}</MiddleTruncate>,
       )
@@ -125,7 +125,7 @@ describe('<MiddleTruncate />', () => {
         )
 
         await waitFor(() => {
-          const result = 'This text co' + ellipsis + 'nes'
+          const result = `This text co${ellipsis}nes`
           expect(getRootInnerText()).toBe(result)
         })
       })

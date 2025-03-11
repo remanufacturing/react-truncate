@@ -1,8 +1,8 @@
-import { defineConfig } from 'astro/config'
-import { capitalize } from '@bassist/utils'
 import react from '@astrojs/react'
 import starlight from '@astrojs/starlight'
 import tailwind from '@astrojs/tailwind'
+import { capitalize } from '@bassist/utils'
+import { defineConfig } from 'astro/config'
 
 const autogenerates = {
   reference: {

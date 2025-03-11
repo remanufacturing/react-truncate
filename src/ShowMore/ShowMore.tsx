@@ -8,9 +8,9 @@ import React, {
 import { Truncate, type TruncateProps } from '@/Truncate'
 import { ToggleButton } from './ToggleButton'
 import {
-  type ShowMoreToggleLinesFn,
   type ShowMoreProps,
   type ShowMoreRef,
+  type ShowMoreToggleLinesFn,
 } from './types'
 
 export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(

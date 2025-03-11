@@ -1,9 +1,15 @@
+import { render, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
+import { renderToString } from 'react-dom/server'
 import ReactIs from 'react-is'
 import sinon from 'sinon'
-import userEvent from '@testing-library/user-event'
-import { render, screen, waitFor, within } from '@testing-library/react'
-import { renderToString } from 'react-dom/server'
+import {
+  ShowMore,
+  type ShowMoreProps,
+  type ShowMoreRef,
+  type ShowMoreToggleLinesFn,
+} from '@/ShowMore'
 import {
   collapseText,
   ellipsis,
@@ -17,12 +23,6 @@ import {
   testMessage,
   width,
 } from './config/test-config'
-import {
-  ShowMore,
-  type ShowMoreToggleLinesFn,
-  type ShowMoreProps,
-  ShowMoreRef,
-} from '@/ShowMore'
 
 type BoxProps = Omit<ShowMoreProps, 'ref' | 'children'> &
   React.PropsWithChildren & {
@@ -63,7 +63,7 @@ describe('<ShowMore />', () => {
   })
 
   describe('in a server environment', () => {
-    it('should render initial static markup', async () => {
+    it('should render initial static markup', () => {
       const markup = renderToString(
         <ShowMore lines={3}>{testMessage}</ShowMore>,
       )
@@ -136,7 +136,7 @@ describe('<ShowMore />', () => {
           await handleExpand()
         })
 
-        it('should expand when the expand button is clicked', async () => {
+        it('should expand when the expand button is clicked', () => {
           // Since beforeEach is already expanded, so directly check the expanded status here
           expect(screen.getByText(message)).toBeInTheDocument()
         })
@@ -299,7 +299,7 @@ describe('<ShowMore />', () => {
       })
     })
 
-    it('should be expanded by default', async () => {
+    it('should be expanded by default', () => {
       render(
         <Box lines={1} defaultExpanded={true}>
           {testMessage}
@@ -317,7 +317,7 @@ describe('<ShowMore />', () => {
     })
 
     describe('Controlled mode', () => {
-      it('should be expanded when the `expanded` prop is true', async () => {
+      it('should be expanded when the `expanded` prop is true', () => {
         const onToggle = sinon.spy()
 
         render(

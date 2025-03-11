@@ -7,17 +7,17 @@ export const Developer: React.FC<{
 }> = ({ avatar, name, homepage }) => {
   return (
     <a
-      className="flex items-center gap-2 h-8 mt-8 mb-2 no-underline hover:underline"
+      className="mb-2 mt-8 flex h-8 items-center gap-2 no-underline hover:underline"
       href={homepage}
       title={name}
       target="_blank"
       rel="noreferrer"
     >
-      <div className="w-7 h-7 rounded-full overflow-hidden">
-        <img className="w-full h-full object-fit" src={avatar} alt={name} />
+      <div className="size-7 overflow-hidden rounded-full">
+        <img className="size-full object-cover" src={avatar} alt={name} />
       </div>
 
-      <span className="text-lg font-600">{name}</span>
+      <span className="text-lg font-[600]">{name}</span>
     </a>
   )
 }

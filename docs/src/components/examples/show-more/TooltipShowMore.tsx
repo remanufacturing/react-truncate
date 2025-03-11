@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react'
 import { ShowMore } from '@re-dev/react-truncate'
+import React, { useMemo } from 'react'
+import { EW } from '@/components/examples/Widgets'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui'
-import { EW } from '@/components/examples/Widgets'
 import type { Languages } from '@/i18n'
 
 export const TooltipShowMore: React.FC<{

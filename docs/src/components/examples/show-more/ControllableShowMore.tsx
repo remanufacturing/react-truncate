@@ -1,9 +1,9 @@
-import React, { useMemo, useRef, useState } from 'react'
 import {
   ShowMore,
   type ShowMoreRef,
   type ShowMoreToggleLinesFn,
 } from '@re-dev/react-truncate'
+import React, { useMemo, useRef, useState } from 'react'
 import {
   DEFAULT_CUSTOM_VALUE,
   DEFAULT_HTML_VALUE,
@@ -11,8 +11,8 @@ import {
   DEFAULT_WIDTH_VALUE,
   EW,
 } from '@/components/examples/Widgets'
-import { useLang, type Languages } from '@/i18n'
 import { useRefreshKey } from '@/hooks/use-refresh-key'
+import { type Languages, useLang } from '@/i18n'
 
 const CustomButton: React.FC<{
   type: 'more' | 'less'
@@ -27,7 +27,7 @@ const CustomButton: React.FC<{
   }, [isZh, type])
 
   return (
-    <button className="text-xs ml-2 cursor-pointer" onClick={onClick}>
+    <button className="ml-2 cursor-pointer text-xs" onClick={onClick}>
       {label}
     </button>
   )

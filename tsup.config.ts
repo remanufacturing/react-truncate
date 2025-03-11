@@ -1,10 +1,10 @@
-import { defineConfig, type Options } from 'tsup'
+import { readFile } from 'node:fs/promises'
 import {
   defaultBundleFormatConfig,
-  getBundleExtension,
   getBundleBanner,
+  getBundleExtension,
 } from '@bassist/node-utils'
-import { readFile } from 'node:fs/promises'
+import { type Options, defineConfig } from 'tsup'
 import pkg from './package.json'
 
 type ESBuildPlugin = NonNullable<Options['esbuildPlugins']>[number]

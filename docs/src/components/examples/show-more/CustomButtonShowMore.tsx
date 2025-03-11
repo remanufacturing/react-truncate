@@ -1,13 +1,13 @@
-import React, { useMemo, useRef } from 'react'
 import {
   ShowMore,
   type ShowMoreRef,
   type ShowMoreToggleLinesFn,
 } from '@re-dev/react-truncate'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { Button } from '@/components/ui'
+import React, { useMemo, useRef } from 'react'
 import { EW } from '@/components/examples/Widgets'
-import { useLang, type Languages } from '@/i18n'
+import { Button } from '@/components/ui'
+import { type Languages, useLang } from '@/i18n'
 
 const IconButton: React.FC<{
   type: 'more' | 'less'
@@ -34,7 +34,7 @@ const IconButton: React.FC<{
         size="icon-sm"
         onClick={onClick}
       >
-        <Icon className="h-4 w-4" />
+        <Icon className="size-4" />
       </Button>
     </>
   )
