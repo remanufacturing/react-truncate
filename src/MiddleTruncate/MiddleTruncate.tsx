@@ -1,3 +1,5 @@
+'use client'
+
 import React, { forwardRef } from 'react'
 import { Truncate, type TruncateProps } from '@/Truncate'
 import { type MiddleTruncateProps } from './types'
