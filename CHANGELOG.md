@@ -1,3 +1,12 @@
+## [0.5.1](https://github.com/remanufacturing/react-truncate/compare/v0.5.0...v0.5.1) (2025-03-31)
+
+
+### Bug Fixes
+
+* mark component library entry as client component ([fd32f47](https://github.com/remanufacturing/react-truncate/commit/fd32f473886657bffad664b54d87ba239fc268cc))
+
+
+
 # [0.5.0](https://github.com/remanufacturing/react-truncate/compare/v0.4.6...v0.5.0) (2025-02-23)
 
 
