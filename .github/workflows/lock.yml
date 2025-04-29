@@ -15,7 +15,7 @@ jobs:
         with:
           actions: 'close-issues'
           token: ${{ secrets.ROBOT_TOKEN }}
-          inactive-day: 179
+          inactive-day: 364
           body: |
             This issue has been automatically closed since there has not been any recent activity after it was created. Please open a new issue for related bugs.
 
@@ -24,5 +24,5 @@ jobs:
         with:
           log-output: true
           github-token: ${{ secrets.ROBOT_TOKEN }}
-          issue-inactive-days: 180
-          pr-inactive-days: 180
+          issue-inactive-days: 365
+          pr-inactive-days: 365
