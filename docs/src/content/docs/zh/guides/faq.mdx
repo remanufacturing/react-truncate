@@ -48,16 +48,30 @@ const onResize = () => setRefreshKey(Date.now())
 
 ```ts
 // e.g. src/hooks/use-refresh-key.ts
-import React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export const useRefreshKey = (deps: unknown[]) => {
-  const [refreshKey, setRefreshKey] = React.useState(Date.now())
+  const [refreshKey, setRefreshKey] = useState(Date.now())
 
-  React.useEffect(() => {
+  /**
+   * 确保依赖项在渲染之间保持稳定。如果 deps 是数组，
+   * 将其转换为字符串以防止进入无限循环。
+   *
+   * ⚠️ 注意：`Array.prototype.toString()` 是浅层的且对顺序敏感，
+   * 对于对象或嵌套数组，可能不会按预期工作。
+   * 若需要更准确的判断，可考虑使用 JSON.stringify()，
+   * 或像 lodash.isEqual() 这样的深度比较函数。
+   */
+  const effectDeps = useMemo(
+    () => (Array.isArray(deps) ? deps.toString() : deps),
+    [deps],
+  )
+
+  useEffect(() => {
     requestAnimationFrame(() => {
       setRefreshKey(Date.now())
     })
-  }, [deps])
+  }, [effectDeps])
 
   return {
     refreshKey,
