@@ -6,7 +6,9 @@ type DetailedHTMLProps = React.DetailedHTMLProps<
 >
 
 export interface TruncateProps extends DetailedHTMLProps {
-  /** The raw text content to be truncated, rich text supported */
+  /**
+   * The raw text content to be truncated, rich text supported
+   */
   children: React.ReactNode
 
   /**

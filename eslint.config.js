@@ -19,12 +19,15 @@ export default defineFlatConfig([
   ...javascript,
   ...node,
   ...react,
+
   {
+    name: getConfigName('overrides'),
     rules: {
       '@typescript-eslint/no-extraneous-class': 'off',
       '@typescript-eslint/triple-slash-reference': 'off',
     },
   },
+
   {
     name: getConfigName('ignore'),
     ignores: ['**/dist/**', '**/lib/**', '**/legacy/**'],

@@ -1,9 +1,5 @@
 import { readFile } from 'node:fs/promises'
-import {
-  defaultBundleFormatConfig,
-  getBundleBanner,
-  getBundleExtension,
-} from '@bassist/node-utils'
+import { BundleFormat, createBaseConfig } from '@bassist/build-config/tsup'
 import { type Options, defineConfig } from 'tsup'
 import pkg from './package.json'
 
@@ -46,20 +42,14 @@ const removePropertiesPlugin: ESBuildPlugin = {
   },
 }
 
-export default defineConfig({
-  entry: ['src/index.ts'],
-  target: ['es2020'],
-  format: defaultBundleFormatConfig,
+const baseConfig = createBaseConfig({
+  pkg,
+  format: [BundleFormat.ESM, BundleFormat.CJS, BundleFormat.IIFE],
   globalName: 'ReactTruncate',
-  outExtension: (ctx) => getBundleExtension(ctx),
-  outDir: 'dist',
-  dts: true,
-  banner: {
-    js: getBundleBanner(pkg),
-  },
-  bundle: true,
-  minify: true,
-  clean: true,
+})
+
+export default defineConfig({
+  ...baseConfig,
   esbuildOptions(options) {
     options.external = external
   },

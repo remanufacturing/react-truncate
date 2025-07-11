@@ -1,7 +1,9 @@
 import { screen, within } from '@testing-library/react'
 import sinon from 'sinon'
 
-/** Test configuration from the original repository */
+/**
+ * Test configuration from the original repository
+ */
 
 export const characterWidth = 6 // px
 export const measureWidth = (text: string) => text.length * characterWidth
@@ -81,7 +83,9 @@ export const getLessButton = () => {
   return within(root).getByTestId('less-button')
 }
 
-/** Make up for the lack of APIs in the test environment */
+/**
+ * Make up for the lack of APIs in the test environment
+ */
 
 export const mockWindowApis = () => {
   const stubs: Partial<
@@ -123,6 +127,8 @@ export const mockWindowApis = () => {
   })
 }
 
-/** Content used for testing */
+/**
+ * Content used for testing
+ */
 
 export const testMessage = 'Some text inside of here'
