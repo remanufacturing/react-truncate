@@ -1,3 +1,12 @@
+## [0.5.2](https://github.com/remanufacturing/react-truncate/compare/v0.5.1...v0.5.2) (2025-08-19)
+
+
+### Bug Fixes
+
+* **MiddleTruncate:** optimize middle truncation algorithm and fix infinite loop ([4041789](https://github.com/remanufacturing/react-truncate/commit/4041789f60f91528fd9082cd78642506cd1d110e))
+
+
+
 ## [0.5.1](https://github.com/remanufacturing/react-truncate/compare/v0.5.0...v0.5.1) (2025-03-31)
 
 
