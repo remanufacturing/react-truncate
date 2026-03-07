@@ -6,6 +6,7 @@
   "license": "MIT",
   "homepage": "https://truncate.js.org",
   "type": "module",
+  "packageManager": "pnpm@10.15.1",
   "files": [
     "dist"
   ],
