@@ -566,6 +566,15 @@ describe('<Truncate />', () => {
     describe('getMiddleTruncateFragments', () => {
       const targetWidth = width
       const ellipsisWidth = measureWidth(ellipsis)
+      const createVariableMeasureWidth = (
+        widths: Record<string, number>,
+        fallback = 1,
+      ) => {
+        return (text: string) =>
+          text.split('').reduce((total, char) => {
+            return total + (widths[char] ?? fallback)
+          }, 0)
+      }
 
       it('should return correct fragments when text fits within target width', () => {
         const options = {
@@ -637,6 +646,154 @@ describe('<Truncate />', () => {
         expect(result).toEqual({
           startFragment: '',
           endFragment: 'This is a long text',
+        })
+      })
+
+      it('should expand startFragment with the next uncovered character only', () => {
+        const measureCompactWidth = (text: string) => text.length
+        const result = getMiddleTruncateFragments({
+          end: -2,
+          lastLineText: 'abcdef',
+          fullText: 'abcdefghij',
+          targetWidth: 8,
+          ellipsisWidth: 1,
+          measureWidth: measureCompactWidth,
+        })
+
+        expect(result).toEqual({
+          startFragment: 'abcde',
+          endFragment: 'ij',
+        })
+      })
+
+      it('should stop expanding when fragments already cover the full text', () => {
+        const measureCompactWidth = (text: string) => text.length
+        const result = getMiddleTruncateFragments({
+          end: -4,
+          lastLineText: 'abcdef',
+          fullText: 'abcdef',
+          targetWidth: 8,
+          ellipsisWidth: 1,
+          measureWidth: measureCompactWidth,
+        })
+
+        expect(result).toEqual({
+          startFragment: 'ab',
+          endFragment: 'cdef',
+        })
+      })
+
+      it('should break start expansion when the next character exceeds the target width', () => {
+        const result = getMiddleTruncateFragments({
+          end: -1,
+          lastLineText: 'abc',
+          fullText: 'abcdef',
+          targetWidth: 5,
+          ellipsisWidth: 1,
+          measureWidth: createVariableMeasureWidth({ c: 2 }),
+        })
+
+        expect(result).toEqual({
+          startFragment: 'ab',
+          endFragment: 'ef',
+        })
+      })
+
+      it('should expand endFragment when start expansion cannot use the remaining width', () => {
+        const measureCompactWidth = (text: string) => text.length
+        const result = getMiddleTruncateFragments({
+          end: -1,
+          lastLineText: 'abc',
+          fullText: 'abcdef',
+          targetWidth: 6,
+          ellipsisWidth: 1,
+          measureWidth: measureCompactWidth,
+        })
+
+        expect(result).toEqual({
+          startFragment: 'abc',
+          endFragment: 'ef',
+        })
+      })
+
+      it('should break end expansion when prepending one more character exceeds the target width', () => {
+        const result = getMiddleTruncateFragments({
+          end: -1,
+          lastLineText: 'abc',
+          fullText: 'abcdef',
+          targetWidth: 6,
+          ellipsisWidth: 1,
+          measureWidth: createVariableMeasureWidth({ e: 2 }),
+        })
+
+        expect(result).toEqual({
+          startFragment: 'abc',
+          endFragment: 'f',
+        })
+      })
+
+      it('should truncate only the end fragment when the start fragment is empty', () => {
+        const measureCompactWidth = (text: string) => text.length
+        const result = getMiddleTruncateFragments({
+          end: -3,
+          lastLineText: 'abc',
+          fullText: 'abcdef',
+          targetWidth: 2,
+          ellipsisWidth: 1,
+          measureWidth: measureCompactWidth,
+        })
+
+        expect(result).toEqual({
+          startFragment: '',
+          endFragment: 'f',
+        })
+      })
+
+      it('should truncate the wider end fragment first and then trim the start fragment if needed', () => {
+        const result = getMiddleTruncateFragments({
+          end: -1,
+          lastLineText: 'abc',
+          fullText: 'abcdef',
+          targetWidth: 2,
+          ellipsisWidth: 1,
+          measureWidth: createVariableMeasureWidth({ f: 3 }),
+        })
+
+        expect(result).toEqual({
+          startFragment: 'a',
+          endFragment: '',
+        })
+      })
+
+      it('should fine-tune by adding one start character when there is remaining width', () => {
+        const result = getMiddleTruncateFragments({
+          end: -1,
+          lastLineText: 'abc',
+          fullText: 'abcdef',
+          targetWidth: 3,
+          ellipsisWidth: 1,
+          measureWidth: createVariableMeasureWidth({ f: 2 }),
+        })
+
+        expect(result).toEqual({
+          startFragment: 'ab',
+          endFragment: '',
+        })
+      })
+
+      it('should fine-tune by adding one end character when start fine-tuning does not fit', () => {
+        const result = getMiddleTruncateFragments({
+          end: -1,
+          lastLineText: 'abc',
+          fullText: 'abcdef',
+          targetWidth: 4,
+          ellipsisWidth: 1,
+          measureWidth: createVariableMeasureWidth({ b: 2 }),
+        })
+
+        expect(result).toEqual({
+          startFragment: 'a',
+          endFragment: 'ef',
         })
       })
     })
