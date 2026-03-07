@@ -22,7 +22,7 @@ const options = [
   },
   {
     link: `https://codecov.io/gh/${repo}`,
-    image: `https://codecov.io/gh/${repo}/graph/badge.svg?token=K9W9KRBTMA&color=${color}`,
+    image: `https://img.shields.io/codecov/c/github/${repo}?color=${color}`,
     title: 'Test Coverage',
   },
   {
