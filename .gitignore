@@ -12,6 +12,7 @@ lib
 
 # dependencies
 node_modules
+.pnpm-store
 
 # logs
 *.log
@@ -34,3 +35,7 @@ coverage
 demo
 *.rar
 *.zip
+playwright-report
+test-results
+smoke/.artifacts
+*.tgz

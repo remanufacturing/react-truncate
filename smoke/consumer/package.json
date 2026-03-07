@@ -1,0 +1,20 @@
+{
+  "name": "react-truncate-smoke-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@re-dev/react-truncate": "/Users/chengpeiquan/Documents/projects/remanufacturing/react-truncate/smoke/.artifacts/re-dev-react-truncate-0.5.2.tgz",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.9.2",
+    "vite": "^5.4.14"
+  }
+}
