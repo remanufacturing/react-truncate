@@ -85,13 +85,13 @@ export const getMiddleTruncateFragments = ({
   // If current width is less than target width, attempt to expand fragments
   if (fullWidth < targetWidth) {
     // Try to expand startFragment to utilize available space
-    // Only expand if startSliceIndex > 0 (i.e., when end is not greater than text length)
+    // Only expand while there is still uncovered text between the two fragments.
     while (
-      startSliceIndex > 0 &&
-      startSliceIndex + startFragment.length < length &&
+      startFragment.length < length &&
+      startFragment.length + endFragment.length < fullText.length &&
       fullWidth < targetWidth
     ) {
-      const nextChar = lastLineText[startSliceIndex + startFragment.length]
+      const nextChar = lastLineText[startFragment.length]
       const testStartFragment = startFragment + nextChar
       const testWidth = getFragmentsTotalWidth(testStartFragment, endFragment)
 
@@ -104,7 +104,11 @@ export const getMiddleTruncateFragments = ({
     }
 
     // If there's still space available, try to expand endFragment
-    while (endFragment.length < fullText.length && fullWidth < targetWidth) {
+    while (
+      endFragment.length < fullText.length &&
+      startFragment.length + endFragment.length < fullText.length &&
+      fullWidth < targetWidth
+    ) {
       const nextChar = fullText[fullText.length - endFragment.length - 1]
       const testEndFragment = nextChar + endFragment
       const testWidth = getFragmentsTotalWidth(startFragment, testEndFragment)
@@ -145,8 +149,6 @@ export const getMiddleTruncateFragments = ({
       startFragment = startFragment.slice(0, startFragment.length - 1)
     } else if (endFragment.length > 0) {
       endFragment = endFragment.slice(1)
-    } else {
-      break
     }
 
     fullWidth = getFragmentsTotalWidth(startFragment, endFragment)
@@ -156,12 +158,18 @@ export const getMiddleTruncateFragments = ({
   // This step ensures to use every available pixel efficiently
   if (fullWidth < targetWidth) {
     const remainingWidth = targetWidth - fullWidth
+    const hasHiddenText =
+      startFragment.length + endFragment.length < fullText.length
 
     // Try to add characters to both ends while maintaining visual balance
     // Only add to startFragment if startSliceIndex > 0
     const startChar =
-      startSliceIndex > 0 ? lastLineText[startFragment.length] : null
-    const endChar = fullText[fullText.length - endFragment.length - 1]
+      hasHiddenText && startSliceIndex > 0
+        ? lastLineText[startFragment.length]
+        : null
+    const endChar = hasHiddenText
+      ? fullText[fullText.length - endFragment.length - 1]
+      : null
 
     if (startChar && measureWidth(startChar) <= remainingWidth) {
       startFragment += startChar
