@@ -4,29 +4,33 @@
 
 **Problem Statement**
 
-`Truncate` currently flattens `children` into plain text before computing the collapsed result. This makes the collapsed state lose rendered markup semantics such as links, inline styles, classes, and DOM structure produced by components like `linkify-react`. As a result:
+`Truncate` currently uses the plain-text engine to decide the collapsed range, then optionally reconstructs inline DOM when `preserveMarkup` is enabled. This fixes semantic loss such as dropped links, classes, and inline styles, but it still inherits the measurement blind spots of plain-text truncation.
 
-- issue `#22` cannot keep clickable links in the collapsed state
-- issue `#26` loses `Linkify` styling in `ShowMore` while collapsed
-- `ShowMore` and `MiddleTruncate` inherit the same limitation because they are thin wrappers around `Truncate`
+That remaining gap matters in real usage:
+
+- inline styles such as `font-weight`, `font-style`, `letter-spacing`, or custom font stacks can change line wrapping
+- nested inline markup such as `a > span`, `strong`, `code`, or linkified output can occupy more width than the flattened plain-text measurement predicts
+- the collapsed result can therefore overflow into an extra rendered line even when the algorithm expected it to fit
+
+This is especially visible in docs demos, where users compare examples side by side and immediately notice when `preserveMarkup` says “3 lines” but the browser renders 4.
 
 ## Goals
 
 - Preserve rendered inline markup in the collapsed state when explicitly requested
-- Keep the existing default performance profile for plain-text users
-- Make `ShowMore` inherit the capability without new public components
-- Prepare `MiddleTruncate` for phased support instead of forcing full parity immediately
+- Make `preserveMarkup` measurement style-aware instead of relying on plain-text width guesses
+- Keep the current default performance profile for users who do not opt into `preserveMarkup`
+- Add stable docs-page E2E coverage for the library’s own live demos so obvious regressions are caught before release
 
 ## Non-Goals
 
-- Do not guarantee perfect preservation of arbitrary React component identity
+- Do not change the default plain-text truncation behavior for existing users
+- Do not promise perfect preservation of arbitrary React component identity, refs, or internal state
 - Do not guarantee block-level layout truncation in the first phase
-- Do not change the default truncation behavior for existing users
-- Do not introduce a parallel public component family such as `MarkupTruncate`
+- Do not force `MiddleTruncate` onto the new measurement path in this iteration
 
 ## Public API Direction
 
-Keep the existing public components unchanged and add one opt-in prop on `Truncate`:
+Keep the existing public components unchanged and continue to expose a single opt-in prop on `Truncate`:
 
 ```ts
 interface TruncateProps {
@@ -37,51 +41,107 @@ interface TruncateProps {
 Recommended behavior:
 
 - `preserveMarkup` defaults to `false`
-- `false` keeps the current plain-text truncation engine
-- `true` enables a markup-preserving engine that works from rendered DOM output
+- `false` keeps the current plain-text engine unchanged
+- `true` enables a markup-preserving, style-aware measurement engine
 - `ShowMore` transparently forwards `preserveMarkup`
-- `MiddleTruncate` is phased separately and should not promise full support in the first release
+- `MiddleTruncate` remains out of scope for this style-aware phase
 
-## Why Not a New Public Component
+## Why The Existing Hybrid Approach Is Not Enough
 
-Creating a public `MarkupTruncate` would split the API surface and quickly raise follow-up questions such as whether `MarkupShowMore` and `MarkupMiddleTruncate` are also required. Keeping a single public `Truncate` with an opt-in flag gives users one mental model, keeps docs smaller, and isolates the performance cost to users who need the feature.
+The current hybrid approach is:
 
-## Internal Architecture
+1. use the plain-text engine to compute visible text lines
+2. rebuild preserved markup from a DOM snapshot
 
-`Truncate` remains the only public entry point but internally routes between two engines:
+This is not sufficient because the truncation boundary is already wrong before markup reconstruction begins. Once the browser applies real inline styles, the supposedly safe prefix may wrap differently and spill into one more line.
+
+That means the root cause sits in the measurement layer, not the render layer.
+
+## Recommended Architecture
+
+`Truncate` keeps two internal engines:
 
 1. **Plain-text engine**
-   - current logic
    - default path
+   - current measurement behavior
    - optimized for performance
 
-2. **Markup engine**
-   - enabled only when `preserveMarkup === true`
-   - works from rendered DOM structure instead of flattened text
+2. **Style-aware markup engine**
+   - used only when `preserveMarkup === true && middle !== true`
+   - computes truncation from rendered DOM structure and actual browser layout
+   - reconstructs collapsed output from a markup snapshot
 
-Recommended internal split:
+### Internal Layers
 
-- **Measurement layer**
-  - container width
-  - ellipsis width
-  - font measurement
-- **Markup snapshot layer**
-  - traverse the rendered hidden node
-  - capture text nodes, inline elements, and line breaks
-  - keep rendered DOM semantics rather than React component identity
-- **Truncation layer**
-  - compute the maximum visible range within width and line limits
-  - support end truncation first
-  - reuse the same snapshot model for later middle truncation
-- **Render layer**
-  - rebuild the collapsed React output from the truncated snapshot
-  - append the ellipsis node while preserving inline structure as much as possible
+#### 1. Snapshot layer
+
+- traverse the hidden rendered node
+- capture text nodes, inline elements, and `br`
+- preserve rendered DOM semantics such as `href`, `class`, `style`, and nested inline structure
+- avoid trying to preserve React component identity
+
+#### 2. Style-aware measurement layer
+
+- build a hidden measurement container that inherits the relevant width and text layout constraints
+- render candidate collapsed output using the preserved snapshot plus ellipsis
+- measure actual browser layout with DOM APIs such as `Range` and `getClientRects()` or equivalent rendered-height checks
+- determine whether the candidate fits within the requested number of lines
+
+#### 3. Search layer
+
+- binary-search the maximum visible prefix that still fits with the ellipsis included
+- reuse the snapshot tree while varying only the visible text boundary
+- support end truncation first
+
+#### 4. Render layer
+
+- rebuild the collapsed React output from the chosen snapshot prefix
+- append the ellipsis node after preserved markup
+- keep inline structure intact wherever possible
+
+## Measurement Strategy Details
+
+### Why real DOM measurement
+
+The browser already knows the true width impact of:
+
+- `font-weight`
+- `font-style`
+- `letter-spacing`
+- inline `style`
+- nested `span`, `strong`, `em`, `code`, `a`
+- third-party renderers that output standard inline DOM
+
+Trying to approximate these effects from flattened text is fragile. Measuring the actual candidate DOM is more expensive, but it directly matches what the user sees.
+
+### Proposed fit check
+
+For each candidate prefix:
+
+1. render the visible prefix plus ellipsis into the hidden measurement container
+2. inspect the rendered layout
+3. treat the candidate as valid only if it stays within the requested line count
+
+Preferred implementation direction:
+
+- use actual DOM layout from a hidden but measurable container
+- use line-aware APIs such as `Range#getClientRects()` when that gives stable line counts
+- fall back to container height checks only when line-rect counting is insufficient
+
+### Constraints for stability
+
+The measurement container should:
+
+- share the target width
+- inherit text styles from the visible root
+- stay measurable while visually hidden
+- avoid affecting page layout or user interaction
 
 ## Supported Scope
 
 ### Phase 1
 
-`Truncate` and `ShowMore` support markup preservation for rendered inline content, including typical output such as:
+`Truncate` and `ShowMore` support markup preservation for rendered inline content, including:
 
 - text nodes
 - `a`
@@ -89,72 +149,92 @@ Recommended internal split:
 - `strong`
 - `em`
 - `code`
-- inline classes and inline styles
-- components like `linkify-react` that finally render standard inline DOM nodes
+- inline classes
+- inline styles
+- components such as `linkify-react` that finally render standard inline DOM nodes
 
-### Phase 1 Limitations
+### Phase 1 limitations
 
 - no guarantee for block elements
-- no guarantee for complex interactive custom component behavior in collapsed state
-- no guarantee for React refs or internal component state preservation
-- no guarantee for exact equivalence of deeply nested custom component trees
-
-### Phase 2
-
-Extend the markup engine to support `middle` truncation for `MiddleTruncate`, starting with simple inline markup only.
+- no guarantee for custom component behavior beyond the DOM they render
+- no guarantee for refs or component state preservation in collapsed output
+- no style-aware `middle` truncation yet
 
 ## Component Responsibilities
 
 ### `Truncate`
 
-- owns measurement
-- owns truncation strategy selection
-- owns collapsed-state rendering
-- defines the official support boundary for markup preservation
+- owns engine selection
+- owns measurement strategy
+- owns collapsed rendering
+- defines the official support boundary for `preserveMarkup`
 
 ### `ShowMore`
 
 - owns expand/collapse state only
 - forwards `preserveMarkup` to `Truncate`
-- does not implement any extra markup compatibility logic
+- does not implement a separate markup-specific layout algorithm
 
 ### `MiddleTruncate`
 
-- remains a semantic wrapper around `Truncate`
-- should reuse the same snapshot model and rendering layer
-- can lag one phase behind `Truncate` and `ShowMore`
+- remains on the existing path for now
+- can adopt the snapshot primitives later in a dedicated phase
 
 ## Performance Strategy
 
-Markup preservation is more expensive than the current plain-text approach because it requires DOM traversal, snapshot creation, truncation against a richer model, and node reconstruction. To avoid regressing users who only need plain-text truncation:
+Markup preservation remains more expensive than plain-text truncation because it requires DOM traversal, candidate rendering, and repeated layout checks.
+
+To avoid regressing the default path:
 
 - keep the plain-text engine as the default path
-- make markup preservation strictly opt-in via `preserveMarkup`
-- memoize snapshot work where possible
-- skip collapsed-state computation when `ShowMore` is expanded
-- reuse existing width measurement primitives where possible
+- only enable style-aware measurement when `preserveMarkup === true`
+- skip this engine for `middle` truncation in the first phase
+- avoid repeated work when `ShowMore` is expanded
+- reuse the snapshot representation across binary-search iterations
+
+## Docs-Page E2E Strategy
+
+The docs site is the library’s public contract in action. If its live demos visibly overflow, users will assume the library is broken even if unit tests pass.
+
+Add browser E2E coverage against the real docs preview site for the pages that demonstrate this feature:
+
+- `/reference/truncate/`
+- `/reference/show-more/`
+- `/zh/reference/show-more/`
+
+### E2E design principles
+
+- add stable `data-testid` anchors to the live demo containers and key preserved nodes
+- use fixed demo width, fixed content, and fixed line-height where needed to keep tests deterministic
+- assert behavior, not implementation details
+
+### Core docs assertions
+
+- `preserveMarkup` collapsed output does not render an extra line compared with the intended line budget
+- preserved collapsed output still contains expected inline nodes such as links or styled spans
+- `ShowMore` expands and collapses correctly in docs demos
+- at least one Chinese docs example covers the previous extra-line regression path
 
 ## Migration and Compatibility
 
 - existing users see no behavior change unless they opt in
-- existing tests for plain-text behavior should remain valid
-- docs must explain that markup preservation is best-effort for rendered inline markup, not full arbitrary React component preservation
+- existing plain-text tests stay valid
+- docs should explicitly describe `preserveMarkup` as opt-in, more expensive, and best-effort for rendered inline markup
 
 ## Recommended Rollout
 
-1. Refactor `Truncate` just enough to support dual engines
-2. Ship end truncation markup support behind `preserveMarkup`
-3. Forward the prop through `ShowMore`
-4. Document support boundaries and performance trade-offs
-5. Add `MiddleTruncate` markup support in a separate phase
+1. Replace the markup engine’s plain-text-derived boundary with style-aware measurement
+2. Keep snapshot/render primitives but rebase them on the new fit-check loop
+3. Preserve `ShowMore` compatibility by forwarding the prop unchanged
+4. Add stable docs-page E2E for the actual live demos
+5. Defer `MiddleTruncate` style-aware support to a later phase
 
 ## Risks
 
-- attribute and child-node preservation bugs during reconstruction
-- resize-triggered recomputation cost in markup-heavy lists
-- awkward edge cases when truncation cuts through nested inline structures
-- over-promising support for arbitrary custom components in docs
+- binary-search candidate rendering may become expensive in markup-heavy lists
+- line counting can differ across environments if tests depend on unstable fonts or container styles
+- nested inline reconstruction may still reveal edge cases when truncation cuts inside deeply styled content
 
-## Recommendation
+## Decision Summary
 
-Adopt a single public `Truncate` API with an opt-in `preserveMarkup` prop, backed by an internal dual-engine architecture. Deliver `Truncate` and `ShowMore` first, then extend `MiddleTruncate` in a second phase once the shared snapshot and rendering primitives are stable.
+Keep `preserveMarkup` opt-in, but make it truly style-aware by measuring real rendered DOM instead of deriving boundaries from flattened plain text. Back the feature with docs-page E2E coverage so the project’s own demos cannot silently regress into obvious overflow bugs.
