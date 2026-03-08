@@ -34,8 +34,11 @@ jobs:
       - name: Run source e2e tests
         run: pnpm test:e2e
 
-      - name: Build library and docs
-        run: pnpm build
+      - name: Build docs E2E assets
+        run: pnpm build:docs:e2e
+
+      - name: Run docs page e2e tests
+        run: pnpm test:e2e:docs:preview e2e/tests/docs-pages.spec.ts
 
       - name: Run coverage on main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
