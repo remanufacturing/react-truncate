@@ -8,6 +8,34 @@ const SHOW_MORE_TEXT =
 const FILE_NAME = 'Quarterly-operating-report-final-reviewed-version-2026.pdf'
 const RESIZE_TEXT =
   'Resizing the container should force truncation to recalculate and produce a shorter visible result in the narrow state.'
+const INLINE_CHINESE_RICH_TEXT = (
+  <>
+    从前有座山，山上有座庙，庙里有个老和尚，老和尚一边讲故事，一边指向
+    <a
+      href="https://truncate.js.org"
+      className="underline"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      文档链接
+    </a>
+    ，还强调这是
+    <span className="font-semibold" style={{ color: '#0ea5e9' }}>
+      重点样式文本
+    </span>
+    。故事继续讲下去：从前有座山，山上有座庙，庙里有个老和尚，老和尚又提到了
+    <a
+      href="https://www.google.bg/"
+      title="Google"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      更多内容
+    </a>
+    ，然后继续讲从前有座山、山上有座庙、庙里有个老和尚的故事，让这段内容足够长，以便稳定触发裁剪并比较
+    preserveMarkup 开关前后的折叠高度。
+  </>
+)
 
 const sectionStyle: React.CSSProperties = {
   display: 'grid',
@@ -110,6 +138,35 @@ export const App: React.FC = () => {
           style={{ ...boxStyle, ...resizeStyle }}
         >
           <Truncate lines={2}>{RESIZE_TEXT}</Truncate>
+        </div>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2>Chinese preserve markup</h2>
+        <div
+          style={{
+            display: 'grid',
+            gap: '12px',
+            gridTemplateColumns: '1fr 1fr',
+          }}
+        >
+          <div
+            data-testid="zh-show-more-plain"
+            style={{ ...boxStyle, width: '220px' }}
+          >
+            <ShowMore lines={3} separator="">
+              {INLINE_CHINESE_RICH_TEXT}
+            </ShowMore>
+          </div>
+
+          <div
+            data-testid="zh-show-more-markup"
+            style={{ ...boxStyle, width: '220px' }}
+          >
+            <ShowMore lines={3} separator="" preserveMarkup>
+              {INLINE_CHINESE_RICH_TEXT}
+            </ShowMore>
+          </div>
         </div>
       </section>
     </main>

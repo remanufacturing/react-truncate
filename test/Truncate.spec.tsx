@@ -5,12 +5,13 @@ import { renderToString } from 'react-dom/server'
 import ReactIs from 'react-is'
 import sinon from 'sinon'
 import { Truncate, type TruncateProps } from '@/Truncate'
+import { createMarkupSnapshot } from '@/Truncate/markup/snapshot'
 import {
   getEllipsisWidth,
   getMiddleTruncateFragments,
   innerText,
   trimRight,
-} from '@/Truncate/utils'
+} from '@/Truncate/shared/utils'
 import {
   ellipsis,
   getMultiLineText,
@@ -182,6 +183,129 @@ describe('<Truncate />', () => {
           const result = `Some new conten${ellipsis}`
           expect(getRootInnerText()).toBe(result)
         })
+      })
+
+      it('should still collapse rich children to plain text by default', async () => {
+        const { container } = render(
+          <Box lines={1}>
+            Hello{' '}
+            <a href="/docs" className="rich-link">
+              <span style={{ color: 'red' }}>link</span>
+            </a>{' '}
+            world and more
+          </Box>,
+        )
+
+        await waitFor(() => {
+          expect(getRootInnerText()).toBe(`Hello link worl${ellipsis}`)
+        })
+
+        expect(container.querySelector('a[href="/docs"]')).toBeNull()
+      })
+
+      it('should preserve inline markup in collapsed output when preserveMarkup is enabled', async () => {
+        const { container } = render(
+          <Box lines={1} preserveMarkup>
+            Hello{' '}
+            <a href="/docs" className="rich-link">
+              <span style={{ color: 'red' }}>link</span>
+            </a>{' '}
+            world and more
+          </Box>,
+        )
+
+        await waitFor(() => {
+          expect(getRootInnerText()).toBe(`Hello link worl${ellipsis}`)
+        })
+
+        const link = container.querySelector('a[href="/docs"]')
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveClass('rich-link')
+
+        const styledSpan = link?.querySelector('span')
+        expect(styledSpan).toHaveStyle({ color: 'red' })
+      })
+
+      it('should append a React ellipsis after preserved markup when preserveMarkup is enabled', async () => {
+        render(
+          <Box lines={1} preserveMarkup ellipsis={<a href="/more">… more</a>}>
+            Hello <strong>link</strong> world and more
+          </Box>,
+        )
+
+        await waitFor(() => {
+          expect(getRootInnerText()).toContain('… more')
+        })
+
+        const root = document.querySelector('[role="root"]') as HTMLElement
+        const ellipsisLink = root.querySelector('a[href="/more"]')
+        expect(ellipsisLink).toBeInTheDocument()
+      })
+
+      it('should keep the same collapsed line breaks as plain text when preserveMarkup is enabled', async () => {
+        const richContent = (
+          <>
+            This is a long inline rich text demo with a{' '}
+            <a href="/docs" className="rich-link">
+              linked words
+            </a>{' '}
+            and some <span style={{ color: 'red' }}>highlighted text</span> that
+            keeps flowing so the browser needs to clamp it across multiple
+            lines.
+          </>
+        )
+
+        const { container, rerender } = render(
+          <Box lines={3}>{richContent}</Box>,
+        )
+
+        let plainTextCollapsed = ''
+
+        await waitFor(() => {
+          plainTextCollapsed = getRootInnerText()
+          expect(plainTextCollapsed).toContain('\n')
+        })
+
+        rerender(
+          <Box lines={3} preserveMarkup>
+            {richContent}
+          </Box>,
+        )
+
+        await waitFor(() => {
+          expect(getRootInnerText()).toBe(plainTextCollapsed)
+        })
+
+        const link = container.querySelector('a[href="/docs"]')
+        expect(link).toBeInTheDocument()
+      })
+
+      it('should keep original rich children when preserveMarkup is enabled but truncation is not needed', async () => {
+        const richContent = (
+          <>
+            Hello{' '}
+            <a href="/docs" className="rich-link">
+              docs
+            </a>{' '}
+            and <span style={{ color: 'red' }}>styled text</span>
+          </>
+        )
+
+        const { container } = render(
+          <Box lines={6} preserveMarkup>
+            {richContent}
+          </Box>,
+        )
+
+        await waitFor(() => {
+          expect(getRootInnerText()).toContain('Hello docs and')
+        })
+
+        const link = container.querySelector('a[href="/docs"]')
+        expect(link).toBeInTheDocument()
+
+        const styledSpan = link?.parentElement?.querySelector('span')
+        expect(styledSpan).toHaveStyle({ color: 'red' })
       })
 
       it('should render without an error when the last line is exactly as wide as the container', () => {
@@ -541,6 +665,51 @@ describe('<Truncate />', () => {
           const result = testMessage.slice(0, numCharacters) + ellipsis
           expect(getRootInnerText()).toBe(result)
         })
+      })
+    })
+
+    describe('createMarkupSnapshot', () => {
+      it('should capture text nodes, nested inline elements, br and attributes', () => {
+        const root = document.createElement('span')
+        root.innerHTML =
+          'Hello <a href="/docs" class="rich-link"><span style="color: red;">li</span></a><br>world'
+
+        expect(createMarkupSnapshot(root, separator)).toEqual([
+          {
+            type: 'text',
+            text: 'Hello ',
+          },
+          {
+            type: 'element',
+            tagName: 'a',
+            attributes: {
+              href: '/docs',
+              class: 'rich-link',
+            },
+            children: [
+              {
+                type: 'element',
+                tagName: 'span',
+                attributes: {
+                  style: 'color: red;',
+                },
+                children: [
+                  {
+                    type: 'text',
+                    text: 'li',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: 'line-break',
+          },
+          {
+            type: 'text',
+            text: 'world',
+          },
+        ])
       })
     })
 

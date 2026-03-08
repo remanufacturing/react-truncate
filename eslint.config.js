@@ -32,4 +32,18 @@ export default defineFlatConfig([
     name: getConfigName('ignore'),
     ignores: ['**/dist/**', '**/lib/**', '**/legacy/**'],
   },
+
+  {
+    name: getConfigName('test'),
+    files: [
+      'test/**/*.{js,mjs,ts,tsx}',
+      'e2e/**/*.{js,mjs,ts,tsx}',
+      'smoke/**/*.{js,mjs,ts,tsx,html}',
+      'playwright.config.ts',
+      'smoke/playwright.config.ts',
+    ],
+    rules: {
+      'tailwindcss/no-custom-classname': 'off',
+    },
+  },
 ])
