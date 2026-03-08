@@ -1,4 +1,5 @@
 import { readFileSync, rmSync } from 'node:fs'
+import process from 'node:process'
 
 const PID_FILE = '/tmp/react-truncate-docs-preview.pid'
 
