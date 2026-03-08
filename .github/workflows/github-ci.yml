@@ -44,6 +44,21 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: pnpm coverage
 
+      - name: Upload coverage to Codecov
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-build
+          if-no-files-found: error
+          path: |
+            dist
+            docs/dist
+
   smoke:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: verify
@@ -78,20 +93,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build library and docs
-        run: pnpm build
+          name: site-build
+          path: .
 
       - name: Deploy docs
         uses: crazy-max/ghaction-github-pages@v4
@@ -100,8 +106,3 @@ jobs:
           build_dir: docs/dist
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
