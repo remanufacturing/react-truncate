@@ -92,18 +92,15 @@ export interface TruncateProps extends DetailedHTMLProps {
    * 2. 如果小于 `0` ，则默认为 `0`
    * 3. 如果值为 `0` ，则表示不被截断
    *
-   * @description 选项冲突注意事项：
-   *  当启用`middle`选项时，该选项将始终为 `1`
+   * 选项冲突注意事项： 当启用`middle`选项时，该选项将始终为 `1`
    *
-   * @since v0.4.0 添加安全整数和正整数检查
-   *
+   * @since V0.4.0 添加安全整数和正整数检查
    * @default 1
    */
   lines?: number
 
   /**
-   * 如果为 `true` ，省略号之前的空格将被删除
-   * 例如： `words …` 将成为 `words…` 而不是
+   * 如果为 `true` ，省略号之前的空格将被删除 例如： `words …` 将成为 `words…` 而不是
    *
    * @default false
    */
@@ -114,8 +111,7 @@ export interface TruncateProps extends DetailedHTMLProps {
    *
    * 如果指定，则内容的计算将基于此数字。
    *
-   * 不指定的情况下将根据组件的
-   * `parentElement.getBoundingClientRect().width` 获取
+   * 不指定的情况下将根据组件的 `parentElement.getBoundingClientRect().width` 获取
    */
   width?: number
 
@@ -124,11 +120,9 @@ export interface TruncateProps extends DetailedHTMLProps {
    *
    * 默认情况下，假定文本使用空格作为分词约定（例如英语），
    *
-   * 但是不一定适合全部语言，不同的语言可以根据用语习惯指定其他符号，
-   * 例如中文内容时，可传入空字符串，从而得到更好的计算结果。
+   * 但是不一定适合全部语言，不同的语言可以根据用语习惯指定其他符号， 例如中文内容时，可传入空字符串，从而得到更好的计算结果。
    *
-   * @since v0.2.0
-   *
+   * @since V0.2.0
    * @default ' '
    */
   separator?: string
@@ -136,11 +130,9 @@ export interface TruncateProps extends DetailedHTMLProps {
   /**
    * 启用在中间位置截断
    *
-   * @description 选项冲突注意事项：
-   *  当启用此选项时，`lines` 选项将始终为 `1`
+   * 选项冲突注意事项： 当启用此选项时，`lines` 选项将始终为 `1`
    *
-   * @since v0.3.0
-   *
+   * @since V0.3.0
    * @default false
    */
   middle?: boolean
@@ -148,6 +140,7 @@ export interface TruncateProps extends DetailedHTMLProps {
   /**
    * 尽可能在折叠态保留已渲染的内联标记结构
    *
+   * @since V0.6.0
    * @default false
    */
   preserveMarkup?: boolean
@@ -159,11 +152,9 @@ export interface TruncateProps extends DetailedHTMLProps {
    *
    * 如果结束位置超出了文本长度时，截断位置会被处理在末尾。
    *
-   * @description 选项生效注意事项：
-   *  该选项仅在 `middle` 选项启用时才会生效
+   * 选项生效注意事项： 该选项仅在 `middle` 选项启用时才会生效
    *
-   * @since v0.3.0
-   *
+   * @since V0.3.0
    * @default 5
    */
   end?: number
@@ -172,7 +163,6 @@ export interface TruncateProps extends DetailedHTMLProps {
    * 触发截断行为时的回调函数
    *
    * @param didTruncate - 是否发生截断
-   *
    */
   onTruncate?: (didTruncate: boolean) => void
 }

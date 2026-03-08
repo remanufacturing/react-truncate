@@ -86,6 +86,7 @@ export interface TruncateProps extends DetailedHTMLProps {
    * This option is opt-in because it performs more work than the default
    * plain-text truncation path.
    *
+   * @since V0.6.0
    * @default false
    */
   preserveMarkup?: boolean
