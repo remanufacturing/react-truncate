@@ -99,6 +99,47 @@ describe('<ShowMore />', () => {
         })
       })
 
+      it('should keep default collapsed rich content behavior without preserveMarkup', async () => {
+        const { container } = render(
+          <Box lines={1}>
+            Hello{' '}
+            <a href="/docs" className="rich-link">
+              <span style={{ color: 'red' }}>link</span>
+            </a>{' '}
+            world and more
+          </Box>,
+        )
+
+        await waitFor(() => {
+          expect(getRootInnerText()).toBe(`Hello li${expandText}`)
+        })
+
+        expect(container.querySelector('a[href="/docs"]')).toBeNull()
+      })
+
+      it('should preserve inline markup in collapsed output when preserveMarkup is enabled', async () => {
+        const { container } = render(
+          <Box lines={1} preserveMarkup>
+            Hello{' '}
+            <a href="/docs" className="rich-link">
+              <span style={{ color: 'red' }}>link</span>
+            </a>{' '}
+            world and more
+          </Box>,
+        )
+
+        await waitFor(() => {
+          expect(getRootInnerText()).toBe(`Hello li${expandText}`)
+        })
+
+        const link = container.querySelector('a[href="/docs"]')
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveClass('rich-link')
+
+        const styledSpan = link?.querySelector('span')
+        expect(styledSpan).toHaveStyle({ color: 'red' })
+      })
+
       describe('when toggle buttons clicked', () => {
         const message =
           'This text should stop at here and not contain the next lines'

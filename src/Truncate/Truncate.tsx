@@ -1,12 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { getMarkupTruncation } from './engines/markup'
+import { getPlainTextTruncation } from './engines/plain-text'
+import { renderLine } from './shared/utils'
 import { type TruncateProps } from './types'
-import {
-  getEllipsisWidth,
-  getMiddleTruncateFragments,
-  innerText,
-  renderLine,
-  trimRight,
-} from './utils'
 
 export const Truncate: React.FC<TruncateProps> = ({
   children,
@@ -17,6 +13,7 @@ export const Truncate: React.FC<TruncateProps> = ({
   separator = ' ',
   middle: middleTruncate = false,
   end: initialEnd = 5,
+  preserveMarkup = false,
   onTruncate,
   ...spanProps
 }) => {
@@ -39,20 +36,16 @@ export const Truncate: React.FC<TruncateProps> = ({
   }, [targetWidth])
 
   const calcTWidth = useCallback((): number | undefined => {
-    // Calculation is no longer relevant, since node has been removed
     if (!targetRef.current?.parentElement) {
       return
     }
 
     const newTargetWidth =
       width ||
-      // Floor the result to deal with browser subpixel precision
       Math.floor(targetRef.current.parentElement.getBoundingClientRect().width)
 
-    // Delay calculation until parent node is inserted to the document
-    // Mounting order in React is ChildComponent, ParentComponent
     if (!newTargetWidth) {
-      return window.requestAnimationFrame(() => calcTWidth(/* callback */))
+      return window.requestAnimationFrame(() => calcTWidth())
     }
 
     const style = window.getComputedStyle(targetRef.current)
@@ -83,7 +76,6 @@ export const Truncate: React.FC<TruncateProps> = ({
 
     return () => {
       window.removeEventListener('resize', calcTWidth)
-
       window.cancelAnimationFrame(animationFrame)
     }
   }, [calcTWidth, animationFrame])
@@ -106,7 +98,6 @@ export const Truncate: React.FC<TruncateProps> = ({
     [canvasContext],
   )
 
-  // Adds stricter integer validation and resets invalid values to default value
   const defaultLines = useMemo(() => {
     if (!Number.isSafeInteger(initialLines) || initialLines < 0) return 0
     return initialLines
@@ -117,158 +108,66 @@ export const Truncate: React.FC<TruncateProps> = ({
     [defaultLines, middleTruncate],
   )
 
-  // Make sure the end position is negative or 0
   const end = useMemo(() => {
     const absVal = Math.abs(initialEnd)
     const val = Number.isFinite(absVal) ? Math.floor(absVal) : 0
     return val > 0 ? -val : val
   }, [initialEnd])
 
-  const getLines = useCallback(() => {
-    const resultLines: Array<string | React.JSX.Element> = []
-    const fullText = innerText(textRef.current, separator)
-    const textLines = fullText.split('\n').map((line) => line.split(separator))
-    const ellipsisWidth = getEllipsisWidth(ellipsisRef.current) || 0
-
-    let didTruncate = true
-
-    for (let line = 1; line <= lines; line++) {
-      const textWords = textLines[0]
-
-      // Handle newline
-      if (textWords.length === 0) {
-        resultLines.push()
-        textLines.shift()
-        line--
-        continue
-      }
-
-      let resultLine: string | React.JSX.Element =
-        textWords.join(separator) || ''
-      if (measureWidth(resultLine) <= targetWidth) {
-        if (textLines.length === 1) {
-          // Line is end of text and fits without truncating
-          didTruncate = false
-          resultLines.push(resultLine)
-          break
-        }
-      }
-
-      if (line === lines) {
-        // Binary search determining the longest possible line including truncate string
-        const textRest = textWords.join(separator)
-
-        let lower = 0
-        let upper = textRest.length - 1
-
-        while (lower <= upper) {
-          const middle = Math.floor((lower + upper) / 2)
-          const testLine = textRest.slice(0, middle + 1)
-
-          if (measureWidth(testLine) + ellipsisWidth <= targetWidth) {
-            lower = middle + 1
-          } else {
-            upper = middle - 1
-          }
-        }
-
-        let lastLineText = textRest.slice(0, lower)
-
-        if (trimWhitespace) {
-          lastLineText = trimRight(lastLineText)
-
-          // Remove blank lines from the end of text
-          while (!lastLineText.length && resultLines.length) {
-            const prevLine = resultLines.pop()
-
-            if (prevLine && typeof prevLine === 'string')
-              lastLineText = trimRight(prevLine)
-          }
-        }
-
-        if (middleTruncate && end !== 0) {
-          const { startFragment, endFragment } = getMiddleTruncateFragments({
-            end,
-            lastLineText,
-            fullText,
-            targetWidth,
-            ellipsisWidth,
-            measureWidth,
-          })
-
-          resultLine = (
-            <span>
-              {startFragment}
-              {ellipsis}
-              {endFragment}
-            </span>
-          )
-        } else {
-          resultLine = (
-            <span>
-              {lastLineText}
-              {ellipsis}
-            </span>
-          )
-        }
-      } else {
-        // Binary search determining when the line breaks
-        let lower = 0
-        let upper = textWords.length - 1
-
-        while (lower <= upper) {
-          const middle = Math.floor((lower + upper) / 2)
-
-          const testLine = textWords.slice(0, middle + 1).join(separator)
-
-          if (measureWidth(testLine) <= targetWidth) {
-            lower = middle + 1
-          } else {
-            upper = middle - 1
-          }
-        }
-
-        // The first word of this line is too long to fit it
-        if (lower === 0) {
-          // Jump to processing of last line
-          line = lines - 1
-          continue
-        }
-
-        resultLine = textWords.slice(0, lower).join(separator)
-        textLines[0].splice(0, lower)
-      }
-
-      resultLines.push(resultLine)
-    }
-
-    truncate(didTruncate)
-
-    return resultLines
-  }, [
-    separator,
-    truncate,
-    lines,
-    measureWidth,
-    targetWidth,
-    trimWhitespace,
-    end,
-    middleTruncate,
-    ellipsis,
-  ])
-
   useEffect(() => {
     const mounted = !!(targetRef.current && targetWidth)
 
     if (typeof window !== 'undefined' && mounted) {
       if (lines > 0) {
-        setRenderTextRef(getLines().map(renderLine))
+        const plainTextResult = getPlainTextTruncation({
+          ellipsis,
+          ellipsisRef: ellipsisRef.current,
+          end,
+          lines,
+          measureWidth,
+          middleTruncate,
+          separator,
+          targetWidth,
+          textRef: textRef.current,
+          trimWhitespace,
+        })
+
+        if (preserveMarkup && !middleTruncate) {
+          if (plainTextResult.didTruncate) {
+            setRenderTextRef(
+              getMarkupTruncation({
+                ellipsis,
+                node: textRef.current,
+                separator,
+                visibleTextLines: plainTextResult.visibleTextLines,
+              }),
+            )
+          } else {
+            setRenderTextRef(children)
+          }
+        } else {
+          setRenderTextRef(plainTextResult.resultLines.map(renderLine))
+        }
+
+        truncate(plainTextResult.didTruncate)
       } else {
         setRenderTextRef(children)
         truncate(false)
       }
     }
-  }, [children, lines, targetWidth, getLines, truncate])
+  }, [
+    children,
+    ellipsis,
+    end,
+    lines,
+    measureWidth,
+    middleTruncate,
+    preserveMarkup,
+    separator,
+    targetWidth,
+    trimWhitespace,
+    truncate,
+  ])
 
   return (
     <span {...spanProps} ref={targetRef} data-testid="truncate-root">

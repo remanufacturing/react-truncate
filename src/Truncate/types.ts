@@ -81,6 +81,16 @@ export interface TruncateProps extends DetailedHTMLProps {
   middle?: boolean
 
   /**
+   * Preserve rendered inline markup in collapsed output when possible
+   *
+   * This option is opt-in because it performs more work than the default
+   * plain-text truncation path.
+   *
+   * @default false
+   */
+  preserveMarkup?: boolean
+
+  /**
    * Number of characters to keep from the end of the text
    *
    * Always rounded down via `Math.floor`, and always treated as a position
