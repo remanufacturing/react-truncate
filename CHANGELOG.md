@@ -1,3 +1,18 @@
+# [0.6.0](https://github.com/remanufacturing/react-truncate/compare/v0.5.2...v0.6.0) (2026-03-08)
+
+
+### Bug Fixes
+
+* **truncate:** cover middle truncation edge cases ([2a4ce82](https://github.com/remanufacturing/react-truncate/commit/2a4ce82b27b4cd343a2b90c863a6412e47bcb78d))
+
+
+### Features
+
+* **Truncate:** add opt-in preserveMarkup rendering ([03b0b51](https://github.com/remanufacturing/react-truncate/commit/03b0b51fd788403eda6e513a2ddfe6c9599bb1f2))
+* **Truncate:** make preserveMarkup measurement style-aware ([3719968](https://github.com/remanufacturing/react-truncate/commit/3719968ed832c7ffa6604a53bdd74d409714e8d7))
+
+
+
 ## [0.5.2](https://github.com/remanufacturing/react-truncate/compare/v0.5.1...v0.5.2) (2025-08-19)
 
 
