@@ -1,8 +1,7 @@
 import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
-  testDir: './e2e/tests',
-  testMatch: 'docs-pages.spec.ts',
+  testDir: './e2e/docs',
   globalSetup: './e2e/docs-global-setup.mjs',
   globalTeardown: './e2e/docs-global-teardown.mjs',
   use: {
