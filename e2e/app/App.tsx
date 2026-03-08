@@ -37,6 +37,33 @@ const INLINE_CHINESE_RICH_TEXT = (
   </>
 )
 
+const STYLE_AWARE_RICH_TEXT = (
+  <>
+    这是普通文字，接着是
+    <a
+      href="https://truncate.js.org"
+      className="underline"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      文档链接
+    </a>
+    ，以及
+    <span
+      style={{
+        color: '#0ea5e9',
+        fontWeight: 900,
+        letterSpacing: '0.18em',
+        paddingInline: '8px',
+      }}
+    >
+      加宽样式片段
+    </span>
+    ，后面再接上一段足够长的说明文字，用来稳定触发 preserveMarkup
+    在样式感知测量上的回归场景。
+  </>
+)
+
 const sectionStyle: React.CSSProperties = {
   display: 'grid',
   gap: '8px',
@@ -165,6 +192,35 @@ export const App: React.FC = () => {
           >
             <ShowMore lines={3} separator="" preserveMarkup>
               {INLINE_CHINESE_RICH_TEXT}
+            </ShowMore>
+          </div>
+        </div>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2>Style-aware preserve markup</h2>
+        <div
+          style={{
+            display: 'grid',
+            gap: '12px',
+            gridTemplateColumns: '1fr 1fr',
+          }}
+        >
+          <div
+            data-testid="style-aware-plain"
+            style={{ ...boxStyle, width: '220px', lineHeight: '24px' }}
+          >
+            <ShowMore lines={3} separator="">
+              {STYLE_AWARE_RICH_TEXT}
+            </ShowMore>
+          </div>
+
+          <div
+            data-testid="style-aware-markup"
+            style={{ ...boxStyle, width: '220px', lineHeight: '24px' }}
+          >
+            <ShowMore lines={3} separator="" preserveMarkup>
+              {STYLE_AWARE_RICH_TEXT}
             </ShowMore>
           </div>
         </div>
