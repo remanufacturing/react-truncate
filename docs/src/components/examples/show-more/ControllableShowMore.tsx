@@ -5,6 +5,10 @@ import {
 } from '@re-dev/react-truncate'
 import React, { useMemo, useRef, useState } from 'react'
 import {
+  InlineChineseRichText,
+  InlineRichText,
+} from '@/components/examples/Data'
+import {
   DEFAULT_CUSTOM_VALUE,
   DEFAULT_HTML_VALUE,
   DEFAULT_LINES_VALUE,
@@ -42,6 +46,7 @@ export const ControllableShowMore: React.FC<{
   const [lines, setLines] = useState(DEFAULT_LINES_VALUE)
   const [html, setHtml] = useState(DEFAULT_HTML_VALUE)
   const [custom, setCustom] = useState(DEFAULT_CUSTOM_VALUE)
+  const [preserveMarkup, setPreserveMarkup] = useState(false)
 
   const ref = useRef<ShowMoreRef>(null)
 
@@ -49,7 +54,13 @@ export const ControllableShowMore: React.FC<{
     ref.current?.toggleLines(e)
   }
 
-  const { refreshKey } = useRefreshKey([width, lines, html, custom])
+  const { refreshKey } = useRefreshKey([
+    width,
+    lines,
+    html,
+    custom,
+    preserveMarkup,
+  ])
 
   return (
     <>
@@ -83,6 +94,13 @@ export const ControllableShowMore: React.FC<{
 
       <EW.Switch
         lang={lang}
+        labelKey="example.preserveMarkup"
+        checked={preserveMarkup}
+        onChange={(v) => setPreserveMarkup(v)}
+      />
+
+      <EW.Switch
+        lang={lang}
         labelKey="example.custom"
         checked={custom}
         onChange={(v) => setCustom(v)}
@@ -94,6 +112,7 @@ export const ControllableShowMore: React.FC<{
           ref={ref}
           lines={lines}
           separator={isZh ? '' : ' '}
+          preserveMarkup={preserveMarkup}
           more={
             custom ? (
               <CustomButton type="more" isZh={isZh} onClick={toggleLines} />
@@ -105,7 +124,15 @@ export const ControllableShowMore: React.FC<{
             ) : undefined
           }
         >
-          <EW.Content isZh={isZh} html={html} />
+          {html ? (
+            isZh ? (
+              <InlineChineseRichText />
+            ) : (
+              <InlineRichText />
+            )
+          ) : (
+            <EW.Content isZh={isZh} />
+          )}
         </ShowMore>
       </EW.Container>
     </>

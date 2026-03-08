@@ -18,6 +18,8 @@ A "Show More" component, when the content exceeds the set number of display line
 
 Use it like a normal component, just pass the long text as the `children` prop.
 
+`ShowMore` inherits the opt-in `preserveMarkup` prop from `Truncate`. Enable it when the collapsed state needs to keep rendered inline markup such as links or inline styles.
+
 <BasicShowMore client:only="react" lang="en" />
 
 <CodeCollapser client:only="react" lang='en'>
@@ -248,6 +250,6 @@ export type ShowMoreRef = {
 
 ## Live demo
 
-Here is a basic example that could theoretically be suitable for any project. Adjust the slider to control how it displays in different situations.
+Here is a basic example that could theoretically be suitable for any project. Adjust the controls to compare plain text, rich text, custom buttons, and preserveMarkup in different situations.
 
 <ControllableShowMore client:only="react" lang="en" />

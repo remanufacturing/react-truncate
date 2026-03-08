@@ -18,6 +18,8 @@ import {
 
 像普通组件一样使用它，只需将长文本作为 `children` prop 传递。
 
+`ShowMore` 会继承 `Truncate` 的 `preserveMarkup` 能力。如果折叠态需要保留链接、类名或内联样式等已渲染的内联富文本，可按需启用它。
+
 <BasicShowMore client:only="react" lang="zh" />
 
 <CodeCollapser client:only="react" lang='zh'>
@@ -239,6 +241,6 @@ export type ShowMoreRef = {
 
 ## 现场演示
 
-这是一个理论上适用于任何项目的基本示例，调整滑块，控制它在不同情况下的显示变化。
+这是一个理论上适用于任何项目的基本示例，可通过调节各项开关和滑块，对比纯文本、富文本、自定义按钮以及 preserveMarkup 在不同情况下的表现。
 
 <ControllableShowMore client:only="react" lang="zh" />
