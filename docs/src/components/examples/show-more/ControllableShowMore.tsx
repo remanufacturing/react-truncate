@@ -41,6 +41,7 @@ export const ControllableShowMore: React.FC<{
   lang: Languages
 }> = ({ lang }) => {
   const { isZh } = useLang(lang)
+  const testIdPrefix = `docs-show-more-demo-${lang}`
 
   const [width, setWidth] = useState(DEFAULT_WIDTH_VALUE)
   const [lines, setLines] = useState(DEFAULT_LINES_VALUE)
@@ -63,7 +64,7 @@ export const ControllableShowMore: React.FC<{
   ])
 
   return (
-    <>
+    <div data-testid={testIdPrefix}>
       <EW.Range
         lang={lang}
         labelKey="example.width"
@@ -72,6 +73,7 @@ export const ControllableShowMore: React.FC<{
         max="100"
         defaultValue={DEFAULT_WIDTH_VALUE}
         onChange={(v) => setWidth(v)}
+        data-testid={`${testIdPrefix}-width`}
       />
 
       <EW.Range
@@ -83,6 +85,7 @@ export const ControllableShowMore: React.FC<{
         defaultValue={DEFAULT_LINES_VALUE}
         onChange={(v) => setLines(v)}
         percentable={false}
+        data-testid={`${testIdPrefix}-lines`}
       />
 
       <EW.Switch
@@ -90,6 +93,7 @@ export const ControllableShowMore: React.FC<{
         labelKey="example.html"
         checked={html}
         onChange={(v) => setHtml(v)}
+        data-testid={`${testIdPrefix}-html`}
       />
 
       <EW.Switch
@@ -97,6 +101,7 @@ export const ControllableShowMore: React.FC<{
         labelKey="example.preserveMarkup"
         checked={preserveMarkup}
         onChange={(v) => setPreserveMarkup(v)}
+        data-testid={`${testIdPrefix}-preserve-markup`}
       />
 
       <EW.Switch
@@ -104,12 +109,17 @@ export const ControllableShowMore: React.FC<{
         labelKey="example.custom"
         checked={custom}
         onChange={(v) => setCustom(v)}
+        data-testid={`${testIdPrefix}-custom`}
       />
 
-      <EW.Container style={{ width: `${width}%` }}>
+      <EW.Container
+        data-testid={`${testIdPrefix}-container`}
+        style={{ width: `${width}%`, lineHeight: '24px' }}
+      >
         <ShowMore
           key={refreshKey}
           ref={ref}
+          data-testid={`${testIdPrefix}-content`}
           lines={lines}
           separator={isZh ? '' : ' '}
           preserveMarkup={preserveMarkup}
@@ -135,6 +145,6 @@ export const ControllableShowMore: React.FC<{
           )}
         </ShowMore>
       </EW.Container>
-    </>
+    </div>
   )
 }

@@ -163,6 +163,7 @@ export const InlineRichText: React.FC = () => (
   <>
     This is a long inline rich text demo with a{' '}
     <a
+      data-testid="docs-inline-rich-link-en"
       href="https://truncate.js.org"
       className="underline"
       rel="noopener noreferrer"
@@ -170,9 +171,21 @@ export const InlineRichText: React.FC = () => (
     >
       truncate.js.org
     </a>{' '}
-    link, some <span style={{ color: '#0ea5e9' }}>highlighted text</span>, and
-    more narrative content that keeps flowing so the collapsed state reliably
-    reaches the line limit. This is a long inline rich text demo with another{' '}
+    link, some{' '}
+    <span
+      data-testid="docs-inline-rich-accent-en"
+      style={{
+        color: '#0ea5e9',
+        fontWeight: 900,
+        letterSpacing: '0.18em',
+        paddingInline: '8px',
+      }}
+    >
+      highlighted text
+    </span>
+    , and more narrative content that keeps flowing so the collapsed state
+    reliably reaches the line limit. This is a long inline rich text demo with
+    another{' '}
     <a
       href="https://www.google.bg/"
       title="Google"
@@ -239,6 +252,7 @@ export const InlineChineseRichText: React.FC = () => (
   <>
     从前有座山，山上有座庙，庙里有个老和尚，老和尚一边讲故事，一边指向{' '}
     <a
+      data-testid="docs-inline-rich-link-zh"
       href="https://truncate.js.org"
       className="underline"
       rel="noopener noreferrer"
@@ -246,7 +260,18 @@ export const InlineChineseRichText: React.FC = () => (
     >
       truncate.js.org
     </a>
-    ，还强调这是 <span style={{ color: '#0ea5e9' }}>重点样式文本</span>
+    ，还强调这是{' '}
+    <span
+      data-testid="docs-inline-rich-accent-zh"
+      style={{
+        color: '#0ea5e9',
+        fontWeight: 900,
+        letterSpacing: '0.18em',
+        paddingInline: '8px',
+      }}
+    >
+      重点样式文本
+    </span>
     。故事继续讲下去：从前有座山，山上有座庙，庙里有个老和尚，老和尚又提到了{' '}
     <a
       href="https://www.google.bg/"

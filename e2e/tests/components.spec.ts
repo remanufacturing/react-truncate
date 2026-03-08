@@ -87,3 +87,25 @@ test('zh show-more preserveMarkup should not add an extra collapsed line', async
 
   expect(markupHeight).toBe(plainHeight)
 })
+
+test('style-aware preserveMarkup should not add an extra collapsed line', async ({
+  page,
+}) => {
+  await page.goto('/')
+
+  const plain = page.locator(
+    '[data-testid="style-aware-plain"] [data-testid="show-more-root"]',
+  )
+  const markup = page.locator(
+    '[data-testid="style-aware-markup"] [data-testid="show-more-root"]',
+  )
+
+  const plainHeight = await plain.evaluate(
+    (node) => node.getBoundingClientRect().height,
+  )
+  const markupHeight = await markup.evaluate(
+    (node) => node.getBoundingClientRect().height,
+  )
+
+  expect(markupHeight).toBe(plainHeight)
+})

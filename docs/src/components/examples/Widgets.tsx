@@ -74,7 +74,9 @@ type SharedItemProps = Omit<
   InputProps,
   'type' | 'className' | 'onChange' | 'lang'
 > &
-  ExampleFormLabelProps
+  ExampleFormLabelProps & {
+    'data-testid'?: string
+  }
 
 interface FormRangeProps extends SharedItemProps {
   onChange: (v: number) => void
@@ -122,16 +124,23 @@ const FormSwitch: React.FC<FormSwitchProps> = ({
   onChange,
   ...rests
 }) => {
+  const switchTestId = rests['data-testid'] as string | undefined
+
   return (
     <ExampleFormItem>
       <ExampleFormLabel lang={lang} labelKey={labelKey} />
 
-      <label className="switch">
+      <label className="switch" data-testid={switchTestId}>
         <input
           type="checkbox"
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
           {...rests}
+          data-testid={
+            typeof switchTestId === 'string'
+              ? `${switchTestId}-input`
+              : undefined
+          }
         />
         <span className="slider round"></span>
       </label>

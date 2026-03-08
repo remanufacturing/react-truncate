@@ -34,6 +34,14 @@ export default defineFlatConfig([
   },
 
   {
+    name: getConfigName('docs'),
+    files: ['docs/**/*.{js,mjs,ts,tsx,astro}'],
+    rules: {
+      'tailwindcss/no-custom-classname': 'off',
+    },
+  },
+
+  {
     name: getConfigName('test'),
     files: [
       'test/**/*.{js,mjs,ts,tsx}',
