@@ -28,6 +28,8 @@
 
 Provides `Truncate`, `MiddleTruncate` and `ShowMore` React components for truncating multi-line spans and adding an ellipsis.
 
+When you need the collapsed state to keep rendered inline markup such as links, classes, or inline styles, enable the opt-in `preserveMarkup` prop on `Truncate` or `ShowMore`. The default path remains optimized for plain-text truncation.
+
 ## Installation
 
 With npm(or yarn, or pnpm):

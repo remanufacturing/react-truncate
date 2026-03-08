@@ -9,6 +9,8 @@ A basic component for cropping text. Usually there is no need to use it directly
 
 Use it like a normal component, just pass the long text as the `children` prop.
 
+If you need the collapsed state to keep rendered inline markup such as links, classes, or inline styles, enable `preserveMarkup`. This mode is opt-in because it does more work than the default plain-text truncation path.
+
 ```tsx
 import React from 'react'
 import { Truncate } from '@re-dev/react-truncate'
@@ -31,6 +33,14 @@ const MyComponent: React.FC = () => {
   )
 }
 ```
+
+```tsx
+<Truncate lines={2} preserveMarkup>
+  Hello <a href="/docs">docs</a> and more content here
+</Truncate>
+```
+
+`preserveMarkup` is best-effort for rendered inline content. It is intended for inline elements such as `a`, `span`, `strong`, `em`, `code`, or components that finally render standard inline DOM nodes. Block layout and arbitrary custom component behavior are not guaranteed to be preserved in the collapsed state.
 
 Hint: (Generally with React) if you want to preserve newlines from plain text, you need to do as follows:
 
@@ -141,6 +151,13 @@ export interface TruncateProps extends DetailedHTMLProps {
    * @default false
    */
   middle?: boolean
+
+  /**
+   * Preserve rendered inline markup in collapsed output when possible
+   *
+   * @default false
+   */
+  preserveMarkup?: boolean
 
   /**
    * Number of characters to keep from the end of the text

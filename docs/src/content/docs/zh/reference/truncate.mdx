@@ -9,6 +9,8 @@ description: Usage of the `Truncate` component.
 
 像普通的组件一样使用它，只需要将长文本作为 `children` prop 传递。
 
+如果希望折叠态尽量保留已经渲染出来的内联富文本结构，例如链接、类名、内联样式等，可以启用 `preserveMarkup` 。该能力为按需开启，因为它比默认的纯文本裁剪路径有更高的计算开销。
+
 ```tsx
 import React from 'react'
 import { Truncate } from '@re-dev/react-truncate'
@@ -31,6 +33,14 @@ const MyComponent: React.FC = () => {
   )
 }
 ```
+
+```tsx
+<Truncate lines={2} preserveMarkup>
+  Hello <a href="/docs">docs</a> and more content here
+</Truncate>
+```
+
+`preserveMarkup` 主要面向已经渲染为标准内联 DOM 的内容，例如 `a`、`span`、`strong`、`em`、`code`，以及最终输出这些节点的组件。对于块级布局和任意自定义组件在折叠态下的完整行为，不保证完全保留。
 
 提示：（通常使用 React）如果你想保留纯文本中的换行符，你需要执行以下操作：
 
@@ -134,6 +144,13 @@ export interface TruncateProps extends DetailedHTMLProps {
    * @default false
    */
   middle?: boolean
+
+  /**
+   * 尽可能在折叠态保留已渲染的内联标记结构
+   *
+   * @default false
+   */
+  preserveMarkup?: boolean
 
   /**
    * 从文本末尾开始保留的字符数
