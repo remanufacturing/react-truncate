@@ -38,7 +38,7 @@ jobs:
         run: pnpm build:docs:e2e
 
       - name: Run docs page e2e tests
-        run: pnpm test:e2e:docs:preview e2e/tests/docs-pages.spec.ts
+        run: pnpm test:e2e:docs:preview
 
       - name: Run coverage on main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
