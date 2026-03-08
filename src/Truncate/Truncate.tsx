@@ -117,44 +117,51 @@ export const Truncate: React.FC<TruncateProps> = ({
   useEffect(() => {
     const mounted = !!(targetRef.current && targetWidth)
 
-    if (typeof window !== 'undefined' && mounted) {
-      if (lines > 0) {
-        const plainTextResult = getPlainTextTruncation({
-          ellipsis,
-          ellipsisRef: ellipsisRef.current,
-          end,
-          lines,
-          measureWidth,
-          middleTruncate,
-          separator,
-          targetWidth,
-          textRef: textRef.current,
-          trimWhitespace,
-        })
-
-        if (preserveMarkup && !middleTruncate) {
-          if (plainTextResult.didTruncate) {
-            setRenderTextRef(
-              getMarkupTruncation({
-                ellipsis,
-                node: textRef.current,
-                separator,
-                visibleTextLines: plainTextResult.visibleTextLines,
-              }),
-            )
-          } else {
-            setRenderTextRef(children)
-          }
-        } else {
-          setRenderTextRef(plainTextResult.resultLines.map(renderLine))
-        }
-
-        truncate(plainTextResult.didTruncate)
-      } else {
-        setRenderTextRef(children)
-        truncate(false)
-      }
+    if (typeof window === 'undefined' || !mounted) {
+      return
     }
+
+    if (lines <= 0) {
+      setRenderTextRef(children)
+      truncate(false)
+      return
+    }
+
+    const plainTextResult = getPlainTextTruncation({
+      ellipsis,
+      ellipsisRef: ellipsisRef.current,
+      end,
+      lines,
+      measureWidth,
+      middleTruncate,
+      separator,
+      targetWidth,
+      textRef: textRef.current,
+      trimWhitespace,
+    })
+
+    if (preserveMarkup && !middleTruncate) {
+      const markupResult = getMarkupTruncation({
+        fallbackDidTruncate: plainTextResult.didTruncate,
+        fallbackVisibleTextLines: plainTextResult.visibleTextLines,
+        ellipsis,
+        ellipsisNode: ellipsisRef.current,
+        lines,
+        node: textRef.current,
+        rootNode: targetRef.current,
+        separator,
+        trimWhitespace,
+      })
+
+      setRenderTextRef(
+        markupResult.didTruncate ? markupResult.result : children,
+      )
+      truncate(markupResult.didTruncate)
+      return
+    }
+
+    setRenderTextRef(plainTextResult.resultLines.map(renderLine))
+    truncate(plainTextResult.didTruncate)
   }, [
     children,
     ellipsis,

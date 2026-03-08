@@ -39,28 +39,33 @@ const normalizeAttributes = (attributes: Record<string, string>) => {
   )
 }
 
-const renderSnapshotNodes = (
+export const renderSnapshotNodes = (
   nodes: MarkupSnapshotNode[],
   keyPrefix = 'markup',
 ): React.ReactNode[] => {
-  return nodes.flatMap((node, index) => {
+  return nodes.reduce<React.ReactNode[]>((result, node, index) => {
     const key = `${keyPrefix}-${index}`
 
     if (node.type === 'text') {
-      return node.text ? [node.text] : []
+      if (node.text) {
+        result.push(node.text)
+      }
+
+      return result
     }
 
     if (node.type === 'line-break') {
-      return [<br key={key} />]
+      result.push(<br key={key} />)
+      return result
     }
 
     const children = renderSnapshotNodes(node.children, `${key}-child`)
 
     if (children.length === 0) {
-      return []
+      return result
     }
 
-    return [
+    result.push(
       React.createElement(
         node.tagName,
         {
@@ -69,8 +74,10 @@ const renderSnapshotNodes = (
         },
         ...children,
       ),
-    ]
-  })
+    )
+
+    return result
+  }, [])
 }
 
 interface SliceResult {
@@ -125,21 +132,18 @@ const sliceSnapshotNode = (
 
   const childResult = sliceSnapshotNodes(node.children, remaining)
 
-  const taken = childResult.taken.length
-    ? [{ ...node, children: childResult.taken }]
-    : []
-  const rest = childResult.rest.length
-    ? [{ ...node, children: childResult.rest }]
-    : []
-
   return {
-    taken,
-    rest,
+    taken: childResult.taken.length
+      ? [{ ...node, children: childResult.taken }]
+      : [],
+    rest: childResult.rest.length
+      ? [{ ...node, children: childResult.rest }]
+      : [],
     remaining: childResult.remaining,
   }
 }
 
-const sliceSnapshotNodes = (
+export const sliceSnapshotNodes = (
   nodes: MarkupSnapshotNode[],
   remaining: number,
 ): SliceResult => {
@@ -155,7 +159,6 @@ const sliceSnapshotNodes = (
     }
 
     const result = sliceSnapshotNode(node, nextRemaining)
-
     taken.push(...result.taken)
     rest.push(...result.rest)
     nextRemaining = result.remaining
@@ -168,7 +171,7 @@ const sliceSnapshotNodes = (
   }
 }
 
-const trimLeadingWhitespace = (
+export const trimLeadingWhitespace = (
   nodes: MarkupSnapshotNode[],
 ): MarkupSnapshotNode[] => {
   if (nodes.length === 0) return nodes
@@ -198,7 +201,56 @@ const trimLeadingWhitespace = (
   return nodes
 }
 
-export const renderMarkupPrefix = (
+export const trimTrailingWhitespace = (
+  nodes: MarkupSnapshotNode[],
+): MarkupSnapshotNode[] => {
+  if (nodes.length === 0) return nodes
+
+  const headNodes = nodes.slice(0, -1)
+  const lastNode = nodes.at(-1)
+
+  if (!lastNode) {
+    return nodes
+  }
+
+  if (lastNode.type === 'line-break') {
+    return trimTrailingWhitespace(headNodes)
+  }
+
+  if (lastNode.type === 'text') {
+    const trimmedText = lastNode.text.replace(/\s+$/, '')
+
+    if (!trimmedText) {
+      return trimTrailingWhitespace(headNodes)
+    }
+
+    return [...headNodes, { ...lastNode, text: trimmedText }]
+  }
+
+  const trimmedChildren = trimTrailingWhitespace(lastNode.children)
+
+  if (trimmedChildren.length === 0) {
+    return trimTrailingWhitespace(headNodes)
+  }
+
+  return [...headNodes, { ...lastNode, children: trimmedChildren }]
+}
+
+export const getSnapshotTextLength = (nodes: MarkupSnapshotNode[]): number => {
+  return nodes.reduce((total, node) => {
+    if (node.type === 'text') {
+      return total + node.text.length
+    }
+
+    if (node.type === 'line-break') {
+      return total + 1
+    }
+
+    return total + getSnapshotTextLength(node.children)
+  }, 0)
+}
+
+export const renderMarkupLines = (
   nodes: MarkupSnapshotNode[],
   visibleTextLines: string[],
   ellipsis: React.ReactNode,
@@ -234,4 +286,21 @@ export const renderMarkupPrefix = (
       </React.Fragment>
     )
   })
+}
+
+export const renderMarkupPrefix = (
+  nodes: MarkupSnapshotNode[],
+  visibleLength: number,
+  ellipsis: React.ReactNode,
+  trimWhitespace = false,
+) => {
+  const result = sliceSnapshotNodes(nodes, visibleLength)
+  const visibleNodes = trimWhitespace
+    ? trimTrailingWhitespace(result.taken)
+    : result.taken
+
+  return [
+    ...renderSnapshotNodes(visibleNodes, 'markup-prefix'),
+    <React.Fragment key="markup-ellipsis">{ellipsis}</React.Fragment>,
+  ]
 }
