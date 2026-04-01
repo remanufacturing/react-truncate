@@ -5,7 +5,10 @@ const LONG_TEXT =
   'This sentence keeps going so the component must clamp it safely. This extra copy ensures the browser truncates it in a narrow box.'
 const SHOW_MORE_TEXT =
   'ShowMore should reveal the hidden text after interaction and allow collapsing again without leaving the browser page.'
+const ZH_SHOW_MORE_TEXT =
+  '显示更多组件在中文内容下也应该能正确展开和收起，并且不应该因为没有空格分词而出现异常的裁剪结果。为了稳定触发折叠状态，这里补充一段更长的中文文本。'
 const FILE_NAME = 'Quarterly-operating-report-final-reviewed-version-2026.pdf'
+const ZH_FILE_NAME = '客户合同归档最终审核版本-2026.pdf'
 const RESIZE_TEXT =
   'Resizing the container should force truncation to recalculate and produce a shorter visible result in the narrow state.'
 const INLINE_CHINESE_RICH_TEXT = (
@@ -81,6 +84,9 @@ export const App: React.FC = () => {
   const [showMoreState, setShowMoreState] = useState<'collapsed' | 'expanded'>(
     'collapsed',
   )
+  const [zhShowMoreState, setZhShowMoreState] = useState<
+    'collapsed' | 'expanded'
+  >('collapsed')
   const [resizeWidth, setResizeWidth] = useState(240)
 
   useEffect(() => {
@@ -140,12 +146,44 @@ export const App: React.FC = () => {
       </section>
 
       <section style={sectionStyle}>
+        <h2>Chinese ShowMore</h2>
+        <div style={{ ...boxStyle, width: '210px' }}>
+          <div data-testid="zh-show-more-state">{zhShowMoreState}</div>
+          <div data-testid="zh-show-more-example">
+            <ShowMore
+              lines={2}
+              more="展开"
+              less="收起"
+              separator=""
+              onToggle={(expanded) =>
+                setZhShowMoreState(expanded ? 'expanded' : 'collapsed')
+              }
+            >
+              {ZH_SHOW_MORE_TEXT}
+            </ShowMore>
+          </div>
+        </div>
+      </section>
+
+      <section style={sectionStyle}>
         <h2>MiddleTruncate</h2>
         <div
           data-testid="middle-example"
           style={{ ...boxStyle, width: '220px' }}
         >
           <MiddleTruncate end={4}>{FILE_NAME}</MiddleTruncate>
+        </div>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2>Chinese MiddleTruncate</h2>
+        <div
+          data-testid="zh-middle-example"
+          style={{ ...boxStyle, width: '220px' }}
+        >
+          <MiddleTruncate end={4} separator="">
+            {ZH_FILE_NAME}
+          </MiddleTruncate>
         </div>
       </section>
 

@@ -13,6 +13,7 @@ export const ControllableMiddleTruncate: React.FC<{
   lang: Languages
 }> = ({ lang }) => {
   const { isZh } = useLang(lang)
+  const testIdPrefix = `docs-middle-truncate-demo-${lang}`
 
   const [width, setWidth] = useState(DEFAULT_WIDTH_VALUE)
   const [end, setEnd] = useState(DEFAULT_END_VALUE)
@@ -21,7 +22,7 @@ export const ControllableMiddleTruncate: React.FC<{
   const { refreshKey } = useRefreshKey([width, end])
 
   return (
-    <>
+    <div data-testid={testIdPrefix}>
       <EW.Range
         lang={lang}
         labelKey="example.width"
@@ -30,6 +31,7 @@ export const ControllableMiddleTruncate: React.FC<{
         max="100"
         defaultValue={DEFAULT_WIDTH_VALUE}
         onChange={setWidth}
+        data-testid={`${testIdPrefix}-width`}
       />
 
       <EW.Range
@@ -41,6 +43,7 @@ export const ControllableMiddleTruncate: React.FC<{
         defaultValue={DEFAULT_END_VALUE}
         onChange={setEnd}
         percentable={false}
+        data-testid={`${testIdPrefix}-end`}
       />
 
       <EW.Switch
@@ -48,13 +51,22 @@ export const ControllableMiddleTruncate: React.FC<{
         labelKey="example.html"
         checked={html}
         onChange={setHtml}
+        data-testid={`${testIdPrefix}-html`}
       />
 
-      <EW.Container style={{ width: `${width}%` }}>
-        <MiddleTruncate separator={isZh ? '' : ' '} end={end} key={refreshKey}>
+      <EW.Container
+        data-testid={`${testIdPrefix}-container`}
+        style={{ width: `${width}%` }}
+      >
+        <MiddleTruncate
+          separator={isZh ? '' : ' '}
+          end={end}
+          key={refreshKey}
+          data-testid={`${testIdPrefix}-content`}
+        >
           <EW.Content isZh={isZh} html={html} />
         </MiddleTruncate>
       </EW.Container>
-    </>
+    </div>
   )
 }

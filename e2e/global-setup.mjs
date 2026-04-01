@@ -3,7 +3,7 @@ import { readFileSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const PORT = 4173
+const PORT = 4176
 const PID_FILE = '/tmp/react-truncate-e2e-vite.pid'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

@@ -5,7 +5,7 @@ export default defineConfig({
   globalSetup: './e2e/global-setup.mjs',
   globalTeardown: './e2e/global-teardown.mjs',
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: 'http://127.0.0.1:4176',
     trace: 'on-first-retry',
   },
 })

@@ -20,18 +20,22 @@ export const TooltipShowMore: React.FC<{
     return <EW.Content isZh={isZh} shorter />
   }, [isZh])
 
+  const testIdPrefix = useMemo(() => {
+    return `docs-tooltip-show-more-${lang}`
+  }, [lang])
+
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <EW.Container>
+          <EW.Container data-testid={testIdPrefix}>
             <ShowMore separator={isZh ? '' : ' '} more={null}>
               {content}
             </ShowMore>
           </EW.Container>
         </TooltipTrigger>
 
-        <TooltipContent>
+        <TooltipContent data-testid={`${testIdPrefix}-content`}>
           <div className="max-w-96">{content}</div>
         </TooltipContent>
       </Tooltip>

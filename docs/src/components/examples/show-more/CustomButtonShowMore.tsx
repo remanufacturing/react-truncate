@@ -11,8 +11,9 @@ import { type Languages, useLang } from '@/i18n'
 
 const IconButton: React.FC<{
   type: 'more' | 'less'
+  isZh: boolean
   onClick: ShowMoreToggleLinesFn
-}> = ({ type, onClick }) => {
+}> = ({ type, isZh, onClick }) => {
   const Icon = useMemo(() => {
     if (type === 'less') {
       return ChevronUp
@@ -24,6 +25,14 @@ const IconButton: React.FC<{
     return type === 'more' ? <span>…</span> : null
   }, [type])
 
+  const label = useMemo(() => {
+    if (isZh) {
+      return type === 'more' ? '展开' : '收起'
+    }
+
+    return type === 'more' ? 'Show More' : 'Show Less'
+  }, [isZh, type])
+
   return (
     <>
       {prefix}
@@ -33,6 +42,8 @@ const IconButton: React.FC<{
         variant="outline"
         size="icon-sm"
         onClick={onClick}
+        aria-label={label}
+        title={label}
       >
         <Icon className="size-4" />
       </Button>
@@ -52,13 +63,13 @@ export const CustomButtonShowMore: React.FC<{
   }
 
   return (
-    <EW.Container>
+    <EW.Container data-testid={`docs-custom-show-more-${lang}`}>
       <ShowMore
         ref={ref}
         lines={3}
         separator={isZh ? '' : ' '}
-        more={<IconButton type="more" onClick={toggleLines} />}
-        less={<IconButton type="less" onClick={toggleLines} />}
+        more={<IconButton type="more" isZh={isZh} onClick={toggleLines} />}
+        less={<IconButton type="less" isZh={isZh} onClick={toggleLines} />}
       >
         <EW.Content isZh={isZh} shorter />
       </ShowMore>
