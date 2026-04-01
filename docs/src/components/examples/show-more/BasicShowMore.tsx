@@ -9,7 +9,7 @@ export const BasicShowMore: React.FC<{
   const { isZh } = useLang(lang)
 
   return (
-    <EW.Container>
+    <EW.Container data-testid={`docs-basic-show-more-${lang}`}>
       <ShowMore lines={3} separator={isZh ? '' : ' '}>
         <EW.Content isZh={isZh} shorter />
       </ShowMore>

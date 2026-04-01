@@ -30,17 +30,47 @@ test('show-more expands and collapses', async ({ page }) => {
     showMoreExample.getByRole('link', { name: 'Collapse' }),
   ).toBeVisible()
 
-  const expandedText = await page.getByTestId('show-more-example').innerText()
+  const expandedText = await showMoreExample.innerText()
   expect(expandedText.length).toBeGreaterThan(collapsedText.length)
 
   await showMoreExample.getByRole('link', { name: 'Collapse' }).click()
   await expect(page.getByTestId('show-more-state')).toHaveText('collapsed')
 })
 
+test('zh show-more expands and collapses', async ({ page }) => {
+  await page.goto('/')
+
+  await expect(page.getByTestId('zh-show-more-state')).toHaveText('collapsed')
+  const showMoreExample = page.getByTestId('zh-show-more-example')
+  const collapsedText = await showMoreExample.innerText()
+
+  await showMoreExample.getByRole('link', { name: '展开' }).click()
+
+  await expect(page.getByTestId('zh-show-more-state')).toHaveText('expanded')
+  await expect(
+    showMoreExample.getByRole('link', { name: '收起' }),
+  ).toBeVisible()
+
+  const expandedText = await showMoreExample.innerText()
+  expect(expandedText.length).toBeGreaterThan(collapsedText.length)
+})
+
 test('middle-truncate preserves suffix', async ({ page }) => {
   await page.goto('/')
 
   const middleExample = page.getByTestId('middle-example')
+  await expect(middleExample).toContainText('.pdf')
+
+  const text = await middleExample.innerText()
+
+  expect(text).toContain('…')
+  expect(text.endsWith('.pdf')).toBeTruthy()
+})
+
+test('zh middle-truncate preserves suffix', async ({ page }) => {
+  await page.goto('/')
+
+  const middleExample = page.getByTestId('zh-middle-example')
   await expect(middleExample).toContainText('.pdf')
 
   const text = await middleExample.innerText()
